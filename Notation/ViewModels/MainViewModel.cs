@@ -1,0 +1,191 @@
+﻿using Notation.Models;
+using Notation.Views;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
+
+namespace Notation.ViewModels
+{
+    public class MainViewModel : DependencyObject
+    {
+        private static MainViewModel _instance;
+        public static MainViewModel Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new MainViewModel();
+                }
+                return _instance;
+            }
+        }
+
+        public UserViewModel User
+        {
+            get { return (UserViewModel)GetValue(UserProperty); }
+            set { SetValue(UserProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for User.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty UserProperty =
+            DependencyProperty.Register("User", typeof(UserViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
+        public LoginViewModel Login
+        {
+            get { return (LoginViewModel)GetValue(LoginProperty); }
+            set { SetValue(LoginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Login.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LoginProperty =
+            DependencyProperty.Register("Login", typeof(LoginViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
+        public int SelectedYear
+        {
+            get { return (int)GetValue(SelectedYearProperty); }
+            set { SetValue(SelectedYearProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedYear.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedYearProperty =
+            DependencyProperty.Register("SelectedYear", typeof(int), typeof(MainViewModel), new PropertyMetadata(0, SelectedYearChanged));
+
+        private static void SelectedYearChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            MainViewModel mainViewModel = (MainViewModel)d;
+            if (mainViewModel.User != null)
+            {
+                mainViewModel.Parameters.LoadData();
+            }
+        }
+
+        public ObservableCollection<int> Years { get; set; }
+
+        public ParametersViewModel Parameters
+        {
+            get { return (ParametersViewModel)GetValue(ParametersProperty); }
+            set { SetValue(ParametersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Parameters.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ParametersProperty =
+            DependencyProperty.Register("Parameters", typeof(ParametersViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
+        public ReportsViewModel Reports
+        {
+            get { return (ReportsViewModel)GetValue(ReportsProperty); }
+            set { SetValue(ReportsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Reports.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ReportsProperty =
+            DependencyProperty.Register("Reports", typeof(ReportsViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
+        public ModelsViewModel Models
+        {
+            get { return (ModelsViewModel)GetValue(ModelsProperty); }
+            set { SetValue(ModelsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Models.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ModelsProperty =
+            DependencyProperty.Register("Models", typeof(ModelsViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
+        public RoutedUICommand LoginCommand { get; set; }
+
+        private void LoginExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Login = new LoginViewModel();
+            LoginView form = new LoginView(Login);
+            if (form.ShowDialog() ?? false)
+            {
+                if (Login.Login == Parameters.BaseParameters.AdminLogin && Login.Password == Parameters.BaseParameters.AdminPassword)
+                {
+                    User = new UserViewModel()
+                    {
+                        Name = "Administrateur",
+                        IsAdmin = true,
+                    };
+                }
+                else
+                {
+                    IEnumerable<int> years = TeacherModel.Login(Login.Login, Login.Password);
+                    LoadYears(years);
+                    TeacherViewModel teacher = TeacherModel.Login(Login.Login, Login.Password, SelectedYear);
+                    User = new UserViewModel()
+                    {
+                        Name = string.Format("{0} {1} {2}", teacher.Title, teacher.FirstName, teacher.LastName),
+                        Teacher = teacher,
+                    };
+                }
+                Parameters.LoadData();
+                Models.LoadData();
+                Reports.LoadData();
+            }
+        }
+
+        public CommandBindingCollection Bindings { get; set; }
+
+        public MainViewModel()
+        {
+            Login = new LoginViewModel();
+            Models = new ModelsViewModel();
+            Parameters = new ParametersViewModel();
+            Reports = new ReportsViewModel();
+            Years = new ObservableCollection<int>();
+
+            LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
+
+            Bindings = new CommandBindingCollection()
+            {
+                new CommandBinding(LoginCommand, LoginExecuted),
+            };
+
+            LoadYears();
+        }
+
+        public void LoadYears()
+        {
+            SelectedYear = 0;
+            foreach (int year in Years.Where(y => y != 0).ToList())
+            {
+                Years.Remove(year);
+            }
+            if (!Years.Contains(0))
+            {
+                Years.Add(0);
+            }
+            foreach (int year in YearModel.Read())
+            {
+                Years.Add(year);
+            }
+            SelectedYear = YearModel.GetCurrentYear();
+        }
+
+        public void LoadYears(IEnumerable<int> years)
+        {
+            SelectedYear = 0;
+            foreach (int year in Years.Where(y => y != 0).ToList())
+            {
+                Years.Remove(year);
+            }
+            if (!Years.Contains(0))
+            {
+                Years.Add(0);
+            }
+            foreach (int year in years)
+            {
+                Years.Add(year);
+            }
+            SelectedYear = YearModel.GetCurrentYear();
+            if (SelectedYear == 0 || !Years.Contains(SelectedYear))
+            {
+                SelectedYear = Years.LastOrDefault();
+            }
+        }
+    }
+}
