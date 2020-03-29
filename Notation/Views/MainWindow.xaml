@@ -123,8 +123,8 @@
                                 </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Nom :" TextAlignment="Right"></TextBlock>
                                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ModificationLevel.Name}"></TextBox>
-                                <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Header="Matières :" IsExpanded="True">
-                                    <Grid>
+                                <Expander Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Header="Matières :" IsExpanded="True" Background="LightGray">
+                                    <Grid Background="White">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="35"></RowDefinition>
                                             <RowDefinition Height="Auto"></RowDefinition>
@@ -186,7 +186,16 @@
                                     <DataGridCheckBoxColumn Binding="{Binding Option}" Header="Option" Width="*"></DataGridCheckBoxColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="1" Grid.Row="1" Background="White" Visibility="{Binding ModificationSubject, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSubjectCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSubjectCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSubject, Converter={StaticResource SelectedToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -194,12 +203,8 @@
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -225,50 +230,55 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <TextBlock Grid.Column="0" Grid.Row="6" Text="Niveaux :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectLevelsCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectLevelCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationSubject.Levels}" SelectedItem="{Binding ModificationSubject.SelectedLevel}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <TextBlock Grid.Column="0" Grid.Row="8" Text="Professeurs :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectTeachersCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectTeacherCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationSubject.Teachers}" SelectedItem="{Binding ModificationSubject.SelectedTeacher}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding Title}" Header="Titre" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <Grid Grid.Row="11" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSubjectCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSubjectCommand}"></Button>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="4" Background="AliceBlue" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="6" Header="Niveaux :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectLevelsCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectLevelCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Levels}" SelectedItem="{Binding ModificationSubject.SelectedLevel}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="7" Header="Professeurs :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectTeachersCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectTeacherCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Teachers}" SelectedItem="{Binding ModificationSubject.SelectedTeacher}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding Title}" Header="Titre" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="7" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -282,6 +292,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -301,7 +312,16 @@
                                     <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="1" Grid.Row="1" Background="White" Visibility="{Binding ModificationTeacher, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="0" Visibility="{Binding ModificationTeacher, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveTeacherCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelTeacherCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationTeacher, Converter={StaticResource SelectedToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -310,12 +330,8 @@
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -340,62 +356,67 @@
                                 <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding ModificationTeacher.FirstName}"></TextBox>
                                 <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding ModificationTeacher.Login}"></TextBox>
                                 <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding ModificationTeacher.Password}"></TextBox>
-                                <TextBlock Grid.Column="0" Grid.Row="7" Text="Matières :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherSubjectsCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherSubjectCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationTeacher.Subjects}" SelectedItem="{Binding ModificationTeacher.SelectedSubject}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding Converter={StaticResource SubjectToNameConverter}}" Header="Nom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding Coefficient}" Header="Coefficient" Width="*"></DataGridTextColumn>
-                                        <DataGridCheckBoxColumn Binding="{Binding Option}" Header="Option" Width="*"></DataGridCheckBoxColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <TextBlock Grid.Column="0" Grid.Row="9" Text="Classes :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherClassesCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherClassCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationTeacher.Classes}" SelectedItem="{Binding ModificationTeacher.SelectedClass}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding Level.Name}" Header="Niveau" Width="*"></DataGridTextColumn>
-                                        <DataGridTemplateColumn Header="Professeur principal" Width="*">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding MainTeacher.Title}"></TextBlock>
-                                                        <TextBlock Text="{Binding MainTeacher.LastName}"></TextBlock>
-                                                        <TextBlock Text="{Binding MainTeacher.Firstname}"></TextBlock>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <Grid Grid.Row="12" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveTeacherCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelTeacherCommand}"></Button>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="13" Grid.ColumnSpan="4" Background="AliceBlue" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="7" Header="Matières :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherSubjectsCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherSubjectCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Subjects}" SelectedItem="{Binding ModificationTeacher.SelectedSubject}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding Converter={StaticResource SubjectToNameConverter}}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding Coefficient}" Header="Coefficient" Width="*"></DataGridTextColumn>
+                                                <DataGridCheckBoxColumn Binding="{Binding Option}" Header="Option" Width="*"></DataGridCheckBoxColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="8" Header="Classes :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherClassesCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherClassCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Classes}" SelectedItem="{Binding ModificationTeacher.SelectedClass}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding Level.Name}" Header="Niveau" Width="*"></DataGridTextColumn>
+                                                <DataGridTemplateColumn Header="Professeur principal" Width="*">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding MainTeacher.Title}"></TextBlock>
+                                                                <TextBlock Text="{Binding MainTeacher.LastName}"></TextBlock>
+                                                                <TextBlock Text="{Binding MainTeacher.Firstname}"></TextBlock>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="8" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -409,6 +430,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -442,19 +464,24 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="1" Grid.Row="1" Background="White" Visibility="{Binding ModificationClass, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveClassCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelClassCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationClass, Converter={StaticResource SelectedToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="250"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -489,52 +516,57 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <TextBlock Grid.Column="0" Grid.Row="5" Text="Professeurs :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassTeachersCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassTeacherCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationClass.Teachers}" SelectedItem="{Binding ModificationClass.SelectedTeacher}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding Title}" Header="Titre" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <TextBlock Grid.Column="0" Grid.Row="7" Text="Elèves :" TextAlignment="Right"></TextBlock>
-                                <Grid Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassStudentsCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassStudentCommand}"></Button>
-                                </Grid>
-                                <DataGrid Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding ModificationClass.Students}" SelectedItem="{Binding ModificationClass.SelectedStudent}"
-                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Binding="{Binding FirstName}" Header="Nom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding LastName}" Header="Prénom" Width="*"></DataGridTextColumn>
-                                        <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                                <Grid Grid.Row="10" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveClassCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelClassCommand}"></Button>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="4" Background="AliceBlue" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="5" Header="Professeurs :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassTeachersCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassTeacherCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Teachers}" SelectedItem="{Binding ModificationClass.SelectedTeacher}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding Title}" Header="Titre" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <Expander Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="6" Header="Elèves :" IsExpanded="True">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="35"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid Grid.Row="0" Grid.Column="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassStudentsCommand}"></Button>
+                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassStudentCommand}"></Button>
+                                        </Grid>
+                                        <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Students}" SelectedItem="{Binding ModificationClass.SelectedStudent}"
+                                          AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Binding="{Binding FirstName}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding LastName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </Expander>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="6" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -548,6 +580,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -567,7 +600,16 @@
                                     <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="1" Grid.Row="1" Background="White" Visibility="{Binding ModificationStudent, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveStudentCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelStudentCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationStudent, Converter={StaticResource SelectedToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -575,8 +617,6 @@
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -592,7 +632,7 @@
                                 </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Nom :" TextAlignment="Right"></TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="3" Text="Prénom :" TextAlignment="Right"></TextBlock>
-                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Date de naissance :" TextAlignment="Right"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="4" Text="Date de naiss. :" TextAlignment="Right"></TextBlock>
                                 <TextBlock Grid.Column="0" Grid.Row="5" Text="Classe :" TextAlignment="Right"></TextBlock>
                                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ModificationStudent.LastName}"></TextBox>
                                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding ModificationStudent.FirstName}"></TextBox>
@@ -604,16 +644,7 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <Grid Grid.Row="7" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveStudentCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelStudentCommand}"></Button>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4" Background="AliceBlue" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="5" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -627,6 +658,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -647,7 +679,16 @@
                                     <DataGridTextColumn Binding="{Binding ToDate, StringFormat=dd\/MM\/yyyy}" Header="Au" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="2" Grid.Row="1" Background="White" Visibility="{Binding ModificationPeriod, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SavePeriodCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelPeriodCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource SelectedToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -655,8 +696,6 @@
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
                                     <RowDefinition Height="35"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                    <RowDefinition Height="50"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -676,16 +715,7 @@
                                 <ComboBox Grid.Column="1" Name="ComboPeriodTrimester" Grid.Row="3" SelectedItem="{Binding ModificationPeriod.Trimester}"></ComboBox>
                                 <DatePicker Grid.Column="1" Grid.Row="4" SelectedDate="{Binding ModificationPeriod.FromDate}"></DatePicker>
                                 <DatePicker Grid.Column="1" Grid.Row="5" SelectedDate="{Binding ModificationPeriod.ToDate}"></DatePicker>
-                                <Grid Grid.Row="7" Grid.ColumnSpan="3">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="120"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SavePeriodCommand}"></Button>
-                                    <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelPeriodCommand}"></Button>
-                                </Grid>
-                                <TextBlock Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="3" Background="AliceBlue" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="5" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -702,6 +732,7 @@
                                 <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="5" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <TextBlock Grid.Column="1" Grid.Row="0" Text="Trimestres :"></TextBlock>
                             <TextBlock Grid.Column="2" Grid.Row="0" Text="Demi-trimestres :"></TextBlock>
                             <TextBlock Grid.Column="3" Grid.Row="0" Text="Périodes :"></TextBlock>
@@ -732,6 +763,7 @@
                                 <TextBlock Grid.Column="0" Text="Nom :"></TextBlock>
                                 <TextBox Grid.Column="1" Text="{Binding BaseParameters.Name}"></TextBox>
                             </Grid>
+                            <Image Source="{StaticResource IconBackground}" Grid.RowSpan="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="280"></ColumnDefinition>
