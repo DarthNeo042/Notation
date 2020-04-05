@@ -126,6 +126,7 @@
     <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Models\YearModel.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
+    <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
     <Compile Include="Utils\ExportUtils.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
@@ -196,6 +197,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Notation.Reports.BulletinPeriodeLineDataSource.datasource" />
     <None Include="Reports\BulletinPeriode.rdlc">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
