@@ -10,6 +10,8 @@ namespace Notation.ViewModels
 {
     public class ParametersViewModel : DependencyObject
     {
+        public int Year { get; set; }
+
         public PeriodViewModel SelectedPeriod
         {
             get { return (PeriodViewModel)GetValue(SelectedPeriodProperty); }
@@ -172,12 +174,12 @@ namespace Notation.ViewModels
 
         private void AddPeriodCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationPeriod = new PeriodViewModel() { Year = MainViewModel.Instance.SelectedYear };
+            ModificationPeriod = new PeriodViewModel() { Year = Year };
             ModificationPeriod.InitNumber();
         }
 
@@ -234,12 +236,12 @@ namespace Notation.ViewModels
 
         private void AddLevelCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddLevelExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationLevel = new LevelViewModel() { Year = MainViewModel.Instance.SelectedYear, Order = Levels.Count };
+            ModificationLevel = new LevelViewModel() { Year = Year, Order = Levels.Count };
         }
 
         public ICommand ModifyLevelCommand { get; set; }
@@ -360,12 +362,12 @@ namespace Notation.ViewModels
 
         private void AddSubjectCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddSubjectExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationSubject = new SubjectViewModel() { Year = MainViewModel.Instance.SelectedYear, Order = Subjects.Count };
+            ModificationSubject = new SubjectViewModel() { Year = Year, Order = Subjects.Count };
             ModificationSubject.LoadParentSubjects();
         }
 
@@ -596,12 +598,12 @@ namespace Notation.ViewModels
 
         private void AddTeacherCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddTeacherExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationTeacher = new TeacherViewModel() { Year = MainViewModel.Instance.SelectedYear };
+            ModificationTeacher = new TeacherViewModel() { Year = Year };
         }
 
         public ICommand ModifyTeacherCommand { get; set; }
@@ -724,12 +726,12 @@ namespace Notation.ViewModels
 
         private void AddClassCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddClassExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationClass = new ClassViewModel() { Year = MainViewModel.Instance.SelectedYear };
+            ModificationClass = new ClassViewModel() { Year = Year };
             ModificationClass.LoadMainTeachersLevels();
         }
 
@@ -894,12 +896,12 @@ namespace Notation.ViewModels
 
         private void AddStudentCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = MainViewModel.Instance.SelectedYear != 0;
+            e.CanExecute = Year != 0;
         }
 
         private void AddStudentExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            ModificationStudent = new StudentViewModel() { Year = MainViewModel.Instance.SelectedYear };
+            ModificationStudent = new StudentViewModel() { Year = Year };
             ModificationStudent.LoadClasses();
         }
 
@@ -1149,27 +1151,27 @@ namespace Notation.ViewModels
             LoadTeacherClasses();
         }
 
-        private void LoadLevelSubjects()
+        public void LoadLevelSubjects()
         {
-            LevelSubjectModel.ReadLevelSubjects(Levels, Subjects, MainViewModel.Instance.SelectedYear);
+            LevelSubjectModel.ReadLevelSubjects(Levels, Subjects, Year);
         }
 
-        private void LoadSubjectTeachers()
+        public void LoadSubjectTeachers()
         {
-            SubjectTeacherModel.ReadSubjectTeachers(Subjects, Teachers, MainViewModel.Instance.SelectedYear);
+            SubjectTeacherModel.ReadSubjectTeachers(Subjects, Teachers, Year);
         }
 
-        private void LoadTeacherClasses()
+        public void LoadTeacherClasses()
         {
-            TeacherClassModel.ReadTeacherClasss(Teachers, Classes, MainViewModel.Instance.SelectedYear);
+            TeacherClassModel.ReadTeacherClasss(Teachers, Classes, Year);
         }
 
         public void LoadPeriods(int idPeriod = 0)
         {
             Periods.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                foreach (PeriodViewModel period in PeriodModel.Read(MainViewModel.Instance.SelectedYear))
+                foreach (PeriodViewModel period in PeriodModel.Read(Year))
                 {
                     Periods.Add(period);
                 }
@@ -1182,9 +1184,9 @@ namespace Notation.ViewModels
         public void LoadLevels()
         {
             Levels.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                foreach (LevelViewModel level in LevelModel.Read(MainViewModel.Instance.SelectedYear))
+                foreach (LevelViewModel level in LevelModel.Read(Year))
                 {
                     Levels.Add(level);
                 }
@@ -1195,11 +1197,11 @@ namespace Notation.ViewModels
         public void LoadSubjects()
         {
             Subjects.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                IEnumerable<SubjectViewModel> subjects = SubjectModel.ReadParents(MainViewModel.Instance.SelectedYear);
+                IEnumerable<SubjectViewModel> subjects = SubjectModel.ReadParents(Year);
                 int order = 0;
-                foreach (SubjectViewModel subject in SubjectModel.ReadChildren(MainViewModel.Instance.SelectedYear, subjects))
+                foreach (SubjectViewModel subject in SubjectModel.ReadChildren(Year, subjects))
                 {
                     subject.Order = order;
                     Subjects.Add(subject);
@@ -1212,9 +1214,9 @@ namespace Notation.ViewModels
         public void LoadTeachers()
         {
             Teachers.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                foreach (TeacherViewModel teacher in TeacherModel.Read(MainViewModel.Instance.SelectedYear))
+                foreach (TeacherViewModel teacher in TeacherModel.Read(Year))
                 {
                     Teachers.Add(teacher);
                 }
@@ -1225,9 +1227,9 @@ namespace Notation.ViewModels
         public void LoadClasses()
         {
             Classes.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                foreach (ClassViewModel _class in ClassModel.Read(MainViewModel.Instance.SelectedYear, MainViewModel.Instance.Parameters.Teachers, MainViewModel.Instance.Parameters.Levels))
+                foreach (ClassViewModel _class in ClassModel.Read(Year, MainViewModel.Instance.Parameters.Teachers, MainViewModel.Instance.Parameters.Levels))
                 {
                     Classes.Add(_class);
                 }
@@ -1238,9 +1240,9 @@ namespace Notation.ViewModels
         public void LoadStudents()
         {
             Students.Clear();
-            if (MainViewModel.Instance.SelectedYear != 0)
+            if (Year != 0)
             {
-                foreach (StudentViewModel Student in StudentModel.Read(MainViewModel.Instance.SelectedYear, MainViewModel.Instance.Parameters.Classes))
+                foreach (StudentViewModel Student in StudentModel.Read(Year, MainViewModel.Instance.Parameters.Classes))
                 {
                     Students.Add(Student);
                 }

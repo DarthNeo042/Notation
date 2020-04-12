@@ -44,19 +44,19 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                string update = "";
+                string query = "";
                 if (Teacher.Id == 0)
                 {
-                    update = string.Format("INSERT INTO [Teacher]([Year], FirstName, LastName, [Login], [Password], [Title]) VALUES({0}, '{1}', '{2}', '{3}', '{4}', '{5}')",
+                    query = string.Format("INSERT INTO [Teacher]([Year], FirstName, LastName, [Login], [Password], [Title]) VALUES({0}, '{1}', '{2}', '{3}', '{4}', '{5}')",
                         Teacher.Year, Teacher.FirstName, Teacher.LastName, Teacher.Login, Teacher.Password, Teacher.Title);
                 }
                 else
                 {
-                    update = string.Format("UPDATE [Teacher] SET FirstName = '{0}', LastName = '{1}', [Login] = '{2}', [Password] = '{3}', [Title] = '{4}' "
+                    query = string.Format("UPDATE [Teacher] SET FirstName = '{0}', LastName = '{1}', [Login] = '{2}', [Password] = '{3}', [Title] = '{4}' "
                         + "WHERE [Teacher].Id = {5} AND [Teacher].[Year] = {6}",
                         Teacher.FirstName, Teacher.LastName, Teacher.Login, Teacher.Password, Teacher.Title, Teacher.Id, Teacher.Year);
                 }
-                using (SqlCommand command = new SqlCommand(update, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
                 }

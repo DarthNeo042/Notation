@@ -11,5 +11,9 @@
         public string Column1Libelle { get; set; }
         public string Column2Libelle { get; set; }
         public string Column3Libelle { get; set; }
+        public string TrimesterAverage { get; set; }
+        public string LastAverage { get; set; }
+        public string Tendency { get; set; }
+        public int MyProperty { get; set; }
     }
 }

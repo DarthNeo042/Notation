@@ -41,19 +41,16 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                string update = "";
+                string query = "";
                 if (Level.Id == 0)
                 {
-                    update = string.Format("INSERT INTO [Level]([Year], [Order], Name) VALUES({0}, {1}, '{2}')",
-                        Level.Year, Level.Order, Level.Name);
+                    query = string.Format("INSERT INTO [Level]([Year], [Order], Name) VALUES({0}, {1}, '{2}')", Level.Year, Level.Order, Level.Name);
                 }
                 else
                 {
-                    update = string.Format("UPDATE [Level] SET Name = '{0}', [Order] = {1} "
-                        + "WHERE [Level].Id = {2} AND [Level].[Year] = {3}",
-                        Level.Name, Level.Order, Level.Id, Level.Year);
+                    query = string.Format("UPDATE [Level] SET Name = '{0}', [Order] = {1} WHERE [Level].Id = {2} AND [Level].[Year] = {3}", Level.Name, Level.Order, Level.Id, Level.Year);
                 }
-                using (SqlCommand command = new SqlCommand(update, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
                 }

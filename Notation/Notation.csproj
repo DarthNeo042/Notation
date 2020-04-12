@@ -135,6 +135,7 @@
     <Compile Include="Utils\NumberUtils.cs" />
     <Compile Include="Utils\PDFUtils.cs" />
     <Compile Include="Utils\SSRSUtils.cs" />
+    <Compile Include="Utils\YearUtils.cs" />
     <Compile Include="ViewModels\BaseParametersViewModel.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CalendarViewModel.cs" />

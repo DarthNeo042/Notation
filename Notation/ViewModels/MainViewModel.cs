@@ -1,6 +1,6 @@
 ﻿using Notation.Models;
+using Notation.Utils;
 using Notation.Views;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -57,6 +57,7 @@ namespace Notation.ViewModels
         private static void SelectedYearChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             MainViewModel mainViewModel = (MainViewModel)d;
+            mainViewModel.Parameters.Year = mainViewModel.SelectedYear;
             if (mainViewModel.User != null)
             {
                 mainViewModel.Parameters.LoadData();
@@ -128,6 +129,21 @@ namespace Notation.ViewModels
             }
         }
 
+        public ICommand AddYearCommand { get; set; }
+
+        private void AddYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !Years.Contains(SelectedYear + 1);
+        }
+
+        private void AddYearExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (MessageBox.Show($"Voulez-vous créer l'année {SelectedYear + 1}/{SelectedYear + 2} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                YearUtils.CreateYear(SelectedYear + 1);
+            }
+        }
+
         public CommandBindingCollection Bindings { get; set; }
 
         public MainViewModel()
@@ -138,10 +154,12 @@ namespace Notation.ViewModels
             Reports = new ReportsViewModel();
             Years = new ObservableCollection<int>();
 
+            AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));
             LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
 
             Bindings = new CommandBindingCollection()
             {
+                new CommandBinding(AddYearCommand, AddYearExecuted, AddYearCanExecute),
                 new CommandBinding(LoginCommand, LoginExecuted),
             };
 

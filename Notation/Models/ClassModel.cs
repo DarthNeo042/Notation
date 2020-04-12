@@ -51,19 +51,19 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                string update = "";
+                string query = "";
                 if (_class.Id == 0)
                 {
-                    update = string.Format("INSERT INTO [Class]([Year], [Order], [Name], [IdLevel], [IdMainTeacher]) VALUES({0}, {1}, '{2}', {3}, {4})",
+                    query = string.Format("INSERT INTO [Class]([Year], [Order], [Name], [IdLevel], [IdMainTeacher]) VALUES({0}, {1}, '{2}', {3}, {4})",
                         _class.Year, _class.Order, _class.Name, _class.Level == null ? "NULL": _class.Level.Id.ToString(), _class.MainTeacher == null ? "NULL" : _class.MainTeacher.Id.ToString());
                 }
                 else
                 {
-                    update = string.Format("UPDATE [Class] SET Name = '{0}', [Order] = {1}, [IdLevel] = {2}, [IdMainTeacher] = {3} "
+                    query = string.Format("UPDATE [Class] SET Name = '{0}', [Order] = {1}, [IdLevel] = {2}, [IdMainTeacher] = {3} "
                         + "WHERE [Class].Id = {4} AND [Class].[Year] = {5}",
                         _class.Name, _class.Order, _class.Level == null ? "NULL" : _class.Level.Id.ToString(), _class.MainTeacher == null ? "NULL" : _class.MainTeacher.Id.ToString(), _class.Id, _class.Year);
                 }
-                using (SqlCommand command = new SqlCommand(update, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
                 }

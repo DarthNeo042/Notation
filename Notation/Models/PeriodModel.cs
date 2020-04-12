@@ -44,18 +44,18 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                string update = "";
+                string query = "";
                 if (period.Id == 0)
                 {
-                    update = string.Format("INSERT INTO [Period]([Year], Trimester, Number, FromDate, ToDate) VALUES({0}, {1}, {2}, '{3}', '{4}')",
-                        period.Year, period.Order, period.Trimester, period.Number, period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
+                    query = string.Format("INSERT INTO [Period]([Year], Trimester, Number, FromDate, ToDate) VALUES({0}, {1}, {2}, '{3}', '{4}')",
+                        period.Year, period.Trimester, period.Number, period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
                 }
                 else
                 {
-                    update = string.Format("UPDATE [Period] SET Trimester = {0}, Number = {1}, FromDate = '{2}', ToDate = '{3}' WHERE [Period].Id = {4} AND [Period].[Year] = {5}",
+                    query = string.Format("UPDATE [Period] SET Trimester = {0}, Number = {1}, FromDate = '{2}', ToDate = '{3}' WHERE [Period].Id = {4} AND [Period].[Year] = {5}",
                         period.Trimester, period.Number, period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString(), period.Id, period.Year);
                 }
-                using (SqlCommand command = new SqlCommand(update, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
                 }

@@ -28,6 +28,19 @@ namespace Notation.Models
             return years;
         }
 
+        public static void Create(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand($"INSERT INTO Year(Year) VALUES ({year})", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static int GetCurrentYear()
         {
             int year = 0;

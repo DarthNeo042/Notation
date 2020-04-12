@@ -45,20 +45,20 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                string update = "";
+                string query = "";
                 if (semiTrimesterComment.Id == 0)
                 {
-                    update = string.Format("INSERT INTO [SemiTrimesterComment]([Year], [Order], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
+                    query = string.Format("INSERT INTO [SemiTrimesterComment]([Year], [Order], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
                         + " VALUES({0}, {1}, '{2}', '{3}', {4}, {5})", semiTrimesterComment.Year, semiTrimesterComment.Order,
                         semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.IdSemiTrimester, semiTrimesterComment.IdStudent);
                 }
                 else
                 {
-                    update = string.Format("UPDATE [SemiTrimesterComment] SET [Order] = {0}, MainTeacherComment = '{1}', DivisionPrefectComment = '{2}', IdSemiTrimester = {3}, IdStudent = {4}"
+                    query = string.Format("UPDATE [SemiTrimesterComment] SET [Order] = {0}, MainTeacherComment = '{1}', DivisionPrefectComment = '{2}', IdSemiTrimester = {3}, IdStudent = {4}"
                         + " WHERE Id = {5} AND [Year] = {6}", semiTrimesterComment.Order, semiTrimesterComment.MainTeacherComment,
                         semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.IdSemiTrimester, semiTrimesterComment.IdStudent);
                 }
-                using (SqlCommand command = new SqlCommand(update, connection))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.ExecuteNonQuery();
                 }
