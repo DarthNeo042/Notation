@@ -141,7 +141,7 @@ namespace Notation.Models
 
         public static double ReadPeriodTrimesterSubjectAverage(PeriodViewModel period, StudentViewModel student, SubjectViewModel subject)
         {
-            double average = -1;
+            double average = double.MinValue;
 
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -167,7 +167,7 @@ namespace Notation.Models
 
         public static double ReadPeriodTrimesterAverage(PeriodViewModel period, StudentViewModel student)
         {
-            double average = -1;
+            double average = double.MinValue;
 
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {

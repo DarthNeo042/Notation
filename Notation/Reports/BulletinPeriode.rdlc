@@ -2243,14 +2243,14 @@
                               </TablixCell>
                               <TablixCell>
                                 <CellContents>
-                                  <Textbox Name="Textbox53">
+                                  <Textbox Name="TrimesterAverage">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=Fields!TrimesterAverage.Value</Value>
                                             <Style>
                                               <FontFamily>Cambria</FontFamily>
                                               <FontSize>12pt</FontSize>
@@ -2263,7 +2263,7 @@
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Textbox53</rd:DefaultName>
+                                    <rd:DefaultName>TrimesterAverage</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Style>Solid</Style>
@@ -2323,14 +2323,14 @@
                               </TablixCell>
                               <TablixCell>
                                 <CellContents>
-                                  <Textbox Name="Textbox36">
+                                  <Textbox Name="LastAverage">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=Fields!LastAverage.Value</Value>
                                             <Style>
                                               <FontFamily>Cambria</FontFamily>
                                               <FontSize>12pt</FontSize>
@@ -2342,7 +2342,7 @@
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Textbox36</rd:DefaultName>
+                                    <rd:DefaultName>LastAverage</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Style>Solid</Style>
@@ -2402,14 +2402,14 @@
                               </TablixCell>
                               <TablixCell>
                                 <CellContents>
-                                  <Textbox Name="Textbox51">
+                                  <Textbox Name="Tendency">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=Fields!Tendency.Value</Value>
                                             <Style>
                                               <FontFamily>Cambria</FontFamily>
                                               <FontSize>12pt</FontSize>
@@ -2422,7 +2422,7 @@
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Textbox51</rd:DefaultName>
+                                    <rd:DefaultName>Tendency</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Style>Solid</Style>
@@ -2941,7 +2941,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!StudiesReport.Value = 1, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3020,7 +3020,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!StudiesReport.Value = 2, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3099,7 +3099,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!StudiesReport.Value = 3, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3178,7 +3178,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!StudiesReport.Value = 4, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3399,8 +3399,8 @@
         <DataSetName>HeaderDataSet</DataSetName>
         <Top>14.3cm</Top>
         <Left>0.3cm</Left>
-        <Height>3.40875cm</Height>
-        <Width>7.45875cm</Width>
+        <Height>3.40876cm</Height>
+        <Width>7.45876cm</Width>
         <ZIndex>10</ZIndex>
         <Style>
           <Border>
@@ -3710,7 +3710,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!DisciplineReport.Value = 1, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3789,7 +3789,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!DisciplineReport.Value = 2, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3868,7 +3868,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!DisciplineReport.Value = 3, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3947,7 +3947,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value />
+                                            <Value>=IIF(Fields!DisciplineReport.Value = 4, "X", "")</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3973,6 +3973,7 @@
                                       <PaddingBottom>2pt</PaddingBottom>
                                     </Style>
                                   </Textbox>
+                                  <rd:Selected>true</rd:Selected>
                                 </CellContents>
                               </TablixCell>
                             </TablixCells>
@@ -4609,8 +4610,8 @@
         <DataSetName>HeaderDataSet</DataSetName>
         <Top>14.30001cm</Top>
         <Left>15.70001cm</Left>
-        <Height>3.40875cm</Height>
-        <Width>4.05875cm</Width>
+        <Height>3.40876cm</Height>
+        <Width>4.05876cm</Width>
         <ZIndex>12</ZIndex>
         <Style>
           <Border>

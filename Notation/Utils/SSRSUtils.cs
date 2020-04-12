@@ -78,6 +78,29 @@ namespace Notation.Utils
                 Header3 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),
             };
 
+            PeriodCommentViewModel periodComment = PeriodCommentModel.Read(student.Year, period.Id, student.Id);
+            if (periodComment != null)
+            {
+                bulletinPeriodeHeader.StudiesReport = (int)periodComment.StudiesReport;
+                bulletinPeriodeHeader.DisciplineReport = (int)periodComment.DisciplineReport;
+            }
+
+            double average = MarkModel.ReadPeriodTrimesterAverage(period, student);
+            if (average != double.MinValue)
+            {
+                bulletinPeriodeHeader.TrimesterAverage = average.ToString("0.0");
+            }
+
+            PeriodViewModel lastPeriod = ModelUtils.GetPreviousPeriod(period);
+            if (lastPeriod != null)
+            {
+                double lastAverage = MarkModel.ReadPeriodTrimesterAverage(lastPeriod, student);
+                if (lastAverage != double.MinValue)
+                {
+                    bulletinPeriodeHeader.LastAverage = lastAverage.ToString("0.0");
+                    bulletinPeriodeHeader.Tendency = average > lastAverage ? "↗" : average < lastAverage ? "↘" : "→";
+                }
+            }
 
             List<BulletinPeriodeLineDataSource> bulletinPeriodeLines = new List<BulletinPeriodeLineDataSource>();
 

@@ -14,6 +14,7 @@
         public string TrimesterAverage { get; set; }
         public string LastAverage { get; set; }
         public string Tendency { get; set; }
-        public int MyProperty { get; set; }
+        public int StudiesReport { get; set; }
+        public int DisciplineReport { get; set; }
     }
 }

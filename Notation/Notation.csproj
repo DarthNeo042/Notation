@@ -133,7 +133,6 @@
     <Compile Include="Utils\MonthUtils.cs" />
     <Compile Include="Utils\NameUtils.cs" />
     <Compile Include="Utils\NumberUtils.cs" />
-    <Compile Include="Utils\PDFUtils.cs" />
     <Compile Include="Utils\SSRSUtils.cs" />
     <Compile Include="Utils\YearUtils.cs" />
     <Compile Include="ViewModels\BaseParametersViewModel.cs" />

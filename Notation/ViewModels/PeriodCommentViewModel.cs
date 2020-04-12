@@ -6,10 +6,10 @@ namespace Notation.ViewModels
     {
         public enum ReportEnum
         {
-            Good = 0,
-            MustProgress = 1,
-            Insufficient = 2,
-            Warning = 3,
+            Good = 1,
+            MustProgress = 2,
+            Insufficient = 3,
+            Warning = 4,
         }
 
         public int IdPeriod
