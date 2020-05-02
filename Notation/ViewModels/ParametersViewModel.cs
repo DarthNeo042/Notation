@@ -40,6 +40,34 @@ namespace Notation.ViewModels
 
         public ObservableCollection<PeriodViewModel> Periods { get; set; }
 
+        public SemiTrimesterViewModel SelectedSemiTrimester
+        {
+            get { return (SemiTrimesterViewModel)GetValue(SelectedSemiTrimesterProperty); }
+            set { SetValue(SelectedSemiTrimesterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedSemiTrimester.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedSemiTrimesterProperty =
+            DependencyProperty.Register("SelectedSemiTrimester", typeof(SemiTrimesterViewModel), typeof(ParametersViewModel), new PropertyMetadata(null, SelectedSemiTrimesterChanged));
+
+        private static void SelectedSemiTrimesterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ParametersViewModel ParametersViewModel = (ParametersViewModel)d;
+            ParametersViewModel.ModificationSemiTrimester = null;
+        }
+
+        public SemiTrimesterViewModel ModificationSemiTrimester
+        {
+            get { return (SemiTrimesterViewModel)GetValue(ModificationSemiTrimesterProperty); }
+            set { SetValue(ModificationSemiTrimesterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ModificationSemiTrimester.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ModificationSemiTrimesterProperty =
+            DependencyProperty.Register("ModificationSemiTrimester", typeof(SemiTrimesterViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
+
+        public ObservableCollection<SemiTrimesterViewModel> SemiTrimesters { get; set; }
+
         public LevelViewModel SelectedLevel
         {
             get { return (LevelViewModel)GetValue(SelectedLevelProperty); }
@@ -223,6 +251,7 @@ namespace Notation.ViewModels
         {
             PeriodModel.Save(ModificationPeriod);
             LoadPeriods(ModificationPeriod.Id);
+            GenerateSemiTrimester();
         }
 
         public ICommand CancelPeriodCommand { get; set; }
@@ -230,6 +259,83 @@ namespace Notation.ViewModels
         private void CancelPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             ModificationPeriod = null;
+        }
+
+        public ICommand ModifySemiTrimesterCommand { get; set; }
+
+        private void ModifySemiTrimesterCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectedSemiTrimester != null;
+        }
+
+        private void ModifySemiTrimesterExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ModificationSemiTrimester = new SemiTrimesterViewModel()
+            {
+                Id = SelectedSemiTrimester.Id,
+                Year = SelectedSemiTrimester.Year,
+                Name = SelectedSemiTrimester.Name,
+                Period1 = SelectedSemiTrimester.Period1,
+                Period2 = SelectedSemiTrimester.Period2,
+            };
+        }
+
+        public ICommand AddSemiTrimesterPeriodCommand { get; set; }
+
+        private void AddSemiTrimesterPeriodCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            int index = SemiTrimesters.IndexOf(SelectedSemiTrimester);
+            bool canExecute = false;
+            if (SemiTrimesters.Count > index + 1)
+            {
+                SemiTrimesterViewModel semiTrimester = SemiTrimesters[index + 1];
+                canExecute = SelectedSemiTrimester != null && SelectedSemiTrimester.Period2 == null && semiTrimester.Period2 == null
+                    && SelectedSemiTrimester.Period1.Trimester == semiTrimester.Period1.Trimester;
+            }
+            e.CanExecute = canExecute;
+        }
+
+        private void AddSemiTrimesterPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            int index = SemiTrimesters.IndexOf(SelectedSemiTrimester);
+            SelectedSemiTrimester.Period2 = SemiTrimesters[index + 1].Period1;
+            SemiTrimesters.RemoveAt(index + 1);
+            SemiTrimesterModel.Save(SemiTrimesters);
+            LoadSemiTrimesters(SelectedSemiTrimester.Id);
+        }
+
+        public ICommand DeleteSemiTrimesterPeriodCommand { get; set; }
+
+        private void DeleteSemiTrimesterPeriodCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectedSemiTrimester != null && SelectedSemiTrimester.Period2 != null;
+        }
+
+        private void DeleteSemiTrimesterPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SemiTrimesters.Add(new SemiTrimesterViewModel()
+            {
+                Period1 = SelectedSemiTrimester.Period2,
+                Year = SelectedSemiTrimester.Year,
+            });
+            SelectedSemiTrimester.Period2 = null;
+            SemiTrimesterModel.Save(SemiTrimesters);
+            LoadSemiTrimesters(SelectedSemiTrimester.Id);
+        }
+
+        public ICommand SaveSemiTrimesterCommand { get; set; }
+
+        private void SaveSemiTrimesterExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SemiTrimesterModel.Save(ModificationSemiTrimester);
+            LoadSemiTrimesters(ModificationSemiTrimester.Id);
+        }
+
+        public ICommand CancelSemiTrimesterCommand { get; set; }
+
+        private void CancelSemiTrimesterExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ModificationSemiTrimester = null;
         }
 
         public ICommand AddLevelCommand { get; set; }
@@ -980,6 +1086,7 @@ namespace Notation.ViewModels
         public ParametersViewModel()
         {
             Periods = new ObservableCollection<PeriodViewModel>();
+            SemiTrimesters = new ObservableCollection<SemiTrimesterViewModel>();
             Levels = new ObservableCollection<LevelViewModel>();
             Subjects = new ObservableCollection<SubjectViewModel>();
             Teachers = new ObservableCollection<TeacherViewModel>();
@@ -997,6 +1104,11 @@ namespace Notation.ViewModels
             DeletePeriodCommand = new RoutedUICommand("DeletePeriod", "DeletePeriod", typeof(ParametersViewModel));
             SavePeriodCommand = new RoutedUICommand("SavePeriod", "SavePeriod", typeof(ParametersViewModel));
             CancelPeriodCommand = new RoutedUICommand("CancelPeriod", "CancelPeriod", typeof(ParametersViewModel));
+            ModifySemiTrimesterCommand = new RoutedUICommand("ModifySemiTrimester", "ModifySemiTrimester", typeof(ParametersViewModel));
+            AddSemiTrimesterPeriodCommand = new RoutedUICommand("AddSemiTrimesterPeriod", "AddSemiTrimesterPeriod", typeof(ParametersViewModel));
+            DeleteSemiTrimesterPeriodCommand = new RoutedUICommand("DeleteSemiTrimesterPeriod", "DeleteSemiTrimesterPeriod", typeof(ParametersViewModel));
+            SaveSemiTrimesterCommand = new RoutedUICommand("SaveSemiTrimester", "SaveSemiTrimester", typeof(ParametersViewModel));
+            CancelSemiTrimesterCommand = new RoutedUICommand("CancelSemiTrimester", "CancelSemiTrimester", typeof(ParametersViewModel));
             AddLevelCommand = new RoutedUICommand("AddLevel", "AddLevel", typeof(ParametersViewModel));
             ModifyLevelCommand = new RoutedUICommand("ModifyLevel", "ModifyLevel", typeof(ParametersViewModel));
             DeleteLevelCommand = new RoutedUICommand("DeleteLevel", "DeleteLevel", typeof(ParametersViewModel));
@@ -1052,6 +1164,11 @@ namespace Notation.ViewModels
                 new CommandBinding(DeletePeriodCommand, DeletePeriodExecuted, DeletePeriodCanExecute),
                 new CommandBinding(SavePeriodCommand, SavePeriodExecuted),
                 new CommandBinding(CancelPeriodCommand, CancelPeriodExecuted),
+                new CommandBinding(ModifySemiTrimesterCommand, ModifySemiTrimesterExecuted, ModifySemiTrimesterCanExecute),
+                new CommandBinding(AddSemiTrimesterPeriodCommand, AddSemiTrimesterPeriodExecuted, AddSemiTrimesterPeriodCanExecute),
+                new CommandBinding(DeleteSemiTrimesterPeriodCommand, DeleteSemiTrimesterPeriodExecuted, DeleteSemiTrimesterPeriodCanExecute),
+                new CommandBinding(SaveSemiTrimesterCommand, SaveSemiTrimesterExecuted),
+                new CommandBinding(CancelSemiTrimesterCommand, CancelSemiTrimesterExecuted),
                 new CommandBinding(AddLevelCommand, AddLevelExecuted, AddLevelCanExecute),
                 new CommandBinding(ModifyLevelCommand, ModifyLevelExecuted, ModifyLevelCanExecute),
                 new CommandBinding(DeleteLevelCommand, DeleteLevelExecuted, DeleteLevelCanExecute),
@@ -1140,6 +1257,7 @@ namespace Notation.ViewModels
         public void LoadData()
         {
             LoadPeriods();
+            LoadSemiTrimesters();
             LoadLevels();
             LoadSubjects();
             LoadTeachers();
@@ -1179,6 +1297,20 @@ namespace Notation.ViewModels
             ModificationPeriod = null;
             Calendar.LoadCalendarSummaries(Periods);
             SelectedPeriod = Periods.FirstOrDefault(p => p.Id == idPeriod);
+        }
+
+        public void LoadSemiTrimesters(int idSemiTrimester = 0)
+        {
+            SemiTrimesters.Clear();
+            if (Year != 0)
+            {
+                foreach (SemiTrimesterViewModel SemiTrimester in SemiTrimesterModel.Read(Year, Periods))
+                {
+                    SemiTrimesters.Add(SemiTrimester);
+                }
+            }
+            Calendar.LoadCalendarSummaries(SemiTrimesters);
+            SelectedSemiTrimester = SemiTrimesters.FirstOrDefault(p => p.Id == idSemiTrimester);
         }
 
         public void LoadLevels()
@@ -1268,6 +1400,35 @@ namespace Notation.ViewModels
                 return cut.Substring("Initial Catalog=".Length);
             }
             return "";
+        }
+
+        private void GenerateSemiTrimester()
+        {
+            SemiTrimesters.Clear();
+            SemiTrimesterViewModel semiTrimester = new SemiTrimesterViewModel() { Year = Year };
+            foreach (IGrouping<int, PeriodViewModel> periodGroup in Periods.GroupBy(p => p.Trimester))
+            {
+                foreach (PeriodViewModel period in periodGroup)
+                {
+                    if (semiTrimester.Period1 == null)
+                    {
+                        semiTrimester.Period1 = period;
+                    }
+                    else
+                    {
+                        semiTrimester.Period2 = period;
+                        SemiTrimesters.Add(semiTrimester);
+                        semiTrimester = new SemiTrimesterViewModel() { Year = Year };
+                    }
+                }
+                if (semiTrimester.Period1 != null)
+                {
+                    SemiTrimesters.Add(semiTrimester);
+                    semiTrimester = new SemiTrimesterViewModel() { Year = Year };
+                }
+            }
+            SemiTrimesterModel.Save(SemiTrimesters);
+            LoadSemiTrimesters();
         }
     }
 }

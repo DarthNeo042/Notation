@@ -78,7 +78,7 @@ namespace Notation.Utils
                 Header3 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),
             };
 
-            PeriodCommentViewModel periodComment = PeriodCommentModel.Read(student.Year, period.Id, student.Id);
+            PeriodCommentViewModel periodComment = PeriodCommentModel.Read(student.Year, period, student);
             if (periodComment != null)
             {
                 bulletinPeriodeHeader.StudiesReport = (int)periodComment.StudiesReport;

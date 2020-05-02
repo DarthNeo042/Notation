@@ -108,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Converters\AdminToVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\SelectedToVisibilityConverter.cs" />
     <Compile Include="Converters\SubjectToNameConverter.cs" />
     <Compile Include="Converters\YearLibelleConverter.cs" />
@@ -119,11 +120,14 @@
     <Compile Include="Models\PeriodCommentModel.cs" />
     <Compile Include="Models\PeriodModel.cs" />
     <Compile Include="Models\SemiTrimesterCommentModel.cs" />
+    <Compile Include="Models\SemiTrimesterModel.cs" />
     <Compile Include="Models\StudentModel.cs" />
     <Compile Include="Models\SubjectModel.cs" />
     <Compile Include="Models\SubjectTeacherModel.cs" />
     <Compile Include="Models\TeacherClassModel.cs" />
     <Compile Include="Models\TeacherModel.cs" />
+    <Compile Include="Models\TrimesterCommentModel.cs" />
+    <Compile Include="Models\TrimesterSubjectCommentModel.cs" />
     <Compile Include="Models\YearModel.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
@@ -153,6 +157,8 @@
     <Compile Include="ViewModels\StudentViewModel.cs" />
     <Compile Include="ViewModels\SubjectViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
+    <Compile Include="ViewModels\TrimesterCommentViewModel.cs" />
+    <Compile Include="ViewModels\TrimesterSubjectCommentViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="Views\AddClassesView.xaml.cs">
       <DependentUpon>AddClassesView.xaml</DependentUpon>

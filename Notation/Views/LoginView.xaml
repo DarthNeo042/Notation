@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notation.Views"
-        xmlns:converters="clr-namespace:Notation.Converters"
         mc:Ignorable="d"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
@@ -41,8 +40,8 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Name="Validate" Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}"></Button>
-            <Button Name="Cancel" Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}"></Button>
+            <Button Name="Validate" Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}" Background="LimeGreen"></Button>
+            <Button Name="Cancel" Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" Background="OrangeRed"></Button>
         </Grid>
     </Grid>
 </Window>

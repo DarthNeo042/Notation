@@ -2,7 +2,7 @@
 
 namespace Notation.ViewModels
 {
-    public class SemiTrimesterCommentViewModel : BaseViewModel
+    public class TrimesterCommentViewModel : BaseViewModel
     {
         public string MainTeacherComment
         {
@@ -12,7 +12,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for MainTeacherComment.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MainTeacherCommentProperty =
-            DependencyProperty.Register("MainTeacherComment", typeof(string), typeof(SemiTrimesterCommentViewModel), new PropertyMetadata(""));
+            DependencyProperty.Register("MainTeacherComment", typeof(string), typeof(TrimesterCommentViewModel), new PropertyMetadata(""));
 
         public string DivisionPrefectComment
         {
@@ -22,7 +22,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for DivisionPrefectComment.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DivisionPrefectCommentProperty =
-            DependencyProperty.Register("DivisionPrefectComment", typeof(string), typeof(SemiTrimesterCommentViewModel), new PropertyMetadata(""));
+            DependencyProperty.Register("DivisionPrefectComment", typeof(string), typeof(TrimesterCommentViewModel), new PropertyMetadata(""));
 
         public StudentViewModel Student
         {
@@ -32,16 +32,16 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for Student.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty StudentProperty =
-            DependencyProperty.Register("Student", typeof(StudentViewModel), typeof(SemiTrimesterViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("Student", typeof(StudentViewModel), typeof(TrimesterCommentViewModel), new PropertyMetadata(null));
 
-        public SemiTrimesterViewModel SemiTrimester
+        public int Trimester
         {
-            get { return (SemiTrimesterViewModel)GetValue(SemiTrimesterProperty); }
-            set { SetValue(SemiTrimesterProperty, value); }
+            get { return (int)GetValue(TrimesterProperty); }
+            set { SetValue(TrimesterProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SemiTrimester.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SemiTrimesterProperty =
-            DependencyProperty.Register("SemiTrimester", typeof(SemiTrimesterViewModel), typeof(SemiTrimesterViewModel), new PropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for Trimester.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TrimesterProperty =
+            DependencyProperty.Register("Trimester", typeof(int), typeof(TrimesterCommentViewModel), new PropertyMetadata(1));
     }
 }

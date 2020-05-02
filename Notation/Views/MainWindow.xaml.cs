@@ -1,7 +1,6 @@
 ﻿using Notation.Utils;
 using Notation.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -66,11 +65,25 @@ namespace Notation.Views
             ModifyStudent.Command.Execute(null);
         }
 
+        private void SemiTrimester_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ModifySemiTrimester.Command.Execute(null);
+        }
+
         private void ExportPeriod_Click(object sender, RoutedEventArgs e)
         {
             if (((Control)sender).DataContext is PeriodViewModel period)
             {
                 ExportUtils.ExportPeriodModels(period);
+            }
+        }
+
+
+        private void ExportSemiTrimester_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
+            {
+                ExportUtils.ExportSemiTrimesterModels(semiTrimester);
             }
         }
 

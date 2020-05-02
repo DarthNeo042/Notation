@@ -12,6 +12,7 @@
         Title="Notation 2.0" Height="1080" Width="1920">
     <Window.Resources>
         <converters:AdminToVisibilityConverter x:Key="AdminToVisibilityConverter"></converters:AdminToVisibilityConverter>
+        <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
         <converters:SelectedToVisibilityConverter x:Key="SelectedToVisibilityConverter"></converters:SelectedToVisibilityConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
         <converters:YearLibelleConverter x:Key="YearLibelleConverter"></converters:YearLibelleConverter>
@@ -719,6 +720,101 @@
                             </Grid>
                         </Grid>
                     </TabItem>
+                    <TabItem Header="Demi-trimestres">
+                        <Grid Background="AliceBlue">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="50"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Name="ModifySemiTrimester" Content="Modifier" Background="Goldenrod" Command="{Binding ModifySemiTrimesterCommand}"></Button>
+                                <Button Grid.Column="1" Content="+" Background="LimeGreen" Command="{Binding AddSemiTrimesterPeriodCommand}" FontWeight="Bold" FontSize="30"></Button>
+                                <Button Grid.Column="2" Content="-" Background="OrangeRed" Command="{Binding DeleteSemiTrimesterPeriodCommand}" FontWeight="Bold" FontSize="30"></Button>
+                            </Grid>
+                            <DataGrid Grid.Row="1" ItemsSource="{Binding SemiTrimesters}" SelectedItem="{Binding SelectedSemiTrimester}" 
+                                      AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="SemiTrimester_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding Period1.Trimester}" Header="Trimestre" Width="*"></DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="Période" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Période"></TextBlock>
+                                                    <TextBlock Text="{Binding Period1.Number}"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Période" Width="*">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="Période" Visibility="{Binding Period2, Converter={StaticResource ObjectToVisibilityConverter}}"></TextBlock>
+                                                    <TextBlock Text="{Binding Period2.Number}" Visibility="{Binding Period2, Converter={StaticResource ObjectToVisibilityConverter}}"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSemiTrimesterCommand}"></Button>
+                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSemiTrimesterCommand}"></Button>
+                            </Grid>
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource SelectedToVisibilityConverter}}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="20"></RowDefinition>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150"></ColumnDefinition>
+                                    <ColumnDefinition Width="300"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Background="LightGray">
+                                    <TextBlock Text="Demi-trimestre de"></TextBlock>
+                                    <TextBlock Text="{Binding ModificationSemiTrimester.Name}"></TextBlock>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" Grid.Row="2" Text="Nom :" TextAlignment="Right"></TextBlock>
+                                <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ModificationSemiTrimester.Name}"></TextBox>
+                                <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                                    <TextBlock Text="Trimestre"></TextBlock>
+                                    <TextBlock Text="{Binding ModificationSemiTrimester.Period1.Trimester}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                                    <TextBlock Text="Période"></TextBlock>
+                                    <TextBlock Text="{Binding ModificationSemiTrimester.Period1.Number}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" Visibility="{Binding ModificationSemiTrimester.Period2, Converter={StaticResource ObjectToVisibilityConverter}}">
+                                    <TextBlock Text="Période"></TextBlock>
+                                    <TextBlock Text="{Binding ModificationSemiTrimester.Period2.Number}"></TextBlock>
+                                </StackPanel>
+                                <TextBlock Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" Grid.RowSpan="5" Background="White" VerticalAlignment="Stretch" Margin="0" Panel.ZIndex="-1"></TextBlock>
+                            </Grid>
+                        </Grid>
+                    </TabItem>
                     <TabItem Header="Calendrier">
                         <Grid Background="AliceBlue">
                             <Grid.ColumnDefinitions>
@@ -741,8 +837,6 @@
                             <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Calendar.SemiTrimestersSummary}" VerticalAlignment="Top"></TextBlock>
                             <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding Calendar.PeriodsSummary}" VerticalAlignment="Top"></TextBlock>
                         </Grid>
-                    </TabItem>
-                    <TabItem Header="Autres">
                     </TabItem>
                     <TabItem Header="Base">
                         <Grid Background="AliceBlue">
@@ -863,7 +957,7 @@
                                         <Button>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Demi-trimestres de"></TextBlock>
-                                                <TextBlock Text="{Binding Month}"></TextBlock>
+                                                <TextBlock Text="{Binding Name}"></TextBlock>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -945,10 +1039,10 @@
                             <ItemsControl ItemsSource="{Binding SemiTrimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button>
+                                        <Button Click="ExportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Demi-trimestres de"></TextBlock>
-                                                <TextBlock Text="{Binding Month}"></TextBlock>
+                                                <TextBlock Text="{Binding Name}"></TextBlock>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>

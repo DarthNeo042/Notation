@@ -1,5 +1,4 @@
-﻿using Notation.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -51,45 +50,34 @@ namespace Notation.ViewModels
         {
             DatesSummary = "";
             PeriodsSummary = "";
-            SemiTrimestersSummary = "";
             TrimestersSummary = "";
 
-            int trimester = 0;
-            PeriodViewModel lastPeriod = null;
-            foreach (PeriodViewModel period in periods.OrderBy(p => p.Trimester).ThenBy(p => p.Number))
+            foreach (IGrouping<int, PeriodViewModel> periodGroup in periods.GroupBy(p => p.Trimester))
             {
-                DatesSummary += string.Format("Du {0} au {1}\r\n", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
-                PeriodsSummary += string.Format("Période {0}\r\n", period.Number);
-                if (lastPeriod == null)
+                foreach (PeriodViewModel period in periodGroup.OrderBy(p => p.Number))
                 {
-                    lastPeriod = period;
+                    DatesSummary += string.Format("Du {0} au {1}\r\n", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
+                    PeriodsSummary += string.Format("Période {0}\r\n", period.Number);
                 }
-                else
-                {
-                    if (lastPeriod.Trimester == period.Trimester)
-                    {
-                        SemiTrimestersSummary += string.Format("Demi-trimestre de {0}\r\n   |\r\n", MonthUtils.Name(period.ToDate.Month));
-                        lastPeriod = null;
-                    }
-                    else
-                    {
-                        SemiTrimestersSummary += string.Format("Demi-trimestre de {0}\r\n", MonthUtils.Name(lastPeriod.ToDate.Month));
-                        lastPeriod = period;
-                    }
-                }
-                if (trimester != period.Trimester)
-                {
-                    TrimestersSummary += string.Format("Trimestre {0}\r\n", period.Trimester);
-                    trimester = period.Trimester;
-                }
-                else
+                TrimestersSummary += string.Format("Trimestre {0}\r\n", periodGroup.Key);
+                for (int i = 0; i < periodGroup.Count() - 1; i++)
                 {
                     TrimestersSummary += "   |\r\n";
                 }
             }
-            if (lastPeriod != null)
+        }
+
+        public void LoadCalendarSummaries(IEnumerable<SemiTrimesterViewModel> semiTrimesters)
+        {
+            SemiTrimestersSummary = "";
+
+            foreach (SemiTrimesterViewModel semiTrimester in semiTrimesters)
             {
-                SemiTrimestersSummary += string.Format("Demi-trimestre de {0}\r\n", MonthUtils.Name(lastPeriod.ToDate.Month));
+                SemiTrimestersSummary += string.Format("Demi-trimestre de {0}\r\n", semiTrimester.Name);
+                if (semiTrimester.Period2 != null)
+                {
+                    SemiTrimestersSummary += "   |\r\n";
+                }
             }
         }
     }

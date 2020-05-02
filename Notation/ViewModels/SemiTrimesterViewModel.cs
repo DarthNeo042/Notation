@@ -4,17 +4,48 @@ using System.Windows;
 
 namespace Notation.ViewModels
 {
-    public class SemiTrimesterViewModel : DependencyObject
+    public class SemiTrimesterViewModel : BaseViewModel
     {
-        public int IdPeriod
+        public PeriodViewModel Period1
         {
-            get { return (int)GetValue(IdPeriodProperty); }
-            set { SetValue(IdPeriodProperty, value); }
+            get { return (PeriodViewModel)GetValue(Period1Property); }
+            set { SetValue(Period1Property, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IdPeriod.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IdPeriodProperty =
-            DependencyProperty.Register("IdPeriod", typeof(int), typeof(SemiTrimesterViewModel), new PropertyMetadata(0));
+        // Using a DependencyProperty as the backing store for Period1.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty Period1Property =
+            DependencyProperty.Register("Period1", typeof(PeriodViewModel), typeof(SemiTrimesterViewModel), new PropertyMetadata(null, PeriodChanged));
+
+        private static void PeriodChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            SemiTrimesterViewModel semiTrimester = (SemiTrimesterViewModel)d;
+            if (semiTrimester.Period1 != null)
+            {
+                semiTrimester.FromDate = semiTrimester.Period1.FromDate;
+                if (semiTrimester.Period2 != null)
+                {
+                    semiTrimester.ToDate = semiTrimester.Period2.ToDate;
+                }
+                else
+                {
+                    semiTrimester.ToDate = semiTrimester.Period1.ToDate;
+                }
+                if (string.IsNullOrEmpty(semiTrimester.Name))
+                {
+                    semiTrimester.Name = MonthUtils.Name(semiTrimester.ToDate.Month);
+                }
+            }
+        }
+
+        public PeriodViewModel Period2
+        {
+            get { return (PeriodViewModel)GetValue(Period2Property); }
+            set { SetValue(Period2Property, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Period2.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty Period2Property =
+            DependencyProperty.Register("Period2", typeof(PeriodViewModel), typeof(SemiTrimesterViewModel), new PropertyMetadata(null, PeriodChanged));
 
         public DateTime FromDate
         {
@@ -36,12 +67,14 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty ToDateProperty =
             DependencyProperty.Register("ToDate", typeof(DateTime), typeof(SemiTrimesterViewModel), new PropertyMetadata(DateTime.Now));
 
-        public string Month
+        public string Name
         {
-            get
-            {
-                return MonthUtils.Name(ToDate.Month);
-            }
+            get { return (string)GetValue(NameProperty); }
+            set { SetValue(NameProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Name.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NameProperty =
+            DependencyProperty.Register("Name", typeof(string), typeof(SemiTrimesterViewModel), new PropertyMetadata(""));
     }
 }

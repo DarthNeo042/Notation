@@ -17,7 +17,7 @@ namespace Notation.Models
                 using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText = string.Format("SELECT * FROM [SemiTrimesterComment] WHERE IdStudent = '{0}' AND IdSemiTrimester = '{1}' AND [Year] = {2} ORDER BY [Order]",
-                        student.Id, semiTrimester.IdPeriod, year);
+                        student.Id, semiTrimester.Period1.Id, year);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -26,9 +26,11 @@ namespace Notation.Models
                             semiTrimesterComment = new SemiTrimesterCommentViewModel()
                             {
                                 Id = (int)reader["Id"],
+                                DivisionPrefectComment = (string)reader["DivisionPrefectComment"],
+                                MainTeacherComment = (string)reader["MainTeacherComment"],
                                 Order = (int)reader["Order"],
-                                IdStudent = student.Id,
-                                IdSemiTrimester = semiTrimester.IdPeriod,
+                                Student = student,
+                                SemiTrimester = semiTrimester,
                                 Year = year,
                             };
                         }
@@ -48,15 +50,13 @@ namespace Notation.Models
                 string query = "";
                 if (semiTrimesterComment.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [SemiTrimesterComment]([Year], [Order], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
-                        + " VALUES({0}, {1}, '{2}', '{3}', {4}, {5})", semiTrimesterComment.Year, semiTrimesterComment.Order,
-                        semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.IdSemiTrimester, semiTrimesterComment.IdStudent);
+                    query = string.Format("INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent) VALUES({0}, '{1}', '{2}', {3}, {4})",
+                        semiTrimesterComment.Year, semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Period1.Id, semiTrimesterComment.Student.Id);
                 }
                 else
                 {
-                    query = string.Format("UPDATE [SemiTrimesterComment] SET [Order] = {0}, MainTeacherComment = '{1}', DivisionPrefectComment = '{2}', IdSemiTrimester = {3}, IdStudent = {4}"
-                        + " WHERE Id = {5} AND [Year] = {6}", semiTrimesterComment.Order, semiTrimesterComment.MainTeacherComment,
-                        semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.IdSemiTrimester, semiTrimesterComment.IdStudent);
+                    query = string.Format("UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{0}', DivisionPrefectComment = '{1}', IdSemiTrimester = {2}, IdStudent = {3} WHERE Id = {4} AND [Year] = {5}",
+                        semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Period1.Id, semiTrimesterComment.Student.Id, semiTrimesterComment.Id, semiTrimesterComment.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

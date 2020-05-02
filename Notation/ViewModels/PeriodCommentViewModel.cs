@@ -12,25 +12,25 @@ namespace Notation.ViewModels
             Warning = 4,
         }
 
-        public int IdPeriod
+        public PeriodViewModel Period
         {
-            get { return (int)GetValue(IdPeriodProperty); }
-            set { SetValue(IdPeriodProperty, value); }
+            get { return (PeriodViewModel)GetValue(PeriodProperty); }
+            set { SetValue(PeriodProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IdPeriod.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IdPeriodProperty =
-            DependencyProperty.Register("IdPeriod", typeof(int), typeof(PeriodCommentViewModel), new PropertyMetadata(0));
+        // Using a DependencyProperty as the backing store for Period.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PeriodProperty =
+            DependencyProperty.Register("Period", typeof(PeriodViewModel), typeof(PeriodCommentViewModel), new PropertyMetadata(null));
 
-        public int IdStudent
+        public StudentViewModel Student
         {
-            get { return (int)GetValue(IdStudentProperty); }
-            set { SetValue(IdStudentProperty, value); }
+            get { return (StudentViewModel)GetValue(StudentProperty); }
+            set { SetValue(StudentProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for IdStudent.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty IdStudentProperty =
-            DependencyProperty.Register("IdStudent", typeof(int), typeof(PeriodCommentViewModel), new PropertyMetadata(0));
+        // Using a DependencyProperty as the backing store for Student.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty StudentProperty =
+            DependencyProperty.Register("Student", typeof(StudentViewModel), typeof(PeriodCommentViewModel), new PropertyMetadata(null));
 
         public ReportEnum StudiesReport
         {
