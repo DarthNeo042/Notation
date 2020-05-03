@@ -51,12 +51,12 @@ namespace Notation.Models
                 if (semiTrimesterComment.Id == 0)
                 {
                     query = string.Format("INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent) VALUES({0}, '{1}', '{2}', {3}, {4})",
-                        semiTrimesterComment.Year, semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Period1.Id, semiTrimesterComment.Student.Id);
+                        semiTrimesterComment.Year, semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Id, semiTrimesterComment.Student.Id);
                 }
                 else
                 {
                     query = string.Format("UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{0}', DivisionPrefectComment = '{1}', IdSemiTrimester = {2}, IdStudent = {3} WHERE Id = {4} AND [Year] = {5}",
-                        semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Period1.Id, semiTrimesterComment.Student.Id, semiTrimesterComment.Id, semiTrimesterComment.Year);
+                        semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Id, semiTrimesterComment.Student.Id, semiTrimesterComment.Id, semiTrimesterComment.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

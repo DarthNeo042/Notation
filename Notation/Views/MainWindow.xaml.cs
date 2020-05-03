@@ -1,6 +1,8 @@
 ﻿using Notation.Utils;
 using Notation.ViewModels;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,6 +19,7 @@ namespace Notation.Views
             DataContext = MainViewModel.Instance;
             CommandBindings.AddRange(MainViewModel.Instance.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
+            CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
             InitializeComponent();
 
             for (int i = 1; i <= 12; i++)
@@ -78,7 +81,6 @@ namespace Notation.Views
             }
         }
 
-
         private void ExportSemiTrimester_Click(object sender, RoutedEventArgs e)
         {
             if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
@@ -97,6 +99,14 @@ namespace Notation.Views
                 {
                     ExportUtils.Import(file);
                 }
+            }
+        }
+
+        private void PeriodModel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.PeriodModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedPeriodModel))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Models.PeriodModelsPath, MainViewModel.Instance.Models.SelectedPeriodModel));
             }
         }
 

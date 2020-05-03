@@ -18,10 +18,12 @@ namespace Notation.Utils
         {
             string directory = FileUtils.SelectDirectory();
 
+            MainViewModel.Instance.Models.PeriodModels.Clear();
+
             ExportPeriodCommentsModels(period, directory);
             ExportPeriodMarksModels(period, directory);
 
-            Process.Start("explorer", string.Format("/root,{0}", directory));
+            MainViewModel.Instance.Models.PeriodModelsPath = directory;
         }
 
         private static void ExportPeriodCommentsModels(PeriodViewModel period, string directory)
@@ -58,6 +60,8 @@ namespace Notation.Utils
             workSheet.Column(3).Style.WrapText = true;
 
             excel.Save();
+
+            MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
         }
 
         private static void ExportPeriodMarksModels(PeriodViewModel period, string directory)
@@ -174,6 +178,8 @@ namespace Notation.Utils
 
                                 workSheet.Cells.AutoFitColumns();
                                 excel.Save();
+
+                                MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                             }
                         }
                     }
@@ -274,6 +280,7 @@ namespace Notation.Utils
                                 workSheet.Cells.AutoFitColumns();
 
                                 excel.Save();
+                                MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                             }
                         }
                     }
@@ -395,6 +402,7 @@ namespace Notation.Utils
 
                     workSheet.Cells.AutoFitColumns();
                     excel.Save();
+                    MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                 }
             }
         }
@@ -640,12 +648,9 @@ namespace Notation.Utils
                 case "MRK_PER":
                     ImportPeriodMarks(filename, workSheet);
                     break;
-                //case "APP_GEN_DTM":
-                //    if (!ImportSemiTrimesterComments(filename, workSheet))
-                //    {
-                //        failureFilenames.Add(filename);
-                //    }
-                //    break;
+                case "APP_GEN_DTM":
+                    ImportSemiTrimesterComments(filename, workSheet);
+                    break;
                 //case "APP_MAT_TRM":
                 //    if (!ImportTrimesterSubjectComments(filename, workSheet))
                 //    {

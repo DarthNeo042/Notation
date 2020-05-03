@@ -931,10 +931,10 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <ItemsControl ItemsSource="{Binding Periods}">
+                            <ItemsControl Grid.Column="0" ItemsSource="{Binding Periods}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button Command="{Binding ExportModelCommand}" Click="ExportPeriod_Click">
+                                        <Button Click="ExportPeriod_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Période"></TextBlock>
                                                 <TextBlock Text="{Binding Number}"></TextBlock>
@@ -943,6 +943,14 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenPeriodModelsPathCommand}"></Button>
+                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding PeriodModels}" SelectedItem="{Binding SelectedPeriodModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                            </Grid>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de demi-trimestre">
@@ -954,9 +962,9 @@
                             <ItemsControl ItemsSource="{Binding SemiTrimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button>
+                                        <Button Click="ExportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Demi-trimestres de"></TextBlock>
+                                                <TextBlock Text="Demi-trimestre de"></TextBlock>
                                                 <TextBlock Text="{Binding Name}"></TextBlock>
                                             </StackPanel>
                                         </Button>

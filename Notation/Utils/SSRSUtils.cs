@@ -9,12 +9,28 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Notation.Utils
 {
+    public class SSRSUtils_SemiTrimester
+    {
+        public ClassViewModel Class { get; set; }
+        public double ClassAverage { get; set; }
+        public Dictionary<SubjectViewModel, double> ClassSubjectAverages { get; set; }
+        public Dictionary<SubjectViewModel, double> ClassSubjectMinAverages { get; set; }
+        public Dictionary<SubjectViewModel, double> ClassSubjectMaxAverages { get; set; }
+        public Dictionary<StudentViewModel, double> StudentAverages { get; set; }
+
+        public SSRSUtils_SemiTrimester()
+        {
+            ClassSubjectAverages = new Dictionary<SubjectViewModel, double>();
+            ClassSubjectMinAverages = new Dictionary<SubjectViewModel, double>();
+            ClassSubjectMaxAverages = new Dictionary<SubjectViewModel, double>();
+            StudentAverages = new Dictionary<StudentViewModel, double>();
+        }
+    }
+
     public static class SSRSUtils
     {
         static public void CreatePeriodReport(PeriodViewModel period)
@@ -63,7 +79,6 @@ namespace Notation.Utils
         static private void GeneratePeriodReport(IEnumerable<MarkViewModel> marks, string directory, StudentViewModel student, PeriodViewModel period, ClassViewModel _class)
         {
             string filename = Path.Combine(directory, string.Format("Bulletin de période {0} de {1} de {2} {3}.pdf", period.Number, _class.Name, student.LastName, student.FirstName));
-
 
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinPeriode.rdlc";
@@ -217,18 +232,6 @@ namespace Notation.Utils
                     bulletinPeriodeLines.Add(bulletinPeriodeLine);
                 }
             }
-
-            //Cell mainCell = new Cell();
-            //mainCell.Add(table);
-            //mainCell.SetMargin(2);
-
-            //Table mainTable = new Table(1);
-            //mainTable.UseAllAvailableWidth();
-            //mainTable.SetBorder(new SolidBorder(0.25f));
-            //mainTable.SetMarginBottom(15);
-            //mainTable.AddCell(mainCell);
-
-            //document.Add(mainTable);
 
             ReportDataSource dataSource = new ReportDataSource("HeaderDataSet", new List<BulletinPeriodeHeaderDataSource>() { bulletinPeriodeHeader });
             report.LocalReport.DataSources.Add(dataSource);
