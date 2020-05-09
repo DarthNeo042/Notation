@@ -23,43 +23,13 @@ namespace Notation.ViewModels
             SemiTrimesters.Clear();
             Trimesters.Clear();
 
-            PeriodViewModel lastPeriod = null;
             foreach (PeriodViewModel period in MainViewModel.Instance.Parameters.Periods.OrderBy(p => p.Trimester).ThenBy(p => p.Number))
             {
                 Periods.Add(period);
-                if (lastPeriod == null)
-                {
-                    lastPeriod = period;
-                }
-                else
-                {
-                    if (lastPeriod.Trimester == period.Trimester)
-                    {
-                        SemiTrimesters.Add(new SemiTrimesterViewModel()
-                        {
-                            FromDate = lastPeriod.FromDate,
-                            ToDate = period.ToDate,
-                        });
-                        lastPeriod = null;
-                    }
-                    else
-                    {
-                        SemiTrimesters.Add(new SemiTrimesterViewModel()
-                        {
-                            FromDate = period.FromDate,
-                            ToDate = period.ToDate,
-                        });
-                        lastPeriod = period;
-                    }
-                }
             }
-            if (lastPeriod != null)
+            foreach (SemiTrimesterViewModel semiTrimester in MainViewModel.Instance.Parameters.SemiTrimesters)
             {
-                SemiTrimesters.Add(new SemiTrimesterViewModel()
-                {
-                    FromDate = lastPeriod.FromDate,
-                    ToDate = lastPeriod.ToDate,
-                });
+                SemiTrimesters.Add(semiTrimester);
             }
             foreach (int trimester in Periods.Select(p => p.Trimester).Distinct())
             {

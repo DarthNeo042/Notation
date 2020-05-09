@@ -17,13 +17,15 @@ namespace Notation.Utils
         public static void ExportPeriodModels(PeriodViewModel period)
         {
             string directory = FileUtils.SelectDirectory();
+            if (!string.IsNullOrEmpty(directory))
+            {
+                MainViewModel.Instance.Models.PeriodModels.Clear();
 
-            MainViewModel.Instance.Models.PeriodModels.Clear();
+                ExportPeriodCommentsModels(period, directory);
+                ExportPeriodMarksModels(period, directory);
 
-            ExportPeriodCommentsModels(period, directory);
-            ExportPeriodMarksModels(period, directory);
-
-            MainViewModel.Instance.Models.PeriodModelsPath = directory;
+                MainViewModel.Instance.Models.PeriodModelsPath = directory;
+            }
         }
 
         private static void ExportPeriodCommentsModels(PeriodViewModel period, string directory)
@@ -549,58 +551,64 @@ namespace Notation.Utils
         {
             string directory = FileUtils.SelectDirectory();
 
-            ExportTrimesterSubjectCommentsModels(trimester, directory);
-            ExportTrimesterGeneralCommentsModels(trimester, directory);
+            if (!string.IsNullOrEmpty(directory))
+            {
+                ExportTrimesterSubjectCommentsModels(trimester, directory);
+                ExportTrimesterGeneralCommentsModels(trimester, directory);
 
-            Process.Start("explorer", string.Format("/root,{0}", directory));
+                Process.Start("explorer", string.Format("/root,{0}", directory));
+            }
         }
 
         public static void ExportSemiTrimesterModels(SemiTrimesterViewModel semiTrimester)
         {
             string directory = FileUtils.SelectDirectory();
 
-            foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+            if (!string.IsNullOrEmpty(directory))
             {
-                string filename = Path.Combine(directory, string.Format("Appréciations demi-trimestre {0} - {1}.xlsx", semiTrimester.Name, _class.Name));
-                File.Delete(filename);
-
-                ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
-
-                ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
-                workSheet.Cells[1, 1].Value = "type";
-                workSheet.Cells[1, 2].Value = "APP_GEN_DTM";
-                workSheet.Cells[2, 1].Value = "année";
-                workSheet.Cells[2, 2].Value = _class.Year;
-                workSheet.Cells[3, 1].Value = "demi-trimestre";
-                workSheet.Cells[3, 2].Value = semiTrimester.Name;
-                workSheet.Cells[4, 1].Value = "élève";
-                workSheet.Cells[4, 2].Value = "professeur principal";
-                workSheet.Cells[4, 3].Value = "chef d'établissement";
-
-                int row = 5;
-                foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                 {
-                    workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                    string filename = Path.Combine(directory, string.Format("Appréciations demi-trimestre {0} - {1}.xlsx", semiTrimester.Name, _class.Name));
+                    File.Delete(filename);
+
+                    ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+
+                    ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+                    workSheet.Cells[1, 1].Value = "type";
+                    workSheet.Cells[1, 2].Value = "APP_GEN_DTM";
+                    workSheet.Cells[2, 1].Value = "année";
+                    workSheet.Cells[2, 2].Value = _class.Year;
+                    workSheet.Cells[3, 1].Value = "demi-trimestre";
+                    workSheet.Cells[3, 2].Value = semiTrimester.Name;
+                    workSheet.Cells[4, 1].Value = "élève";
+                    workSheet.Cells[4, 2].Value = "professeur principal";
+                    workSheet.Cells[4, 3].Value = "chef d'établissement";
+
+                    int row = 5;
+                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                    {
+                        workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                    }
+
+                    workSheet.Column(1).AutoFit();
+                    workSheet.Column(2).Width = 50;
+                    workSheet.Column(2).Style.WrapText = true;
+                    workSheet.Column(3).Width = 50;
+                    workSheet.Column(3).Style.WrapText = true;
+
+                    IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
+                    _textValidation.ShowErrorMessage = true;
+                    _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
+                    _textValidation.ErrorTitle = "Commentaire trop long";
+                    _textValidation.Error = "Le commentaire ne doit pas dépasser 180 caractères.";
+                    _textValidation.Formula.Value = 0;
+                    _textValidation.Formula2.Value = 180;
+
+                    excel.Save();
                 }
 
-                workSheet.Column(1).AutoFit();
-                workSheet.Column(2).Width = 50;
-                workSheet.Column(2).Style.WrapText = true;
-                workSheet.Column(3).Width = 50;
-                workSheet.Column(3).Style.WrapText = true;
-
-                IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
-                _textValidation.ShowErrorMessage = true;
-                _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
-                _textValidation.ErrorTitle = "Commentaire trop long";
-                _textValidation.Error = "Le commentaire ne doit pas dépasser 180 caractères.";
-                _textValidation.Formula.Value = 0;
-                _textValidation.Formula2.Value = 180;
-
-                excel.Save();
+                Process.Start("explorer", string.Format("/root,{0}", directory));
             }
-
-            Process.Start("explorer", string.Format("/root,{0}", directory));
         }
 
         private static StudentViewModel GetStudentFromName(string name)

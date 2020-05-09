@@ -6,7 +6,7 @@ namespace Notation.Models
 {
     public static class SemiTrimesterCommentModel
     {
-        public static SemiTrimesterCommentViewModel Read(StudentViewModel student, SemiTrimesterViewModel semiTrimester, int year)
+        public static SemiTrimesterCommentViewModel Read(SemiTrimesterViewModel semiTrimester, StudentViewModel student)
         {
             SemiTrimesterCommentViewModel semiTrimesterComment = null;
 
@@ -17,7 +17,7 @@ namespace Notation.Models
                 using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText = string.Format("SELECT * FROM [SemiTrimesterComment] WHERE IdStudent = '{0}' AND IdSemiTrimester = '{1}' AND [Year] = {2} ORDER BY [Order]",
-                        student.Id, semiTrimester.Period1.Id, year);
+                        student.Id, semiTrimester.Period1.Id, semiTrimester.Year);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -31,7 +31,7 @@ namespace Notation.Models
                                 Order = (int)reader["Order"],
                                 Student = student,
                                 SemiTrimester = semiTrimester,
-                                Year = year,
+                                Year = semiTrimester.Year,
                             };
                         }
                     }

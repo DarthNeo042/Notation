@@ -156,7 +156,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -186,7 +186,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -211,7 +211,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -240,7 +240,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -249,7 +249,7 @@ namespace Notation.Models
             return average;
         }
 
-        public static double ReadSemiTrimesterCLassSubjectAverage(SemiTrimesterViewModel semiTrimester, ClassViewModel _class, SubjectViewModel subject)
+        public static double ReadSemiTrimesterClassSubjectAverage(SemiTrimesterViewModel semiTrimester, ClassViewModel _class, SubjectViewModel subject)
         {
             double average = double.MinValue;
 
@@ -265,7 +265,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -294,7 +294,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -311,7 +311,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) FROM"
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
@@ -321,7 +321,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }
@@ -338,7 +338,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) FROM"
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
@@ -348,7 +348,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            average = (double)(decimal)reader["Average"];
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
                         }
                     }
                 }

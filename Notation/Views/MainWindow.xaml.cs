@@ -117,5 +117,13 @@ namespace Notation.Views
                 SSRSUtils.CreatePeriodReport(period);
             }
         }
+
+        private void ReportSemiTrimester_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
+            {
+                SSRSUtils.CreateSemiTrimesterReport(semiTrimester);
+            }
+        }
     }
 }

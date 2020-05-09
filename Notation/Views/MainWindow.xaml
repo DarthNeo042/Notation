@@ -1047,7 +1047,7 @@
                             <ItemsControl ItemsSource="{Binding SemiTrimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button Click="ExportSemiTrimester_Click">
+                                        <Button Click="ReportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Demi-trimestres de"></TextBlock>
                                                 <TextBlock Text="{Binding Name}"></TextBlock>

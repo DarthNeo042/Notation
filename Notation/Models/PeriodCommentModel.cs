@@ -35,13 +35,13 @@ namespace Notation.Models
             }
         }
 
-        public static PeriodCommentViewModel Read(int year, PeriodViewModel period, StudentViewModel student)
+        public static PeriodCommentViewModel Read(PeriodViewModel period, StudentViewModel student)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [PeriodComment] WHERE [Year] = {0} AND [IdPeriod] = {1} AND [IdStudent] = {2}", year, period.Id, student.Id), connection))
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [PeriodComment] WHERE [Year] = {0} AND [IdPeriod] = {1} AND [IdStudent] = {2}", period.Year, period.Id, student.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -54,7 +54,7 @@ namespace Notation.Models
                                 StudiesReport = (PeriodCommentViewModel.ReportEnum)(int)reader["StudiesReport"],
                                 Period = period,
                                 Student = student,
-                                Year = year,
+                                Year = period.Year,
                             };
                         }
                     }

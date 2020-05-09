@@ -129,6 +129,8 @@
     <Compile Include="Models\TrimesterCommentModel.cs" />
     <Compile Include="Models\TrimesterSubjectCommentModel.cs" />
     <Compile Include="Models\YearModel.cs" />
+    <Compile Include="Reports\BulletinDemiTrimestreHeaderDataSource.cs" />
+    <Compile Include="Reports\BulletinDemiTrimestreLineDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
     <Compile Include="Utils\ExportUtils.cs" />
@@ -203,6 +205,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreLineDataSource.datasource" />
+    <None Include="Reports\BulletinDemiTrimestre.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreHeaderDataSource.datasource" />
     <None Include="Properties\DataSources\Notation.Reports.BulletinPeriodeLineDataSource.datasource" />
     <None Include="Reports\BulletinPeriode.rdlc">
       <SubType>Designer</SubType>
