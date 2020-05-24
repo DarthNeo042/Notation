@@ -54,8 +54,8 @@ namespace Notation.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(teacher.LastName) && !string.IsNullOrWhiteSpace(teacher.FirstName))
             {
-                teacher.Login = string.Format("{0}{1}", teacher.FirstName.ToLower()[0], teacher.LastName.ToLower());
-                teacher.Password = string.Format("{0}{1}", teacher.LastName.ToLower().Substring(0, 3), new Random().Next(100, 999));
+                teacher.Login = string.Format("{0}{1}", teacher.FirstName.ToLower()[0], teacher.LastName.Replace(" ", "").Replace("-", "").ToLower());
+                teacher.Password = string.Format("{0}{1}", teacher.LastName.Replace(" ", "").Replace("-", "").ToLower().Substring(0, 3), new Random().Next(100, 999));
             }
         }
 

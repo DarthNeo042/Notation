@@ -56,13 +56,29 @@ namespace Notation.ViewModels
             {
                 foreach (PeriodViewModel period in periodGroup.OrderBy(p => p.Number))
                 {
-                    DatesSummary += string.Format("Du {0} au {1}\r\n", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
-                    PeriodsSummary += string.Format("Période {0}\r\n", period.Number);
+                    if (!string.IsNullOrEmpty(DatesSummary))
+                    {
+                        DatesSummary += "\r\n";
+                    }
+                    if (!string.IsNullOrEmpty(PeriodsSummary))
+                    {
+                        PeriodsSummary += "\r\n";
+                    }
+                    DatesSummary += string.Format("Du {0} au {1}", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
+                    PeriodsSummary += string.Format("Période {0}", period.Number);
                 }
-                TrimestersSummary += string.Format("Trimestre {0}\r\n", periodGroup.Key);
+                if (!string.IsNullOrEmpty(TrimestersSummary))
+                {
+                    TrimestersSummary += "\r\n";
+                }
+                TrimestersSummary += string.Format("Trimestre {0}", periodGroup.Key);
                 for (int i = 0; i < periodGroup.Count() - 1; i++)
                 {
-                    TrimestersSummary += "   |\r\n";
+                    if (!string.IsNullOrEmpty(TrimestersSummary))
+                    {
+                        TrimestersSummary += "\r\n";
+                    }
+                    TrimestersSummary += "   |";
                 }
             }
         }
@@ -73,10 +89,18 @@ namespace Notation.ViewModels
 
             foreach (SemiTrimesterViewModel semiTrimester in semiTrimesters)
             {
-                SemiTrimestersSummary += string.Format("Demi-trimestre de {0}\r\n", semiTrimester.Name);
+                if (!string.IsNullOrEmpty(SemiTrimestersSummary))
+                {
+                    SemiTrimestersSummary += "\r\n";
+                }
+                SemiTrimestersSummary += string.Format("Demi-trimestre de {0}", semiTrimester.Name);
                 if (semiTrimester.Period2 != null)
                 {
-                    SemiTrimestersSummary += "   |\r\n";
+                    if (!string.IsNullOrEmpty(SemiTrimestersSummary))
+                    {
+                        SemiTrimestersSummary += "\r\n";
+                    }
+                    SemiTrimestersSummary += "   |";
                 }
             }
         }

@@ -560,8 +560,8 @@
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Students}" SelectedItem="{Binding ModificationClass.SelectedStudent}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Binding="{Binding FirstName}" Header="Nom" Width="*"></DataGridTextColumn>
-                                                <DataGridTextColumn Binding="{Binding LastName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                                                <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                                                 <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
@@ -596,8 +596,8 @@
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Student_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Nom" Width="*"></DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding LastName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                                    <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                                     <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -825,10 +825,14 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="5" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="5" Grid.RowSpan="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Background="LightGray" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Background="LightGray" VerticalAlignment="Stretch" Margin="0"></TextBlock>
+                            <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Background="White" VerticalAlignment="Stretch" Margin="0"></TextBlock>
                             <TextBlock Grid.Column="1" Grid.Row="0" Text="Trimestres :"></TextBlock>
                             <TextBlock Grid.Column="2" Grid.Row="0" Text="Demi-trimestres :"></TextBlock>
                             <TextBlock Grid.Column="3" Grid.Row="0" Text="Périodes :"></TextBlock>

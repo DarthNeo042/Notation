@@ -241,8 +241,10 @@ namespace Notation.ViewModels
 
         private void DeletePeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            SemiTrimesterModel.Delete(SelectedPeriod.Year);
             PeriodModel.Delete(SelectedPeriod.Year, SelectedPeriod.Id);
             LoadPeriods();
+            GenerateSemiTrimester();
         }
 
         public ICommand SavePeriodCommand { get; set; }
@@ -945,12 +947,12 @@ namespace Notation.ViewModels
 
         private void AddClassStudentsCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = ModificationClass != null && Students.Any(t => !ModificationClass.Students.Contains(t));
+            e.CanExecute = ModificationClass != null && Students.Any(s => s.Class == null && !ModificationClass.Students.Contains(s));
         }
 
         private void AddClassStudentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddStudentsView form = new AddStudentsView(Students.Where(t => !ModificationClass.Students.Contains(t)));
+            AddStudentsView form = new AddStudentsView(Students.Where(s => s.Class == null && !ModificationClass.Students.Contains(s)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (StudentViewModel Student in form.Students.Where(t => t.Selected))

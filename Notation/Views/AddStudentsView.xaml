@@ -25,8 +25,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding FirstName}" Header="Nom" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding LastName}" Header="Prénom" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                 <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>

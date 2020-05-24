@@ -26,7 +26,7 @@ namespace Notation.Views
             {
                 ComboPeriodNumber.Items.Add(i);
             }
-            for (int i = 1; i <= 9; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 ComboPeriodTrimester.Items.Add(i);
             }
@@ -99,6 +99,7 @@ namespace Notation.Views
                 {
                     ExportUtils.Import(file);
                 }
+                MessageBox.Show("Import réussi.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

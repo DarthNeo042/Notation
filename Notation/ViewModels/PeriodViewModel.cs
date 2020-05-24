@@ -56,6 +56,10 @@ namespace Notation.ViewModels
                     break;
                 }
             }
+            if (MainViewModel.Instance.Parameters.Periods.Any())
+            {
+                Trimester = MainViewModel.Instance.Parameters.Periods.Max(p => p.Trimester);
+            }
         }
     }
 }

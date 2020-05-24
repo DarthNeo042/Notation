@@ -76,5 +76,18 @@ namespace Notation.Models
                 }
             }
         }
+
+        public static void Delete(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand($"DELETE FROM SemiTrimester WHERE [Year] = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

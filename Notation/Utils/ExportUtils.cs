@@ -675,7 +675,7 @@ namespace Notation.Utils
                     MessageBox.Show("Format non reconnu.", "Echec", MessageBoxButton.OK, MessageBoxImage.Error);
                     break;
             }
-            MessageBox.Show("Import réussi.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show("Import réussi.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private static bool ImportPeriodComments(string filename, ExcelWorksheet workSheet)

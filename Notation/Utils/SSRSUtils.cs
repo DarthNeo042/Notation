@@ -140,7 +140,7 @@ namespace Notation.Utils
                 i++;
             }
 
-            foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+            foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null).OrderBy(s => s.Order))
             {
                 BulletinPeriodeLineDataSource bulletinPeriodeLine = new BulletinPeriodeLineDataSource()
                 {
@@ -188,7 +188,7 @@ namespace Notation.Utils
                 }
                 bulletinPeriodeLines.Add(bulletinPeriodeLine);
 
-                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
                     bulletinPeriodeLine = new BulletinPeriodeLineDataSource()
                     {
@@ -215,7 +215,7 @@ namespace Notation.Utils
                             }
                             marksStr += mark.Mark.ToString();
                         }
-                        switch (i)
+                        switch (coefficient)
                         {
                             case 1:
                                 bulletinPeriodeLine.Marks1 = marksStr;

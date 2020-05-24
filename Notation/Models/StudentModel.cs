@@ -88,6 +88,19 @@ namespace Notation.Models
                         command.ExecuteNonQuery();
                     }
                 }
+                IEnumerable<StudentViewModel> unassignedStudents = MainViewModel.Instance.Parameters.Students.Where(s => !_class.Students.Any(s2 => s2.Id == s.Id));
+                foreach (ClassViewModel _class2 in MainViewModel.Instance.Parameters.Classes.Where(c => c.Id != _class.Id))
+                {
+                    unassignedStudents = unassignedStudents.Where(s => !_class2.Students.Any(s2 => s2.Id == s.Id));
+                }
+                foreach (StudentViewModel student in unassignedStudents)
+                {
+                    using (SqlCommand command = new SqlCommand(string.Format("UPDATE [Student] SET IdClass = NULL WHERE [Student].Id = {1} AND [Student].[Year] = {2}",
+                        _class.Id, student.Id, student.Year), connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
             }
         }
 

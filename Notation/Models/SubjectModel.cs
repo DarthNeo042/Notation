@@ -84,14 +84,15 @@ namespace Notation.Models
                 if (subject.Id == 0)
                 {
                     query = string.Format("INSERT INTO [Subject]([Year], [Order], Name, Coefficient, [Option], ParentSubjectId) VALUES({0}, {1}, '{2}', {3}, {4}, {5})",
-                        subject.Year, subject.Order, subject.Name, subject.Coefficient, subject.Option ? 1 : 0, subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL");
+                        subject.Year, subject.Order, subject.Name, subject.Coefficient.ToString().Replace(',', '.'), subject.Option ? 1 : 0,
+                        subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL");
                 }
                 else
                 {
                     query = string.Format("UPDATE [Subject] SET Name = '{0}', [Order] = {1}, Coefficient = {2}, [Option] = {3}, ParentSubjectId = {4}"
                         + " WHERE [Subject].Id = {5} AND [Subject].[Year] = {6}",
-                        subject.Name, subject.Order, subject.Coefficient, subject.Option ? 1 : 0, subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL",
-                        subject.Id, subject.Year);
+                        subject.Name, subject.Order, subject.Coefficient.ToString().Replace(',', '.'), subject.Option ? 1 : 0,
+                        subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL", subject.Id, subject.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

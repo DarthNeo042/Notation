@@ -30,10 +30,7 @@ namespace Notation.ViewModels
                 {
                     semiTrimester.ToDate = semiTrimester.Period1.ToDate;
                 }
-                if (string.IsNullOrEmpty(semiTrimester.Name))
-                {
-                    semiTrimester.Name = MonthUtils.Name(semiTrimester.ToDate.Month);
-                }
+                semiTrimester.Name = MonthUtils.Name(semiTrimester.ToDate.Month);
             }
         }
 
