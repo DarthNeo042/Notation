@@ -8,11 +8,11 @@ namespace Notation.Views
     /// <summary>
     /// Logique d'interaction pour AddTeachersView.xaml
     /// </summary>
-    public partial class AddTeachersView : Window
+    public partial class AddTeachers : Window
     {
         public ObservableCollection<TeacherViewModel> Teachers { get; set; }
 
-        public AddTeachersView(IEnumerable<TeacherViewModel> teachers)
+        public AddTeachers(IEnumerable<TeacherViewModel> teachers)
         {
             DataContext = this;
 

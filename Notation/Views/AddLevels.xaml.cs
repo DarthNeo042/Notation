@@ -6,21 +6,21 @@ using System.Windows;
 namespace Notation.Views
 {
     /// <summary>
-    /// Logique d'interaction pour AddSubjectsView.xaml
+    /// Logique d'interaction pour AddLevelsView.xaml
     /// </summary>
-    public partial class AddSubjectsView : Window
+    public partial class AddLevels : Window
     {
-        public ObservableCollection<SubjectViewModel> Subjects { get; set; }
+        public ObservableCollection<LevelViewModel> Levels { get; set; }
 
-        public AddSubjectsView(IEnumerable<SubjectViewModel> subjects)
+        public AddLevels(IEnumerable<LevelViewModel> levels)
         {
             DataContext = this;
 
-            Subjects = new ObservableCollection<SubjectViewModel>(subjects);
+            Levels = new ObservableCollection<LevelViewModel>(levels);
 
-            foreach (SubjectViewModel subject in Subjects)
+            foreach (LevelViewModel level in Levels)
             {
-                subject.Selected = false;
+                level.Selected = false;
             }
 
             InitializeComponent();

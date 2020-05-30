@@ -7,7 +7,7 @@ namespace Notation.Views
     /// <summary>
     /// Logique d'interaction pour ProgressForm.xaml
     /// </summary>
-    public partial class ProgressView : Window
+    public partial class Progress : Window
     {
         private delegate void UpdateProgressBarDelegate(DependencyProperty dp, object value);
 
@@ -19,7 +19,7 @@ namespace Notation.Views
 
         // Using a DependencyProperty as the backing store for ProgressValue.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ProgressValueProperty =
-            DependencyProperty.Register("ProgressValue", typeof(int), typeof(ProgressView), new PropertyMetadata(0));
+            DependencyProperty.Register("ProgressValue", typeof(int), typeof(Progress), new PropertyMetadata(0));
 
         public string TextLabel
         {
@@ -29,7 +29,7 @@ namespace Notation.Views
 
         // Using a DependencyProperty as the backing store for TextLabel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextLabelProperty =
-            DependencyProperty.Register("TextLabel", typeof(string), typeof(ProgressView), new PropertyMetadata(""));
+            DependencyProperty.Register("TextLabel", typeof(string), typeof(Progress), new PropertyMetadata(""));
 
         public string ProgressLabel
         {
@@ -39,7 +39,7 @@ namespace Notation.Views
 
         // Using a DependencyProperty as the backing store for ProgressLabel.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ProgressLabelProperty =
-            DependencyProperty.Register("ProgressLabel", typeof(string), typeof(ProgressView), new PropertyMetadata(""));
+            DependencyProperty.Register("ProgressLabel", typeof(string), typeof(Progress), new PropertyMetadata(""));
 
         public string Text
         {
@@ -73,7 +73,7 @@ namespace Notation.Views
 
         private UpdateProgressBarDelegate _updatePbDelegate;
 
-        public ProgressView()
+        public Progress()
         {
             DataContext = this;
 

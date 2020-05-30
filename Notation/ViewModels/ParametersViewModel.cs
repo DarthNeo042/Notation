@@ -427,7 +427,7 @@ namespace Notation.ViewModels
 
         private void AddLevelSubjectsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddSubjectsView form = new AddSubjectsView(Subjects.Where(s => s.ParentSubject == null && !ModificationLevel.Subjects.Contains(s)));
+            AddSubjects form = new AddSubjects(Subjects.Where(s => s.ParentSubject == null && !ModificationLevel.Subjects.Contains(s)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (SubjectViewModel subject in form.Subjects.Where(s => s.Selected))
@@ -625,7 +625,7 @@ namespace Notation.ViewModels
 
         private void AddSubjectLevelsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddLevelsView form = new AddLevelsView(Levels.Where(l => !ModificationSubject.Levels.Contains(l)));
+            AddLevels form = new AddLevels(Levels.Where(l => !ModificationSubject.Levels.Contains(l)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (LevelViewModel level in form.Levels.Where(l => l.Selected))
@@ -656,7 +656,7 @@ namespace Notation.ViewModels
 
         private void AddSubjectTeachersExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddTeachersView form = new AddTeachersView(Teachers.Where(l => !ModificationSubject.Teachers.Contains(l)));
+            AddTeachers form = new AddTeachers(Teachers.Where(l => !ModificationSubject.Teachers.Contains(l)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (TeacherViewModel Teacher in form.Teachers.Where(l => l.Selected))
@@ -746,7 +746,7 @@ namespace Notation.ViewModels
 
         private void AddTeacherSubjectsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddSubjectsView form = new AddSubjectsView(Subjects.Where(s => s.ParentSubject == null && !ModificationTeacher.Subjects.Contains(s)));
+            AddSubjects form = new AddSubjects(Subjects.Where(s => s.ParentSubject == null && !ModificationTeacher.Subjects.Contains(s)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (SubjectViewModel subject in form.Subjects.Where(s => s.Selected))
@@ -777,7 +777,7 @@ namespace Notation.ViewModels
 
         private void AddTeacherClassesExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddClassesView form = new AddClassesView(Classes.Where(c => !ModificationTeacher.Classes.Contains(c)));
+            AddClasses form = new AddClasses(Classes.Where(c => !ModificationTeacher.Classes.Contains(c)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (ClassViewModel Class in form.Classes.Where(s => s.Selected))
@@ -921,7 +921,7 @@ namespace Notation.ViewModels
 
         private void AddClassTeachersExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddTeachersView form = new AddTeachersView(Teachers.Where(t => !ModificationClass.Teachers.Contains(t)));
+            AddTeachers form = new AddTeachers(Teachers.Where(t => !ModificationClass.Teachers.Contains(t)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (TeacherViewModel teacher in form.Teachers.Where(t => t.Selected))
@@ -952,7 +952,7 @@ namespace Notation.ViewModels
 
         private void AddClassStudentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            AddStudentsView form = new AddStudentsView(Students.Where(s => s.Class == null && !ModificationClass.Students.Contains(s)));
+            AddStudents form = new AddStudents(Students.Where(s => s.Class == null && !ModificationClass.Students.Contains(s)));
             if (form.ShowDialog() ?? false)
             {
                 foreach (StudentViewModel Student in form.Students.Where(t => t.Selected))

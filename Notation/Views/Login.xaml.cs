@@ -6,9 +6,9 @@ namespace Notation.Views
     /// <summary>
     /// Logique d'interaction pour Login.xaml
     /// </summary>
-    public partial class LoginView : Window
+    public partial class Login : Window
     {
-        public LoginView(LoginViewModel login)
+        public Login(LoginViewModel login)
         {
             DataContext = login;
             CommandBindings.AddRange(login.Bindings);

@@ -6,21 +6,21 @@ using System.Windows;
 namespace Notation.Views
 {
     /// <summary>
-    /// Logique d'interaction pour AddClassesView.xaml
+    /// Logique d'interaction pour AddStudentsView.xaml
     /// </summary>
-    public partial class AddClassesView : Window
+    public partial class AddStudents : Window
     {
-        public ObservableCollection<ClassViewModel> Classes { get; set; }
+        public ObservableCollection<StudentViewModel> Students { get; set; }
 
-        public AddClassesView(IEnumerable<ClassViewModel> classes)
+        public AddStudents(IEnumerable<StudentViewModel> students)
         {
             DataContext = this;
 
-            Classes = new ObservableCollection<ClassViewModel>(classes);
+            Students = new ObservableCollection<StudentViewModel>(students);
 
-            foreach (ClassViewModel _class in Classes)
+            foreach (StudentViewModel student in Students)
             {
-                _class.Selected = false;
+                student.Selected = false;
             }
 
             InitializeComponent();

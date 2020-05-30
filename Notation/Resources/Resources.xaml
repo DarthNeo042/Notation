@@ -27,7 +27,6 @@
         <Setter Property="FontSize" Value="20"></Setter>
     </Style>
     <Style TargetType="ListView">
-        <Setter Property="MaxHeight" Value="480"></Setter>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"></Setter>
     </Style>
     <Style TargetType="DatePicker">

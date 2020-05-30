@@ -53,8 +53,8 @@
             <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}" Background="AliceBlue"></TextBlock>
             <Button Grid.Column="10" Content="Aide"></Button>
         </Grid>
-        <TabControl Grid.Row="1" TabStripPlacement="Left">
-            <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}">
+        <TabControl Grid.Row="1" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
+            <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}" Name="ParametersTab" IsVisibleChanged="ParametersTab_IsVisibleChanged">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
                         <TextBlock></TextBlock>
@@ -975,6 +975,14 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenSemiTrimesterModelsPathCommand}"></Button>
+                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterModels}" SelectedItem="{Binding SelectedSemiTrimesterModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                            </Grid>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de trimestre">
@@ -995,6 +1003,14 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenTrimesterModelsPathCommand}"></Button>
+                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding TrimesterModels}" SelectedItem="{Binding SelectedTrimesterModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                            </Grid>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Import">
@@ -1087,6 +1103,31 @@
                         </Grid>
                     </TabItem>
                 </TabControl>
+            </TabItem>
+            <TabItem Name="EntryTab" IsSelected="true" DataContext="{Binding Entry}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock></TextBlock>
+                        <TextBlock Text="Saisie"></TextBlock>
+                        <TextBlock></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Background="AliceBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <Button Content="Notes" Command="{Binding EntryMarksCommand}"></Button>
+                        <Button Content="Appréciations générales de période" Command="{Binding EntryPeriodCommentsCommand}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                        <Button Content="Appréciations générales de demi-trimestre" Command="{Binding EntrySemiTrimesterComments}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                        <Button Content="Appréciations de matières de trimestre" Command="{Binding EntryTrimesterSubjectComments}"></Button>
+                        <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterComments}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                    </StackPanel>
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

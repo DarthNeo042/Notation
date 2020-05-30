@@ -1,4 +1,4 @@
-﻿<Window x:Class="Notation.Views.AddClassesView"
+﻿<Window x:Class="Notation.Views.AddTeachers"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,15 +8,15 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="AliceBlue"
-        Title="Ajouter des classes" Height="480" Width="640">
+        Title="Ajouter des professeurs" Height="480" Width="640">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Classes"></TextBlock>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Classes}" AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" FontSize="18" FontFamily="Cambria">
+        <TextBlock Grid.Row="0" Text="Professeurs"></TextBlock>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Teachers}"  AutoGenerateColumns="False" SelectionMode="Single" CanUserAddRows="False" FontSize="18" FontFamily="Cambria">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25">
                     <DataGridTemplateColumn.CellTemplate>
@@ -25,19 +25,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding Level.Name}" Header="Niveau" Width="*"></DataGridTextColumn>
-                <DataGridTemplateColumn Header="Professeur principal" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding MainTeacher.Title}"></TextBlock>
-                                <TextBlock Text="{Binding MainTeacher.LastName}"></TextBlock>
-                                <TextBlock Text="{Binding MainTeacher.Firstname}"></TextBlock>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding Title}" Header="Titre" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding LastName}" Header="Nom" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="2">

@@ -20,6 +20,8 @@ namespace Notation.Views
             CommandBindings.AddRange(MainViewModel.Instance.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
+            CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);
+
             InitializeComponent();
 
             for (int i = 1; i <= 12; i++)
@@ -124,6 +126,18 @@ namespace Notation.Views
             if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
             {
                 SSRSUtils.CreateSemiTrimesterReport(semiTrimester);
+            }
+        }
+
+        private void ParametersTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (MainViewModel.Instance.User.IsAdmin)
+            {
+                ParametersTab.IsSelected = true;
+            }
+            else
+            {
+                EntryTab.IsSelected = true;
             }
         }
     }

@@ -61,6 +61,8 @@ namespace Notation.ViewModels
             if (mainViewModel.User != null)
             {
                 mainViewModel.Parameters.LoadData();
+                mainViewModel.Models.LoadData();
+                mainViewModel.Reports.LoadData();
             }
         }
 
@@ -96,12 +98,22 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty ModelsProperty =
             DependencyProperty.Register("Models", typeof(ModelsViewModel), typeof(MainViewModel), new PropertyMetadata(null));
 
+        public EntryViewModel Entry
+        {
+            get { return (EntryViewModel)GetValue(EntryProperty); }
+            set { SetValue(EntryProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Entry.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EntryProperty =
+            DependencyProperty.Register("Entry", typeof(EntryViewModel), typeof(MainViewModel), new PropertyMetadata(null));
+
         public RoutedUICommand LoginCommand { get; set; }
 
         private void LoginExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Login = new LoginViewModel();
-            LoginView form = new LoginView(Login);
+            Login form = new Login(Login);
             if (form.ShowDialog() ?? false)
             {
                 if (Login.Login == Parameters.BaseParameters.AdminLogin && Login.Password == Parameters.BaseParameters.AdminPassword)
@@ -152,6 +164,7 @@ namespace Notation.ViewModels
             Models = new ModelsViewModel();
             Parameters = new ParametersViewModel();
             Reports = new ReportsViewModel();
+            Entry = new EntryViewModel();
             Years = new ObservableCollection<int>();
 
             AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));

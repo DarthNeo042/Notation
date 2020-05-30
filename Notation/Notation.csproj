@@ -133,6 +133,7 @@
     <Compile Include="Reports\BulletinDemiTrimestreLineDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
+    <Compile Include="Reports\BulletinTrimestreHeaderDataSource.cs" />
     <Compile Include="Utils\ExportUtils.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
@@ -145,6 +146,8 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CalendarViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
+    <Compile Include="ViewModels\EntryMarksViewModel.cs" />
+    <Compile Include="ViewModels\EntryViewModel.cs" />
     <Compile Include="ViewModels\LevelViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -162,29 +165,32 @@
     <Compile Include="ViewModels\TrimesterCommentViewModel.cs" />
     <Compile Include="ViewModels\TrimesterSubjectCommentViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
-    <Compile Include="Views\AddClassesView.xaml.cs">
-      <DependentUpon>AddClassesView.xaml</DependentUpon>
+    <Compile Include="Views\AddClasses.xaml.cs">
+      <DependentUpon>AddClasses.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddLevelsView.xaml.cs">
-      <DependentUpon>AddLevelsView.xaml</DependentUpon>
+    <Compile Include="Views\AddLevels.xaml.cs">
+      <DependentUpon>AddLevels.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddStudentsView.xaml.cs">
-      <DependentUpon>AddStudentsView.xaml</DependentUpon>
+    <Compile Include="Views\AddStudents.xaml.cs">
+      <DependentUpon>AddStudents.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddSubjectsView.xaml.cs">
-      <DependentUpon>AddSubjectsView.xaml</DependentUpon>
+    <Compile Include="Views\AddSubjects.xaml.cs">
+      <DependentUpon>AddSubjects.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AddTeachersView.xaml.cs">
-      <DependentUpon>AddTeachersView.xaml</DependentUpon>
+    <Compile Include="Views\AddTeachers.xaml.cs">
+      <DependentUpon>AddTeachers.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
+    <Compile Include="Views\EntryMarks.xaml.cs">
+      <DependentUpon>EntryMarks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProgressView.xaml.cs">
-      <DependentUpon>ProgressView.xaml</DependentUpon>
+    <Compile Include="Views\Progress.xaml.cs">
+      <DependentUpon>Progress.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -205,7 +211,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\BulletinTrimestre.rdlc" />
     <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreLineDataSource.datasource" />
+    <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreHeaderDataSource.datasource" />
     <None Include="Reports\BulletinDemiTrimestre.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -261,27 +269,31 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddClassesView.xaml">
+    <Page Include="Views\AddClasses.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddLevelsView.xaml">
+    <Page Include="Views\AddLevels.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddStudentsView.xaml">
+    <Page Include="Views\AddStudents.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddSubjectsView.xaml">
+    <Page Include="Views\AddSubjects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\AddTeachersView.xaml">
+    <Page Include="Views\AddTeachers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="Views\EntryMarks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -289,7 +301,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProgressView.xaml">
+    <Page Include="Views\Progress.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -204,7 +204,7 @@ namespace Notation.Models
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} AND IdSubject = {3}", semiTrimester.Year, semiTrimester.Id, student.Id, subject.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -232,7 +232,7 @@ namespace Notation.Models
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} GROUP BY IdSubject)"
                     + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, student.Id), connection))
                 {
@@ -258,7 +258,7 @@ namespace Notation.Models
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} AND IdSubject = {3}", semiTrimester.Year, semiTrimester.Id, _class.Id, subject.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -286,7 +286,7 @@ namespace Notation.Models
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdClass = {2} GROUP BY IdSubject)"
                     + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, _class.Id), connection))
                 {
@@ -313,7 +313,7 @@ namespace Notation.Models
 
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
                     + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", semiTrimester.Year, semiTrimester.Id, student.Id, subject.Id), connection))
                 {
@@ -340,7 +340,7 @@ namespace Notation.Models
 
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = SemiTrimester.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
                     + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
                     + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", semiTrimester.Year, semiTrimester.Id, _class.Id, subject.Id), connection))
                 {
@@ -412,6 +412,228 @@ namespace Notation.Models
         }
 
         public static int ReadSemiTrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
+        {
+            double average = averages[student];
+            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
+        }
+
+        public static double ReadTrimesterSubjectAverage(int trimester, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} AND IdSubject = {3}", student.Year, trimester, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadTrimesterAverage(int trimester, StudentViewModel student)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                    + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
+                    + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
+                    + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", student.Year, trimester, student.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadTrimesterClassSubjectAverage(int trimester, ClassViewModel _class, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} AND IdSubject = {3}", _class.Year, trimester, _class.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadTrimesterClassAverage(int trimester, ClassViewModel _class)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                    + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
+                    + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
+                    + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", _class.Year, trimester, _class.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadTrimesterMainSubjectAverage(int trimester, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                    + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", student.Year, trimester, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadTrimesterClassMainSubjectAverage(int trimester, ClassViewModel _class, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                    + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
+                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", _class.Year, trimester, _class.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static void ReadTrimesterMinMaxSubjectAverage(int trimester, ClassViewModel _class, SubjectViewModel subject, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadTrimesterSubjectAverage(trimester, student, subject);
+                if (average < minAverage)
+                {
+                    minAverage = average;
+                }
+                if (average > maxAverage)
+                {
+                    maxAverage = average;
+                }
+            }
+        }
+
+        public static void ReadTrimesterMinMaxMainSubjectAverage(int trimester, ClassViewModel _class, SubjectViewModel subject, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadTrimesterMainSubjectAverage(trimester, student, subject);
+                if (average < minAverage)
+                {
+                    minAverage = average;
+                }
+                if (average > maxAverage)
+                {
+                    maxAverage = average;
+                }
+            }
+        }
+
+        public static void ReadTrimesterMinMaxAverage(int trimester, ClassViewModel _class, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadTrimesterAverage(trimester, student);
+                if (average < minAverage)
+                {
+                    minAverage = average;
+                }
+                if (average > maxAverage)
+                {
+                    maxAverage = average;
+                }
+            }
+        }
+
+        public static int ReadtrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
         {
             double average = averages[student];
             return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);

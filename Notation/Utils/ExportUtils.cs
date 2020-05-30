@@ -659,18 +659,12 @@ namespace Notation.Utils
                 case "APP_GEN_DTM":
                     ImportSemiTrimesterComments(filename, workSheet);
                     break;
-                //case "APP_MAT_TRM":
-                //    if (!ImportTrimesterSubjectComments(filename, workSheet))
-                //    {
-                //        failureFilenames.Add(filename);
-                //    }
-                //    break;
-                //case "APP_GEN_TRM":
-                //    if (!ImportTrimesterGeneralComments(filename, workSheet))
-                //    {
-                //        failureFilenames.Add(filename);
-                //    }
-                //    break;
+                case "APP_MAT_TRM":
+                    ImportTrimesterSubjectComments(filename, workSheet);
+                    break;
+                case "APP_GEN_TRM":
+                    ImportTrimesterGeneralComments(filename, workSheet);
+                    break;
                 default:
                     MessageBox.Show("Format non reconnu.", "Echec", MessageBoxButton.OK, MessageBoxImage.Error);
                     break;
@@ -1142,141 +1136,180 @@ namespace Notation.Utils
             excel.Save();
         }
 
-        //public static void ExportTrimesterSummary(string directory, ClassViewModel _class, int trimester)
-        //{
-        //    string filename = Path.Combine(directory, string.Format("Bulletin de trimestre {0} de {1} (Résumé).xlsx", trimester, _class.Name));
-        //    File.Delete(filename);
+        private static bool ImportTrimesterGeneralComments(string filename, ExcelWorksheet workSheet)
+        {
+            int year = (int)(double)workSheet.Cells[2, 2].Value;
+            int trimester = (int)(double)workSheet.Cells[3, 2].Value;
 
-        //    ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+            if (year == 0 || trimester == 0)
+            {
+                return false;
+            }
 
-        //    ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+            int i = 5;
+            while (workSheet.Cells[i, 1].Value != null)
+            {
+                if (workSheet.Cells[i, 2].Value != null || workSheet.Cells[i, 3].Value != null)
+                {
+                    StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-        //    int i;
-        //    int j = 2;
-        //    foreach (SubjectViewModel subject in _class.Level.Subjects)
-        //    {
-        //        if (!subject.ChildrenSubjects.Any())
-        //        {
-        //            workSheet.Cells[1, j].Value = subject.Name;
-        //            workSheet.Cells[2, j].Value = subject.Coefficient;
-        //            workSheet.Cells[3, j].Value = subject.Option ? "X" : "";
-        //            workSheet.Column(j + 1).Hidden = true;
-        //            workSheet.Column(j + 2).Hidden = true;
-        //            j += 3;
-        //        }
-        //        else
-        //        {
-        //            foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
-        //            {
-        //                workSheet.Cells[1, j].Value = subject2.Name;
-        //                workSheet.Cells[2, j].Value = subject2.Coefficient;
-        //                workSheet.Cells[3, j].Value = subject2.Option ? "X" : "";
-        //                workSheet.Column(j + 1).Hidden = true;
-        //                workSheet.Column(j + 2).Hidden = true;
-        //                j += 3;
-        //            }
-        //        }
-        //    }
-        //    workSheet.Row(2).Hidden = true;
-        //    workSheet.Row(3).Hidden = true;
-        //    workSheet.Column(j + 1).Hidden = true;
-        //    workSheet.Column(j + 2).Hidden = true;
-        //    workSheet.Cells[1, j].Value = "Général";
+                    TrimesterCommentViewModel trimesterComment = new TrimesterCommentViewModel()
+                    {
+                        Trimester = trimester,
+                        Student = student,
+                        Year = year,
+                    };
 
-        //    double value;
-        //    i = 4;
-        //    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-        //    {
-        //        workSheet.Cells[i, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-        //        j = 2;
-        //        foreach (SubjectViewModel subject in _class.Level.Subjects)
-        //        {
-        //            if (!subject.ChildrenSubjects.Any())
-        //            {
-        //                value = MarksDAL.ReadTrimesterSubjectAverage(student, subject, trimester);
-        //                if (value == -1)
-        //                {
-        //                    workSheet.Cells[i, j].Value = "";
-        //                }
-        //                else
-        //                {
-        //                    workSheet.Cells[i, j].Value = value;
-        //                }
-        //                workSheet.Cells[i + 1, j + 1].Formula = string.Format("IF({0}=\"\",IF({1}=\"\",0,{1}*{2}),IF({1}=\"\",0,MAX(0,{1}*{2}-10)))", RowColumnToCell(3, j), RowColumnToCell(i, j), RowColumnToCell(2, j));
-        //                workSheet.Cells[i + 2, j + 2].Formula = string.Format("IF({0}=\"\",0,IF({1}=\"\",{2},0))", RowColumnToCell(i, j), RowColumnToCell(3, j), RowColumnToCell(2, j));
-        //                j += 3;
-        //            }
-        //            else
-        //            {
-        //                foreach (SubjectViewModel subject2 in ModelUtils.GetChildrenSubjects(subject))
-        //                {
-        //                    value = MarksDAL.ReadTrimesterSubjectAverage(student, subject2, trimester);
-        //                    if (value == -1)
-        //                    {
-        //                        workSheet.Cells[i, j].Value = "";
-        //                    }
-        //                    else
-        //                    {
-        //                        workSheet.Cells[i, j].Value = value;
-        //                    }
-        //                    workSheet.Cells[i + 1, j + 1].Formula = string.Format("IF({0}=\"\",IF({1}=\"\",0,{1}*{2}),IF({1}=\"\",0,MAX(0,{1}*{2}-10)))", RowColumnToCell(3, j), RowColumnToCell(i, j), RowColumnToCell(2, j));
-        //                    workSheet.Cells[i + 2, j + 2].Formula = string.Format("IF({0}=\"\",0,IF({1}=\"\",{2},0))", RowColumnToCell(i, j), RowColumnToCell(3, j), RowColumnToCell(2, j));
-        //                    j += 3;
-        //                }
-        //            }
-        //        }
-        //        workSheet.Cells[i + 1, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(i + 1, 3), RowColumnToCell(i + 1, j - 1));
-        //        workSheet.Cells[i + 2, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(i + 2, 3), RowColumnToCell(i + 2, j - 1));
-        //        workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i + 1, j + 1), RowColumnToCell(i + 2, j + 1));
-        //        workSheet.Cells[i, j + 2].Formula = string.Format("IF({0}=\"\",0,1)", RowColumnToCell(i, j));
+                    if (workSheet.Cells[i, 2].Value != null)
+                    {
+                        trimesterComment.DivisionPrefectComment = workSheet.Cells[i, 2].Text;
+                    }
+                    if (workSheet.Cells[i, 3].Value != null)
+                    {
+                        trimesterComment.MainTeacherComment = workSheet.Cells[i, 3].Text;
+                    }
 
-        //        workSheet.Row(i + 1).Hidden = true;
-        //        workSheet.Row(i + 2).Hidden = true;
-        //        i += 3;
-        //    }
+                    TrimesterCommentModel.Save(trimesterComment);
+                }
+                i++;
+            }
 
-        //    workSheet.Cells[i, 1].Value = "Général";
-        //    j = 2;
-        //    foreach (SubjectViewModel subject in _class.Level.Subjects)
-        //    {
-        //        IEnumerable<SubjectViewModel> childrenSubjects = ModelUtils.GetChildrenSubjects(subject);
+            return true;
+        }
 
-        //        if (!childrenSubjects.Any())
-        //        {
-        //            workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 1), RowColumnToCell(i - 1, j + 1));
-        //            workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
-        //            workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
-        //            j += 3;
-        //        }
-        //        else
-        //        {
-        //            foreach (SubjectViewModel subject2 in ModelUtils.GetChildrenSubjects(subject))
-        //            {
-        //                workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 1), RowColumnToCell(i - 1, j + 1));
-        //                workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
-        //                workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
-        //                j += 3;
-        //            }
-        //        }
-        //    }
-        //    workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j), RowColumnToCell(i - 1, j));
-        //    workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
-        //    workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
+        public static void ExportTrimesterSummary(string directory, ClassViewModel _class, int trimester)
+        {
+            string filename = Path.Combine(directory, string.Format("Bulletin de trimestre {0} de {1} (Résumé).xlsx", trimester, _class.Name));
+            File.Delete(filename);
 
-        //    for (int i2 = 1; i2 < i + 1; i2++)
-        //    {
-        //        for (int j2 = 1; j2 < j + 3; j2++)
-        //        {
-        //            workSheet.Cells[i2, j2].Style.Numberformat.Format = "0.0";
-        //            workSheet.Cells[i2, j2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-        //            workSheet.Cells[i2, j2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-        //            workSheet.Cells[i2, j2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-        //            workSheet.Cells[i2, j2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-        //        }
-        //    }
+            ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
 
-        //    workSheet.Column(1).AutoFit();
-        //    excel.Save();
-        //}
+            ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+
+            int i;
+            int j = 2;
+            foreach (SubjectViewModel subject in _class.Level.Subjects)
+            {
+                if (!subject.ChildrenSubjects.Any())
+                {
+                    workSheet.Cells[1, j].Value = subject.Name;
+                    workSheet.Cells[2, j].Value = subject.Coefficient;
+                    workSheet.Cells[3, j].Value = subject.Option ? "X" : "";
+                    workSheet.Column(j + 1).Hidden = true;
+                    workSheet.Column(j + 2).Hidden = true;
+                    j += 3;
+                }
+                else
+                {
+                    foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                    {
+                        workSheet.Cells[1, j].Value = subject2.Name;
+                        workSheet.Cells[2, j].Value = subject2.Coefficient;
+                        workSheet.Cells[3, j].Value = subject2.Option ? "X" : "";
+                        workSheet.Column(j + 1).Hidden = true;
+                        workSheet.Column(j + 2).Hidden = true;
+                        j += 3;
+                    }
+                }
+            }
+            workSheet.Row(2).Hidden = true;
+            workSheet.Row(3).Hidden = true;
+            workSheet.Column(j + 1).Hidden = true;
+            workSheet.Column(j + 2).Hidden = true;
+            workSheet.Cells[1, j].Value = "Général";
+
+            double value;
+            i = 4;
+            foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+            {
+                workSheet.Cells[i, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                j = 2;
+                foreach (SubjectViewModel subject in _class.Level.Subjects)
+                {
+                    if (!subject.ChildrenSubjects.Any())
+                    {
+                        value = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject);
+                        if (value == -1)
+                        {
+                            workSheet.Cells[i, j].Value = "";
+                        }
+                        else
+                        {
+                            workSheet.Cells[i, j].Value = value;
+                        }
+                        workSheet.Cells[i + 1, j + 1].Formula = string.Format("IF({0}=\"\",IF({1}=\"\",0,{1}*{2}),IF({1}=\"\",0,MAX(0,{1}*{2}-10)))", RowColumnToCell(3, j), RowColumnToCell(i, j), RowColumnToCell(2, j));
+                        workSheet.Cells[i + 2, j + 2].Formula = string.Format("IF({0}=\"\",0,IF({1}=\"\",{2},0))", RowColumnToCell(i, j), RowColumnToCell(3, j), RowColumnToCell(2, j));
+                        j += 3;
+                    }
+                    else
+                    {
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                        {
+                            value = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
+                            if (value == -1)
+                            {
+                                workSheet.Cells[i, j].Value = "";
+                            }
+                            else
+                            {
+                                workSheet.Cells[i, j].Value = value;
+                            }
+                            workSheet.Cells[i + 1, j + 1].Formula = string.Format("IF({0}=\"\",IF({1}=\"\",0,{1}*{2}),IF({1}=\"\",0,MAX(0,{1}*{2}-10)))", RowColumnToCell(3, j), RowColumnToCell(i, j), RowColumnToCell(2, j));
+                            workSheet.Cells[i + 2, j + 2].Formula = string.Format("IF({0}=\"\",0,IF({1}=\"\",{2},0))", RowColumnToCell(i, j), RowColumnToCell(3, j), RowColumnToCell(2, j));
+                            j += 3;
+                        }
+                    }
+                }
+                workSheet.Cells[i + 1, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(i + 1, 3), RowColumnToCell(i + 1, j - 1));
+                workSheet.Cells[i + 2, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(i + 2, 3), RowColumnToCell(i + 2, j - 1));
+                workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i + 1, j + 1), RowColumnToCell(i + 2, j + 1));
+                workSheet.Cells[i, j + 2].Formula = string.Format("IF({0}=\"\",0,1)", RowColumnToCell(i, j));
+
+                workSheet.Row(i + 1).Hidden = true;
+                workSheet.Row(i + 2).Hidden = true;
+                i += 3;
+            }
+
+            workSheet.Cells[i, 1].Value = "Général";
+            j = 2;
+            foreach (SubjectViewModel subject in _class.Level.Subjects)
+            {
+                if (!subject.ChildrenSubjects.Any())
+                {
+                    workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 1), RowColumnToCell(i - 1, j + 1));
+                    workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
+                    workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
+                    j += 3;
+                }
+                else
+                {
+                    foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                    {
+                        workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 1), RowColumnToCell(i - 1, j + 1));
+                        workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
+                        workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
+                        j += 3;
+                    }
+                }
+            }
+            workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j), RowColumnToCell(i - 1, j));
+            workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
+            workSheet.Cells[i, j].Formula = string.Format("IF({1}=0,\"\",{0}/{1})", RowColumnToCell(i, j + 1), RowColumnToCell(i, j + 2));
+
+            for (int i2 = 1; i2 < i + 1; i2++)
+            {
+                for (int j2 = 1; j2 < j + 3; j2++)
+                {
+                    workSheet.Cells[i2, j2].Style.Numberformat.Format = "0.0";
+                    workSheet.Cells[i2, j2].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[i2, j2].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[i2, j2].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    workSheet.Cells[i2, j2].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                }
+            }
+
+            workSheet.Column(1).AutoFit();
+            excel.Save();
+        }
     }
 }

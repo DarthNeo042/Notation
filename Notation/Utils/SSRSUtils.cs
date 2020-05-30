@@ -39,7 +39,7 @@ namespace Notation.Utils
 
             if (!string.IsNullOrEmpty(directory))
             {
-                ProgressView progress = new ProgressView();
+                Progress progress = new Progress();
                 try
                 {
                     progress.Count = MainViewModel.Instance.Parameters.Students.Count;
@@ -253,7 +253,7 @@ namespace Notation.Utils
 
             if (!string.IsNullOrEmpty(directory))
             {
-                ProgressView progress = new ProgressView();
+                Progress progress = new Progress();
                 try
                 {
                     progress.Count = MainViewModel.Instance.Parameters.Students.Count;
