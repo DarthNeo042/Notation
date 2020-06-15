@@ -36,10 +36,11 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="100"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Utilisateur :" Background="AliceBlue"></TextBlock>
-            <TextBlock Grid.Column="1" Text="{Binding User.Name}" Background="AliceBlue"></TextBlock>
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="11" Background="White" Height="35"></TextBlock>
+            <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding User.Name}"></TextBlock>
             <Button Grid.Column="2" Content="Changer d'utilisateur" Command="{Binding LoginCommand}"></Button>
-            <TextBlock Grid.Column="3" Text="Année :" Background="AliceBlue"></TextBlock>
+            <TextBlock Grid.Column="3" Text="Année :"></TextBlock>
             <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -49,8 +50,8 @@
             </ComboBox>
             <Button Grid.Column="5" Content="Ajouter" Background="LimeGreen" Command="{Binding AddYearCommand}"></Button>
             <Button Grid.Column="6" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteYearCommand}"></Button>
-            <TextBlock Grid.Column="7" Text="Base :" Background="AliceBlue"></TextBlock>
-            <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}" Background="AliceBlue"></TextBlock>
+            <TextBlock Grid.Column="7" Text="Base :"></TextBlock>
+            <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}"></TextBlock>
             <Button Grid.Column="10" Content="Aide"></Button>
         </Grid>
         <TabControl Grid.Row="1" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
@@ -458,7 +459,7 @@
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding MainTeacher.Title}"></TextBlock>
                                                     <TextBlock Text="{Binding MainTeacher.LastName}"></TextBlock>
-                                                    <TextBlock Text="{Binding MainTeacher.Firstname}"></TextBlock>
+                                                    <TextBlock Text="{Binding MainTeacher.FirstName}"></TextBlock>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>

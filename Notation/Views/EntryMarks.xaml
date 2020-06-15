@@ -7,42 +7,134 @@
         mc:Ignorable="d"
         Title="InputMarks" Height="1080" Width="1920"
         WindowState="Maximized">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="4*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="Classes :"></TextBlock>
-            <ListView Grid.Row="1" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}" VerticalAlignment="Stretch">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Name}"></TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
-        <Grid Grid.Column="1" DataContext="{Binding SelectedClass}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="Elèves :"></TextBlock>
-            <ListView Grid.Row="1" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" VerticalAlignment="Stretch">
-                <ListView.ItemTemplate>
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Période :"></TextBlock>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Periods}" SelectedItem="{Binding SelectedPeriod}">
+                <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding FirstName}"></TextBlock>
-                            <TextBlock Text="{Binding LastName}"></TextBlock>
+                            <TextBlock Text="Période"></TextBlock>
+                            <TextBlock Text="{Binding Number}"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <TextBlock Text="Du"></TextBlock>
+                <TextBlock Text="{Binding SelectedPeriod.FromDate, StringFormat=dd\/MM\/yyyy}"></TextBlock>
+                <TextBlock Text="au"></TextBlock>
+                <TextBlock Text="{Binding SelectedPeriod.ToDate, StringFormat=dd\/MM\/yyyy}"></TextBlock>
+            </StackPanel>
         </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Classes :"></TextBlock>
+                <ListView Grid.Row="1" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Class.Name}"></TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Elèves :"></TextBlock>
+                <ListView Grid.Row="1" ItemsSource="{Binding SelectedClass.Students}" SelectedItem="{Binding SelectedClass.SelectedStudent}" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Student.FirstName}"></TextBlock>
+                                <TextBlock Text="{Binding Student.LastName}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Matières :"></TextBlock>
+                <ListView Grid.Row="1" ItemsSource="{Binding SelectedClass.SelectedStudent.MarksSubjects}" SelectedItem="{Binding SelectedClass.SelectedStudent.SelectedMarksSubject}" VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Subject.Name}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Professeur :"></TextBlock>
+                    <ComboBox Grid.Column="1" ItemsSource="{Binding Teachers}" SelectedItem="{Binding SelectedTeacher}" Name="Teacher">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Title}"></TextBlock>
+                                    <TextBlock Text="{Binding LastName}"></TextBlock>
+                                    <TextBlock Text="{Binding FirstName}"></TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </Grid>
+                <TextBlock Grid.Row="2" Text="Leçons (coefficient 1)"></TextBlock>
+                <ScrollViewer Grid.Row="3" Height="50" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Name="Marks1" Orientation="Horizontal"></StackPanel>
+                </ScrollViewer>
+                    <TextBlock Grid.Row="4" Text="Devoirs (coefficient 2)"></TextBlock>
+                <ScrollViewer Grid.Row="5" Height="50" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Name="Marks2" Orientation="Horizontal"></StackPanel>
+                </ScrollViewer>
+                <TextBlock Grid.Row="6" Text="Examens (coefficient 4)"></TextBlock>
+                <ScrollViewer Grid.Row="7" Height="50" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
+                    <StackPanel Name="Marks4" Orientation="Horizontal"></StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+        <Image Source="{StaticResource IconBackground}" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
     </Grid>
 </Window>

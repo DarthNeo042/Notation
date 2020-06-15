@@ -233,7 +233,7 @@ namespace Notation.Models
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} GROUP BY IdSubject)"
+                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject)"
                     + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, student.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -287,7 +287,7 @@ namespace Notation.Models
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdClass = {2} GROUP BY IdSubject)"
+                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject)"
                     + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, _class.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -364,13 +364,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadSemiTrimesterSubjectAverage(semiTrimester, student, subject);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }
@@ -382,13 +385,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadSemiTrimesterMainSubjectAverage(semiTrimester, student, subject);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }
@@ -400,13 +406,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadSemiTrimesterAverage(semiTrimester, student);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }
@@ -586,13 +595,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadTrimesterSubjectAverage(trimester, student, subject);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }
@@ -604,13 +616,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadTrimesterMainSubjectAverage(trimester, student, subject);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }
@@ -622,13 +637,16 @@ namespace Notation.Models
             foreach (StudentViewModel student in _class.Students)
             {
                 double average = ReadTrimesterAverage(trimester, student);
-                if (average < minAverage)
+                if (average != double.MinValue)
                 {
-                    minAverage = average;
-                }
-                if (average > maxAverage)
-                {
-                    maxAverage = average;
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
                 }
             }
         }

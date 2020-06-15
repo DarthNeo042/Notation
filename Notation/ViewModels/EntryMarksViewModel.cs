@@ -1,21 +1,34 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Notation.ViewModels
 {
     public class EntryMarksViewModel : DependencyObject
     {
-        public ObservableCollection<ClassViewModel> Classes { get; set; }
+        public delegate void SelectedClassChangedEventHandler();
 
-        public ClassViewModel SelectedClass
+        public event SelectedClassChangedEventHandler SelectedClassChangedEvent;
+
+        public ObservableCollection<EntryClassViewModel> Classes { get; set; }
+
+        public EntryClassViewModel SelectedClass
         {
-            get { return (ClassViewModel)GetValue(SelectedClassProperty); }
+            get { return (EntryClassViewModel)GetValue(SelectedClassProperty); }
             set { SetValue(SelectedClassProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for SelectedClass.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedClassProperty =
-            DependencyProperty.Register("SelectedClass", typeof(ClassViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedClass", typeof(EntryClassViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null, SelectedClassChanged));
+
+        private static void SelectedClassChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            EntryMarksViewModel entryMarks = (EntryMarksViewModel)d;
+            entryMarks.SelectedClassChangedEvent?.Invoke();
+        }
 
         public ObservableCollection<PeriodViewModel> Periods { get; set; }
 
@@ -29,10 +42,71 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty SelectedPeriodProperty =
             DependencyProperty.Register("SelectedPeriod", typeof(PeriodViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null));
 
+        public ObservableCollection<TeacherViewModel> Teachers { get; set; }
+
+        public TeacherViewModel SelectedTeacher
+        {
+            get { return (TeacherViewModel)GetValue(SelectedTeacherProperty); }
+            set { SetValue(SelectedTeacherProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedTeacher.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedTeacherProperty =
+            DependencyProperty.Register("SelectedTeacher", typeof(TeacherViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null));
+
+        public ICommand RightCommand { get; set; }
+
+        private void RightExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            SelectedClass.SelectedStudent.SelectedMarksSubject.SelectedCoefficient.SelectedMark = SelectedClass.SelectedStudent.SelectedMarksSubject.SelectedCoefficient.Marks[0];
+        }
+
+        public CommandBindingCollection Bindings { get; set; }
+
         public EntryMarksViewModel()
         {
-            Classes = new ObservableCollection<ClassViewModel>(MainViewModel.Instance.Parameters.Classes);
+            Classes = new ObservableCollection<EntryClassViewModel>();
             Periods = new ObservableCollection<PeriodViewModel>(MainViewModel.Instance.Parameters.Periods);
+            Teachers = new ObservableCollection<TeacherViewModel>(MainViewModel.Instance.Parameters.Teachers);
+
+            RightCommand = new RoutedUICommand("Right", "Right", typeof(MainViewModel));
+
+            Bindings = new CommandBindingCollection()
+            {
+                new CommandBinding(RightCommand, RightExecuted),
+            };
+
+            foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+            {
+                EntryClassViewModel entryClass = new EntryClassViewModel() { Class = _class };
+                foreach (StudentViewModel student in _class.Students)
+                {
+                    EntryStudentViewModel entryStudent = new EntryStudentViewModel() { Student = student };
+                    entryStudent.LoadEntryMarks();
+                    entryClass.Students.Add(entryStudent);
+                }
+                Classes.Add(entryClass);
+            }
+
+            SelectedClass = Classes.FirstOrDefault();
+            if (SelectedClass != null)
+            {
+                SelectedClass.SelectedStudent = SelectedClass.Students.FirstOrDefault();
+                if (SelectedClass.SelectedStudent != null)
+                {
+                    SelectedClass.SelectedStudent.SelectedMarksSubject = SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
+                }
+            }
+            SelectedPeriod = Periods.FirstOrDefault(p => p.FromDate <= DateTime.Now.Date && p.ToDate > DateTime.Now.Date.AddDays(1));
+            if (SelectedPeriod == null)
+            {
+                SelectedPeriod = Periods.FirstOrDefault();
+            }
+
+            if (MainViewModel.Instance.User.Teacher != null)
+            {
+                SelectedTeacher = MainViewModel.Instance.Parameters.Teachers.FirstOrDefault(t => t.Id == MainViewModel.Instance.User.Teacher.Id);
+            }
         }
     }
 }

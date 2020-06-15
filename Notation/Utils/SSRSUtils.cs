@@ -17,6 +17,8 @@ namespace Notation.Utils
     {
         public ClassViewModel Class { get; set; }
         public double ClassAverage { get; set; }
+        public double ClassMinAverage { get; set; }
+        public double ClassMaxAverage { get; set; }
         public Dictionary<SubjectViewModel, double> ClassSubjectAverages { get; set; }
         public Dictionary<SubjectViewModel, double> ClassSubjectMinAverages { get; set; }
         public Dictionary<SubjectViewModel, double> ClassSubjectMaxAverages { get; set; }
@@ -289,6 +291,14 @@ namespace Notation.Utils
                                 SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
                             }
                         }
+                        SSRSUtils_SemiTrimester.ClassAverage = MarkModel.ReadSemiTrimesterClassAverage(semiTrimester, _class);
+                        MarkModel.ReadSemiTrimesterMinMaxAverage(semiTrimester, _class, out double classMinAverage, out double classMaxAverage);
+                        SSRSUtils_SemiTrimester.ClassMinAverage = classMinAverage;
+                        SSRSUtils_SemiTrimester.ClassMaxAverage = classMaxAverage;
+                        foreach (StudentViewModel student in _class.Students)
+                        {
+                            SSRSUtils_SemiTrimester.StudentAverages[student] = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+                        }
                         foreach (StudentViewModel student in _class.Students)
                         {
                             progress.Text = string.Format("{0} {1}", student.LastName, student.FirstName);
@@ -341,22 +351,30 @@ namespace Notation.Utils
                 bulletinDemiTrimestreHeader.DivisionPrefectReport = semiTrimesterComment.DivisionPrefectComment;
             }
 
-            //double average = MarkModel.ReadSemiTrimesterTrimesterAverage(semiTrimester, student);
-            //if (average != double.MinValue)
-            //{
-            //    bulletinSemiTrimestereHeader.TrimesterAverage = average.ToString("0.0");
-            //}
+            bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
+                (_class.MainTeacher != null ? string.Format(" {0} {1} {2}", _class.MainTeacher.Title, !string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "", _class.MainTeacher.LastName) : "");
+            //bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
+            //    (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.BaseParameters.) ? " " + MainViewModel.Singleton.Parameters.Parameters.DivisionPrefect : "");
 
-            //SemiTrimesterViewModel lastSemiTrimester = ModelUtils.GetPreviousSemiTrimester(semiTrimester);
-            //if (lastSemiTrimester != null)
-            //{
-            //    double lastAverage = MarkModel.ReadSemiTrimesterTrimesterAverage(lastSemiTrimester, student);
-            //    if (lastAverage != double.MinValue)
-            //    {
-            //        bulletinSemiTrimestereHeader.LastAverage = lastAverage.ToString("0.0");
-            //        bulletinSemiTrimestereHeader.Tendency = average > lastAverage ? "↗" : average < lastAverage ? "↘" : "→";
-            //    }
-            //}
+            double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+            if (average != double.MinValue)
+            {
+                bulletinDemiTrimestreHeader.Average = average.ToString("0.0");
+            }
+            if (SSRSUtils_SemiTrimester.ClassAverage != double.MinValue)
+            {
+                bulletinDemiTrimestreHeader.ClassAverage = SSRSUtils_SemiTrimester.ClassAverage.ToString("0.0");
+            }
+            if (SSRSUtils_SemiTrimester.ClassMinAverage != double.MaxValue)
+            {
+                bulletinDemiTrimestreHeader.ClassMinAverage = SSRSUtils_SemiTrimester.ClassMinAverage.ToString("0.0");
+            }
+            if (SSRSUtils_SemiTrimester.ClassMaxAverage != double.MinValue)
+            {
+                bulletinDemiTrimestreHeader.ClassMaxAverage = SSRSUtils_SemiTrimester.ClassMaxAverage.ToString("0.0");
+            }
+            int ranking = MarkModel.ReadSemiTrimesterRanking(student, SSRSUtils_SemiTrimester.StudentAverages);
+            bulletinDemiTrimestreHeader.Ranking = $"{ranking}/{SSRSUtils_SemiTrimester.StudentAverages.Count}";
 
             List<BulletinDemiTrimestreLineDataSource> bulletinDemiTrimestreLines = new List<BulletinDemiTrimestreLineDataSource>();
 
@@ -383,7 +401,7 @@ namespace Notation.Utils
                 {
                     bulletinDemiTrimestreLine.Teacher = string.Format("{0} {1}. {2}", teacher.Title, !string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "", teacher.LastName);
                 }
-                double average = double.MinValue;
+                average = double.MinValue;
                 if (subject.ChildrenSubjects.Any())
                 {
                     average = MarkModel.ReadSemiTrimesterMainSubjectAverage(semiTrimester, student, subject);

@@ -134,6 +134,7 @@
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
     <Compile Include="Reports\BulletinTrimestreHeaderDataSource.cs" />
+    <Compile Include="Reports\BulletinTrimestreLineDataSource.cs" />
     <Compile Include="Utils\ExportUtils.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\ModelUtils.cs" />
@@ -146,7 +147,12 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CalendarViewModel.cs" />
     <Compile Include="ViewModels\ClassViewModel.cs" />
+    <Compile Include="ViewModels\EntryClassViewModel.cs" />
+    <Compile Include="ViewModels\EntryMarksCoefficientViewModel.cs" />
+    <Compile Include="ViewModels\EntryMarksMarkViewModel.cs" />
+    <Compile Include="ViewModels\EntryMarksSubjectViewModel.cs" />
     <Compile Include="ViewModels\EntryMarksViewModel.cs" />
+    <Compile Include="ViewModels\EntryStudentViewModel.cs" />
     <Compile Include="ViewModels\EntryViewModel.cs" />
     <Compile Include="ViewModels\LevelViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -211,9 +217,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\BulletinTrimestre.rdlc" />
+    <EmbeddedResource Include="Reports\BulletinTrimestre.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreLineDataSource.datasource" />
     <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreHeaderDataSource.datasource" />
+    <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreLineDataSource.datasource" />
     <None Include="Reports\BulletinDemiTrimestre.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -229,36 +238,6 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Resources\calibri.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calibrib.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calibrii.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calibril.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calibrili.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\calibriz.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\cambria.ttc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\cambriab.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\cambriai.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\cambriaz.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
