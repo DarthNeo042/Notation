@@ -52,7 +52,13 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for SelectedTeacher.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedTeacherProperty =
-            DependencyProperty.Register("SelectedTeacher", typeof(TeacherViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("SelectedTeacher", typeof(TeacherViewModel), typeof(EntryMarksViewModel), new PropertyMetadata(null, SelectedTeacherChanged));
+
+        private static void SelectedTeacherChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            EntryMarksViewModel entryMarks = (EntryMarksViewModel)d;
+            entryMarks.Load();
+        }
 
         public ICommand RightCommand { get; set; }
 
@@ -76,27 +82,6 @@ namespace Notation.ViewModels
                 new CommandBinding(RightCommand, RightExecuted),
             };
 
-            foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
-            {
-                EntryClassViewModel entryClass = new EntryClassViewModel() { Class = _class };
-                foreach (StudentViewModel student in _class.Students)
-                {
-                    EntryStudentViewModel entryStudent = new EntryStudentViewModel() { Student = student };
-                    entryStudent.LoadEntryMarks();
-                    entryClass.Students.Add(entryStudent);
-                }
-                Classes.Add(entryClass);
-            }
-
-            SelectedClass = Classes.FirstOrDefault();
-            if (SelectedClass != null)
-            {
-                SelectedClass.SelectedStudent = SelectedClass.Students.FirstOrDefault();
-                if (SelectedClass.SelectedStudent != null)
-                {
-                    SelectedClass.SelectedStudent.SelectedMarksSubject = SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
-                }
-            }
             SelectedPeriod = Periods.FirstOrDefault(p => p.FromDate <= DateTime.Now.Date && p.ToDate > DateTime.Now.Date.AddDays(1));
             if (SelectedPeriod == null)
             {
@@ -106,6 +91,35 @@ namespace Notation.ViewModels
             if (MainViewModel.Instance.User.Teacher != null)
             {
                 SelectedTeacher = MainViewModel.Instance.Parameters.Teachers.FirstOrDefault(t => t.Id == MainViewModel.Instance.User.Teacher.Id);
+            }
+        }
+
+        public void Load()
+        {
+            Classes.Clear();
+            if (SelectedTeacher != null)
+            {
+                foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes.Where(c => c.Teachers.Contains(SelectedTeacher)))
+                {
+                    EntryClassViewModel entryClass = new EntryClassViewModel() { Class = _class };
+                    foreach (StudentViewModel student in _class.Students)
+                    {
+                        EntryStudentViewModel entryStudent = new EntryStudentViewModel() { Student = student };
+                        entryStudent.LoadEntryMarks(SelectedTeacher);
+                        entryClass.Students.Add(entryStudent);
+                    }
+                    Classes.Add(entryClass);
+                }
+
+                SelectedClass = Classes.FirstOrDefault();
+                if (SelectedClass != null)
+                {
+                    SelectedClass.SelectedStudent = SelectedClass.Students.FirstOrDefault();
+                    if (SelectedClass.SelectedStudent != null)
+                    {
+                        SelectedClass.SelectedStudent.SelectedMarksSubject = SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
+                    }
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Notation.Models;
 using Notation.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -28,23 +29,21 @@ namespace Notation.Views
 
         private void EntryMarks_SelectedClassChangedEvent()
         {
-            Marks1.Children.Clear();
-            Marks2.Children.Clear();
-            Marks4.Children.Clear();
-            if (!((EntryMarksViewModel)DataContext).SelectedClass.SelectedStudentChangedSet)
+            EntryMarksViewModel entryMarks = (EntryMarksViewModel)DataContext;
+            if (entryMarks.SelectedClass != null && !entryMarks.SelectedClass.SelectedStudentChangedSet)
             {
-                ((EntryMarksViewModel)DataContext).SelectedClass.SelectedStudentChangedEvent += SelectedClass_SelectedStudentChangedEvent;
+                entryMarks.SelectedClass.SelectedStudentChangedEvent += SelectedClass_SelectedStudentChangedEvent;
+                entryMarks.SelectedClass.SelectedStudent = entryMarks.SelectedClass.Students.FirstOrDefault();
             }
         }
 
         private void SelectedClass_SelectedStudentChangedEvent()
         {
-            Marks1.Children.Clear();
-            Marks2.Children.Clear();
-            Marks4.Children.Clear();
-            if (!((EntryMarksViewModel)DataContext).SelectedClass.SelectedStudent.SelectedSubjectChangedSet)
+            EntryMarksViewModel entryMarks = (EntryMarksViewModel)DataContext;
+            if (entryMarks.SelectedClass != null && entryMarks.SelectedClass.SelectedStudent != null && !entryMarks.SelectedClass.SelectedStudent.SelectedSubjectChangedSet)
             {
-                ((EntryMarksViewModel)DataContext).SelectedClass.SelectedStudent.SelectedSubjectChangedEvent += SelectedStudent_SelectedSubjectChangedEvent;
+                entryMarks.SelectedClass.SelectedStudent.SelectedSubjectChangedEvent += SelectedStudent_SelectedSubjectChangedEvent;
+                entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject = entryMarks.SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
             }
         }
 
@@ -55,40 +54,43 @@ namespace Notation.Views
             Marks1.Children.Clear();
             Marks2.Children.Clear();
             Marks4.Children.Clear();
-            TextBox textBox = null;
-            if (entryMarks.SelectedTeacher != null)
+            if (entryMarks.SelectedClass != null)
             {
-                foreach (MarkViewModel mark in MarkModel.Read(new List<int>() { entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id },
-                    entryMarks.SelectedClass.SelectedStudent.Student.Id, entryMarks.SelectedTeacher.Id, entryMarks.SelectedClass.Class.Id, entryMarks.SelectedPeriod.Id, entryMarks.SelectedPeriod.Year))
+                TextBox textBox = null;
+                if (entryMarks.SelectedTeacher != null && entryMarks.SelectedClass.SelectedStudent != null && entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != null)
                 {
-                    textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = mark.Mark.ToString() };
-                    textBox.PreviewKeyDown += Mark_KeyDown;
-                    switch (mark.Coefficient)
+                    foreach (MarkViewModel mark in MarkModel.Read(new List<int>() { entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id },
+                        entryMarks.SelectedClass.SelectedStudent.Student.Id, entryMarks.SelectedTeacher.Id, entryMarks.SelectedClass.Class.Id, entryMarks.SelectedPeriod.Id, entryMarks.SelectedPeriod.Year))
                     {
-                        case 1:
-                            Marks1.Children.Add(textBox);
-                            break;
-                        case 2:
-                            Marks2.Children.Add(textBox);
-                            break;
-                        case 4:
-                            Marks4.Children.Add(textBox);
-                            break;
+                        textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = mark.Mark.ToString() };
+                        textBox.PreviewKeyDown += Mark_KeyDown;
+                        switch (mark.Coefficient)
+                        {
+                            case 1:
+                                Marks1.Children.Add(textBox);
+                                break;
+                            case 2:
+                                Marks2.Children.Add(textBox);
+                                break;
+                            case 4:
+                                Marks4.Children.Add(textBox);
+                                break;
+                        }
                     }
                 }
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox.PreviewKeyDown += Mark_KeyDown;
+                textBox.TextChanged += Mark_TextChanged;
+                Marks1.Children.Add(textBox);
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox.PreviewKeyDown += Mark_KeyDown;
+                textBox.TextChanged += Mark_TextChanged;
+                Marks2.Children.Add(textBox);
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox.PreviewKeyDown += Mark_KeyDown;
+                textBox.TextChanged += Mark_TextChanged;
+                Marks4.Children.Add(textBox);
             }
-            textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
-            textBox.PreviewKeyDown += Mark_KeyDown;
-            textBox.TextChanged += Mark_TextChanged;
-            Marks1.Children.Add(textBox);
-            textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
-            textBox.PreviewKeyDown += Mark_KeyDown;
-            textBox.TextChanged += Mark_TextChanged;
-            Marks2.Children.Add(textBox);
-            textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
-            textBox.PreviewKeyDown += Mark_KeyDown;
-            textBox.TextChanged += Mark_TextChanged;
-            Marks4.Children.Add(textBox);
         }
 
         private void Mark_TextChanged(object sender, TextChangedEventArgs e)
@@ -114,6 +116,8 @@ namespace Notation.Views
 
         private void Mark_KeyDown(object sender, KeyEventArgs e)
         {
+            EntryMarksViewModel entryMarks = (EntryMarksViewModel)DataContext;
+
             switch (e.Key)
             {
                 case Key.Right:
@@ -163,6 +167,34 @@ namespace Notation.Views
                         {
                             Marks4.Children[0].Focus();
                         }
+                        else if (stackPanel == Marks4)
+                        {
+                            SaveMarks(entryMarks);
+                            if (entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != entryMarks.SelectedClass.SelectedStudent.MarksSubjects.Last())
+                            {
+                                entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject
+                                    = entryMarks.SelectedClass.SelectedStudent.MarksSubjects[entryMarks.SelectedClass.SelectedStudent.MarksSubjects.IndexOf(entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject) + 1];
+                            }
+                            else
+                            {
+                                if (entryMarks.SelectedClass.SelectedStudent != entryMarks.SelectedClass.Students.Last())
+                                {
+                                    entryMarks.SelectedClass.SelectedStudent
+                                        = entryMarks.SelectedClass.Students[entryMarks.SelectedClass.Students.IndexOf(entryMarks.SelectedClass.SelectedStudent) + 1];
+                                }
+                                else
+                                {
+                                    if (entryMarks.SelectedClass != entryMarks.Classes.Last())
+                                    {
+                                        entryMarks.SelectedClass = entryMarks.Classes[entryMarks.Classes.IndexOf(entryMarks.SelectedClass) + 1];
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Fin de la saisie.", "Fin", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                }
+                            }
+                        }
                         e.Handled = true;
                     }
                     break;
@@ -177,6 +209,37 @@ namespace Notation.Views
                         else if (stackPanel == Marks2)
                         {
                             Marks1.Children[0].Focus();
+                        }
+                        else if (stackPanel == Marks1)
+                        {
+                            SaveMarks(entryMarks);
+                            if (entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != entryMarks.SelectedClass.SelectedStudent.MarksSubjects.First())
+                            {
+                                entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject
+                                    = entryMarks.SelectedClass.SelectedStudent.MarksSubjects[entryMarks.SelectedClass.SelectedStudent.MarksSubjects.IndexOf(entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject) - 1];
+                            }
+                            else
+                            {
+                                if (entryMarks.SelectedClass.SelectedStudent != entryMarks.SelectedClass.Students.First())
+                                {
+                                    entryMarks.SelectedClass.SelectedStudent
+                                        = entryMarks.SelectedClass.Students[entryMarks.SelectedClass.Students.IndexOf(entryMarks.SelectedClass.SelectedStudent) - 1];
+                                    entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject = entryMarks.SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
+                                }
+                                else
+                                {
+                                    if (entryMarks.SelectedClass != entryMarks.Classes.First())
+                                    {
+                                        entryMarks.SelectedClass = entryMarks.Classes[entryMarks.Classes.IndexOf(entryMarks.SelectedClass) - 1];
+                                        entryMarks.SelectedClass.SelectedStudent = entryMarks.SelectedClass.Students.FirstOrDefault();
+                                        entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject = entryMarks.SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Début de la saisie.", "Fin", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    }
+                                }
+                            }
                         }
                         e.Handled = true;
                     }
@@ -203,6 +266,71 @@ namespace Notation.Views
                         e.Handled = true;
                     }
                     break;
+            }
+        }
+
+        private void SaveMarks(EntryMarksViewModel entryMarks)
+        {
+            List<MarkViewModel> marks = new List<MarkViewModel>();
+            foreach (TextBox textBox in Marks1.Children)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text))
+                {
+                    marks.Add(new MarkViewModel()
+                    {
+                        Coefficient = 1,
+                        IdClass = entryMarks.SelectedClass.Class.Id,
+                        IdPeriod = entryMarks.SelectedPeriod.Id,
+                        IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
+                        IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
+                        IdTeacher = entryMarks.SelectedTeacher.Id,
+                        Mark = int.Parse(textBox.Text),
+                        Year = entryMarks.SelectedPeriod.Year,
+                    });
+                }
+            }
+            foreach (TextBox textBox in Marks2.Children)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text))
+                {
+                    marks.Add(new MarkViewModel()
+                    {
+                        Coefficient = 2,
+                        IdClass = entryMarks.SelectedClass.Class.Id,
+                        IdPeriod = entryMarks.SelectedPeriod.Id,
+                        IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
+                        IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
+                        IdTeacher = entryMarks.SelectedTeacher.Id,
+                        Mark = int.Parse(textBox.Text),
+                        Year = entryMarks.SelectedPeriod.Year,
+                    });
+                }
+            }
+            foreach (TextBox textBox in Marks4.Children)
+            {
+                if (!string.IsNullOrEmpty(textBox.Text))
+                {
+                    marks.Add(new MarkViewModel()
+                    {
+                        Coefficient = 4,
+                        IdClass = entryMarks.SelectedClass.Class.Id,
+                        IdPeriod = entryMarks.SelectedPeriod.Id,
+                        IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
+                        IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
+                        IdTeacher = entryMarks.SelectedTeacher.Id,
+                        Mark = int.Parse(textBox.Text),
+                        Year = entryMarks.SelectedPeriod.Year,
+                    });
+                }
+            }
+            MarkModel.Save(marks, entryMarks.SelectedPeriod.Year);
+        }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Marks1 != null && Marks1.Children.Count > 0)
+            {
+                Marks1.Children[0].Focus();
             }
         }
     }

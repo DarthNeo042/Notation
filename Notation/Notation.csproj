@@ -217,9 +217,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\BulletinTrimestre.rdlc">
+    <None Include="Reports\BulletinTrimestre.rdlc">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreLineDataSource.datasource" />
     <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreHeaderDataSource.datasource" />
     <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreLineDataSource.datasource" />

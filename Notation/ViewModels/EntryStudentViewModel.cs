@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 
 namespace Notation.ViewModels
@@ -50,11 +51,11 @@ namespace Notation.ViewModels
             MarksSubjects = new ObservableCollection<EntryMarksSubjectViewModel>();
         }
 
-        public void LoadEntryMarks()
+        public void LoadEntryMarks(TeacherViewModel teacher)
         {
             if (Student.Class != null && Student.Class.Level != null)
             {
-                foreach (SubjectViewModel subject in Student.Class.Level.Subjects)
+                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)))
                 {
                     EntryMarksSubjectViewModel entryMarksSubject = new EntryMarksSubjectViewModel() { Subject = subject };
                     entryMarksSubject.Coefficients.Add(new EntryMarksCoefficientViewModel() { Coefficient = 1, Name = "Leçons" });

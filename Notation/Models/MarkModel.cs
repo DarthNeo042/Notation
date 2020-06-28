@@ -545,7 +545,7 @@ namespace Notation.Models
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
                     + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", student.Year, trimester, student.Id, subject.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -571,8 +571,8 @@ namespace Notation.Models
 
                 using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
+                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
                     + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", _class.Year, trimester, _class.Id, subject.Id), connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())

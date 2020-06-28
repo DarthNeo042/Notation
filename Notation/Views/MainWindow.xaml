@@ -1088,7 +1088,7 @@
                             <ItemsControl ItemsSource="{Binding Trimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button>
+                                        <Button Click="ReportTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Trimestre"></TextBlock>
                                                 <TextBlock Text="{Binding}"></TextBlock>

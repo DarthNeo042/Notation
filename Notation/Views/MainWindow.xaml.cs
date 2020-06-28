@@ -129,6 +129,14 @@ namespace Notation.Views
             }
         }
 
+        private void ReportTrimester_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Control)sender).DataContext is int trimester)
+            {
+                SSRSUtils.CreateTrimesterReport(trimester);
+            }
+        }
+
         private void ParametersTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (MainViewModel.Instance.User.IsAdmin)
