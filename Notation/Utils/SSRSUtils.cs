@@ -373,8 +373,8 @@ namespace Notation.Utils
 
             bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
                 (_class.MainTeacher != null ? string.Format(" {0} {1} {2}", _class.MainTeacher.Title, !string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "", _class.MainTeacher.LastName) : "");
-            //bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
-            //    (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.BaseParameters.) ? " " + MainViewModel.Singleton.Parameters.Parameters.DivisionPrefect : "");
+            bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
+                (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
             double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
             if (average != double.MinValue)
@@ -582,8 +582,8 @@ namespace Notation.Utils
 
             bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
                 (_class.MainTeacher != null ? string.Format(" {0} {1} {2}", _class.MainTeacher.Title, !string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "", _class.MainTeacher.LastName) : "");
-            //bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
-            //    (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.BaseParameters.) ? " " + MainViewModel.Singleton.Parameters.Parameters.DivisionPrefect : "");
+            bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
+                (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
             double average = MarkModel.ReadTrimesterAverage(trimester, student);
             if (average != double.MinValue)

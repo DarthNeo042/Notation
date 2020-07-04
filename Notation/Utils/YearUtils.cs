@@ -27,6 +27,8 @@ namespace Notation.Utils
             CreateSubjectTeachers(mainViewModel, year);
             CreateTeacherClasses(mainViewModel, year);
 
+            CreateYearParameters(mainViewModel, year);
+
             MessageBox.Show("Création de la nouvelle année réussie.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
 
             MainViewModel.Instance.SelectedYear = year;
@@ -180,6 +182,16 @@ namespace Notation.Utils
                 });
             }
             mainViewModel.Parameters.LoadStudents();
+        }
+
+        private static void CreateYearParameters(MainViewModel mainViewModel, int year)
+        {
+            YearParametersModel.Create(new YearParametersViewModel()
+            {
+                DivisionPrefect = mainViewModel.Parameters.YearParameters.DivisionPrefect,
+                Year = year,
+            });
+            mainViewModel.Parameters.LoadYearParameters();
         }
     }
 }

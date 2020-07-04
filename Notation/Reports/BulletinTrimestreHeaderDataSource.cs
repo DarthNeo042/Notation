@@ -13,7 +13,9 @@
         public string ClassAverage { get; set; }
         public string ClassMinAverage { get; set; }
         public string ClassMaxAverage { get; set; }
-        public string MainTeacherComment { get; set; }
-        public string DivisionPrefectComment { get; set; }
+        public string MainTeacherReport { get; set; }
+        public string DivisionPrefectReport { get; set; }
+        public string MainTeacherReportHeader { get; set; }
+        public string DivisionPrefectReportHeader { get; set; }
     }
 }

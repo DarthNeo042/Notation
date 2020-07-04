@@ -188,6 +188,16 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty BaseParametersProperty =
             DependencyProperty.Register("BaseParameters", typeof(BaseParametersViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
 
+        public YearParametersViewModel YearParameters
+        {
+            get { return (YearParametersViewModel)GetValue(YearParametersProperty); }
+            set { SetValue(YearParametersProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for YearParameters.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty YearParametersProperty =
+            DependencyProperty.Register("YearParameters", typeof(YearParametersViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
+
         public CalendarViewModel Calendar
         {
             get { return (CalendarViewModel)GetValue(CalendarProperty); }
@@ -1083,6 +1093,21 @@ namespace Notation.ViewModels
             BaseParameters = BaseParametersModel.Read();
         }
 
+        public ICommand SaveYearParametersCommand { get; set; }
+
+        private void SaveYearParametersExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            YearParametersModel.Save(YearParameters);
+            MessageBox.Show("Enregistrement réussi.", "Réussi", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public ICommand CancelYearParametersCommand { get; set; }
+
+        private void CancelYearParametersExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            YearParameters = YearParametersModel.Read(Year);
+        }
+
         public CommandBindingCollection Bindings { get; set; }
 
         public ParametersViewModel()
@@ -1158,6 +1183,8 @@ namespace Notation.ViewModels
             CancelStudentCommand = new RoutedUICommand("CancelStudent", "CancelStudent", typeof(ParametersViewModel));
             SaveBaseParametersCommand = new RoutedUICommand("SaveBaseParameters", "SaveBaseParameters", typeof(ParametersViewModel));
             CancelBaseParametersCommand = new RoutedUICommand("CancelBaseParameters", "CancelBaseParameters", typeof(ParametersViewModel));
+            SaveYearParametersCommand = new RoutedUICommand("SaveYearParameters", "SaveYearParameters", typeof(ParametersViewModel));
+            CancelYearParametersCommand = new RoutedUICommand("CancelYearParameters", "CancelYearParameters", typeof(ParametersViewModel));
 
             Bindings = new CommandBindingCollection()
             {
@@ -1218,6 +1245,8 @@ namespace Notation.ViewModels
                 new CommandBinding(CancelStudentCommand, CancelStudentExecuted),
                 new CommandBinding(SaveBaseParametersCommand, SaveBaseParametersExecuted),
                 new CommandBinding(CancelBaseParametersCommand, CancelBaseParametersExecuted),
+                new CommandBinding(SaveYearParametersCommand, SaveYearParametersExecuted),
+                new CommandBinding(CancelYearParametersCommand, CancelYearParametersExecuted),
             };
         }
 
@@ -1269,6 +1298,8 @@ namespace Notation.ViewModels
             LoadLevelSubjects();
             LoadSubjectTeachers();
             LoadTeacherClasses();
+
+            LoadYearParameters();
         }
 
         public void LoadLevelSubjects()
@@ -1392,6 +1423,11 @@ namespace Notation.ViewModels
                 BaseParameters = new BaseParametersViewModel() { Name = GetBaseName() };
                 BaseParametersModel.Create(BaseParameters);
             }
+        }
+
+        public void LoadYearParameters()
+        {
+            YearParameters = YearParametersModel.Read(Year);
         }
 
         private string GetBaseName()

@@ -129,6 +129,7 @@
     <Compile Include="Models\TrimesterCommentModel.cs" />
     <Compile Include="Models\TrimesterSubjectCommentModel.cs" />
     <Compile Include="Models\YearModel.cs" />
+    <Compile Include="Models\YearParametersModel.cs" />
     <Compile Include="Reports\BulletinDemiTrimestreHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinDemiTrimestreLineDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="ViewModels\TrimesterCommentViewModel.cs" />
     <Compile Include="ViewModels\TrimesterSubjectCommentViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\YearParametersViewModel.cs" />
     <Compile Include="Views\AddClasses.xaml.cs">
       <DependentUpon>AddClasses.xaml</DependentUpon>
     </Compile>
