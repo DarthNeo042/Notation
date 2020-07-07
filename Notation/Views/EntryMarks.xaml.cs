@@ -35,6 +35,7 @@ namespace Notation.Views
                 entryMarks.SelectedClass.SelectedStudentChangedEvent += SelectedClass_SelectedStudentChangedEvent;
                 entryMarks.SelectedClass.SelectedStudent = entryMarks.SelectedClass.Students.FirstOrDefault();
             }
+            SelectedClass_SelectedStudentChangedEvent();
         }
 
         private void SelectedClass_SelectedStudentChangedEvent()
@@ -45,6 +46,8 @@ namespace Notation.Views
                 entryMarks.SelectedClass.SelectedStudent.SelectedSubjectChangedEvent += SelectedStudent_SelectedSubjectChangedEvent;
                 entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject = entryMarks.SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
             }
+            SelectedStudent_SelectedSubjectChangedEvent();
+            CalculateAverages((EntryMarksViewModel)DataContext);
         }
 
         private void SelectedStudent_SelectedSubjectChangedEvent()
@@ -64,6 +67,8 @@ namespace Notation.Views
                     {
                         textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = mark.Mark.ToString() };
                         textBox.PreviewKeyDown += Mark_KeyDown;
+                        textBox.TextChanged += Mark_TextChanged;
+                        textBox.LostFocus += Mark_LostFocus;
                         switch (mark.Coefficient)
                         {
                             case 1:
@@ -81,16 +86,25 @@ namespace Notation.Views
                 textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
+                textBox.LostFocus += Mark_LostFocus;
                 Marks1.Children.Add(textBox);
                 textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
+                textBox.LostFocus += Mark_LostFocus;
                 Marks2.Children.Add(textBox);
                 textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
+                textBox.LostFocus += Mark_LostFocus;
                 Marks4.Children.Add(textBox);
             }
+        }
+
+        private void Mark_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SaveMarks((EntryMarksViewModel)DataContext);
+            CalculateAverages((EntryMarksViewModel)DataContext);
         }
 
         private void Mark_TextChanged(object sender, TextChangedEventArgs e)
@@ -136,6 +150,7 @@ namespace Notation.Views
                                 TextBox textBox2 = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
                                 textBox2.PreviewKeyDown += Mark_KeyDown;
                                 textBox2.TextChanged += Mark_TextChanged;
+                                textBox2.LostFocus += Mark_LostFocus;
                                 stackPanel.Children.Add(textBox2);
                                 textBox2.Focus();
                             }
@@ -169,7 +184,8 @@ namespace Notation.Views
                         }
                         else if (stackPanel == Marks4)
                         {
-                            SaveMarks(entryMarks);
+                            SaveMarks((EntryMarksViewModel)DataContext);
+                            CalculateAverages((EntryMarksViewModel)DataContext);
                             if (entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != entryMarks.SelectedClass.SelectedStudent.MarksSubjects.Last())
                             {
                                 entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject
@@ -212,7 +228,8 @@ namespace Notation.Views
                         }
                         else if (stackPanel == Marks1)
                         {
-                            SaveMarks(entryMarks);
+                            SaveMarks((EntryMarksViewModel)DataContext);
+                            CalculateAverages((EntryMarksViewModel)DataContext);
                             if (entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != entryMarks.SelectedClass.SelectedStudent.MarksSubjects.First())
                             {
                                 entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject
@@ -233,10 +250,6 @@ namespace Notation.Views
                                         entryMarks.SelectedClass = entryMarks.Classes[entryMarks.Classes.IndexOf(entryMarks.SelectedClass) - 1];
                                         entryMarks.SelectedClass.SelectedStudent = entryMarks.SelectedClass.Students.FirstOrDefault();
                                         entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject = entryMarks.SelectedClass.SelectedStudent.MarksSubjects.FirstOrDefault();
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("Début de la saisie.", "Fin", MessageBoxButton.OK, MessageBoxImage.Information);
                                     }
                                 }
                             }
@@ -260,6 +273,7 @@ namespace Notation.Views
                             TextBox textBox2 = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
                             textBox2.PreviewKeyDown += Mark_KeyDown;
                             textBox2.TextChanged += Mark_TextChanged;
+                            textBox2.LostFocus += Mark_LostFocus;
                             stackPanel.Children.Add(textBox2);
                             textBox2.Focus();
                         }
@@ -324,6 +338,26 @@ namespace Notation.Views
                 }
             }
             MarkModel.Save(marks, entryMarks.SelectedPeriod.Year);
+        }
+
+        private void CalculateAverages(EntryMarksViewModel entryMarks)
+        {
+            if (entryMarks.SelectedClass != null && entryMarks.SelectedClass.SelectedStudent != null)
+            {
+                foreach (EntryMarksSubjectViewModel marksSubject in entryMarks.SelectedClass.SelectedStudent.MarksSubjects)
+                {
+                    double average = double.MinValue;
+                    if (marksSubject.Subject.ChildrenSubjects.Any())
+                    {
+                        average = MarkModel.ReadPeriodMainSubjectAverage(entryMarks.SelectedPeriod, entryMarks.SelectedClass.SelectedStudent.Student, marksSubject.Subject);
+                    }
+                    else
+                    {
+                        average = MarkModel.ReadPeriodSubjectAverage(entryMarks.SelectedPeriod, entryMarks.SelectedClass.SelectedStudent.Student, marksSubject.Subject);
+                    }
+                    marksSubject.Average = average != double.MinValue ? average.ToString("0.0") : "";
+                }
+            }
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

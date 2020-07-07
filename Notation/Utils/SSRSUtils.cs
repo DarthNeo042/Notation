@@ -61,10 +61,9 @@ namespace Notation.Utils
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress();
+                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Count = MainViewModel.Instance.Parameters.Students.Count;
                     progress.Show();
 
                     foreach (IGrouping<int, MarkViewModel> studentGroup in MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent))
@@ -85,7 +84,7 @@ namespace Notation.Utils
                         }
                     }
 
-                    //CreatePeriodReportSummary(directory);
+                    CreatePeriodReportSummary(directory, period);
 
                     progress.Close();
                     Process.Start("explorer", string.Format("/root,{0}", directory));
@@ -269,16 +268,33 @@ namespace Notation.Utils
             }
         }
 
+        static public void CreatePeriodReportSummary(string directory, PeriodViewModel period)
+        {
+            if (!string.IsNullOrEmpty(directory))
+            {
+                try
+                {
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes.OrderBy(c => c.Order))
+                    {
+                        ExportUtils.ExportPeriodSummary(directory, _class, period);
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+
         static public void CreateSemiTrimesterReport(SemiTrimesterViewModel semiTrimester)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress();
+                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Count = MainViewModel.Instance.Parameters.Students.Count;
                     progress.Show();
 
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
@@ -484,10 +500,9 @@ namespace Notation.Utils
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress();
+                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Count = MainViewModel.Instance.Parameters.Students.Count;
                     progress.Show();
 
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
@@ -542,8 +557,6 @@ namespace Notation.Utils
                             }
                         }
                     }
-
-                    //CreateSemiTrimesterReportSummary(directory);
 
                     progress.Close();
                     Process.Start("explorer", string.Format("/root,{0}", directory));

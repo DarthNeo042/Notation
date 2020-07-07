@@ -46,6 +46,74 @@ namespace Notation.ViewModels
             Process.Start("explorer", string.Format("/root,{0}", PeriodModelsPath));
         }
 
+        public ObservableCollection<string> SemiTrimesterModels { get; set; }
+
+        public string SelectedSemiTrimesterModel
+        {
+            get { return (string)GetValue(SelectedSemiTrimesterModelProperty); }
+            set { SetValue(SelectedSemiTrimesterModelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedSemiTrimesterModel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedSemiTrimesterModelProperty =
+            DependencyProperty.Register("SelectedSemiTrimesterModel", typeof(string), typeof(ModelsViewModel), new PropertyMetadata(""));
+
+        public string SemiTrimesterModelsPath
+        {
+            get { return (string)GetValue(SemiTrimesterModelsPathProperty); }
+            set { SetValue(SemiTrimesterModelsPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SemiTrimesterModelsPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SemiTrimesterModelsPathProperty =
+            DependencyProperty.Register("SemiTrimesterModelsPath", typeof(string), typeof(ModelsViewModel), new PropertyMetadata(""));
+
+        public ICommand OpenSemiTrimesterModelsPathCommand { get; set; }
+
+        private void OpenSemiTrimesterModelsPathCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(SemiTrimesterModelsPath);
+        }
+
+        private void OpenSemiTrimesterModelsPathExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Process.Start("explorer", string.Format("/root,{0}", SemiTrimesterModelsPath));
+        }
+
+        public ObservableCollection<string> TrimesterModels { get; set; }
+
+        public string SelectedTrimesterModel
+        {
+            get { return (string)GetValue(SelectedTrimesterModelProperty); }
+            set { SetValue(SelectedTrimesterModelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedTrimesterModel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedTrimesterModelProperty =
+            DependencyProperty.Register("SelectedTrimesterModel", typeof(string), typeof(ModelsViewModel), new PropertyMetadata(""));
+
+        public string TrimesterModelsPath
+        {
+            get { return (string)GetValue(TrimesterModelsPathProperty); }
+            set { SetValue(TrimesterModelsPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TrimesterModelsPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TrimesterModelsPathProperty =
+            DependencyProperty.Register("TrimesterModelsPath", typeof(string), typeof(ModelsViewModel), new PropertyMetadata(""));
+
+        public ICommand OpenTrimesterModelsPathCommand { get; set; }
+
+        private void OpenTrimesterModelsPathCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(TrimesterModelsPath);
+        }
+
+        private void OpenTrimesterModelsPathExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Process.Start("explorer", string.Format("/root,{0}", TrimesterModelsPath));
+        }
+
         public CommandBindingCollection Bindings { get; set; }
 
         public ModelsViewModel()
@@ -55,11 +123,17 @@ namespace Notation.ViewModels
             Trimesters = new ObservableCollection<int>();
 
             PeriodModels = new ObservableCollection<string>();
+            SemiTrimesterModels = new ObservableCollection<string>();
+            TrimesterModels = new ObservableCollection<string>();
 
             OpenPeriodModelsPathCommand = new RoutedUICommand("OpenPeriodModelsPath", "OpenPeriodModelsPath", typeof(ModelsViewModel));
+            OpenSemiTrimesterModelsPathCommand = new RoutedUICommand("OpenSemiTrimesterModelsPath", "OpenSemiTrimesterModelsPath", typeof(ModelsViewModel));
+            OpenTrimesterModelsPathCommand = new RoutedUICommand("OpenTrimesterModelsPath", "OpenTrimesterModelsPath", typeof(ModelsViewModel));
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(OpenPeriodModelsPathCommand, OpenPeriodModelsPathExecuted, OpenPeriodModelsPathCanExecute),
+                new CommandBinding(OpenSemiTrimesterModelsPathCommand, OpenSemiTrimesterModelsPathExecuted, OpenSemiTrimesterModelsPathCanExecute),
+                new CommandBinding(OpenTrimesterModelsPathCommand, OpenTrimesterModelsPathExecuted, OpenTrimesterModelsPathCanExecute),
             };
         }
 

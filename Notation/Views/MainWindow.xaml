@@ -982,10 +982,12 @@
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenPeriodModelsPathCommand}"></Button>
-                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding PeriodModels}" SelectedItem="{Binding SelectedPeriodModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                                <ProgressBar Grid.Row="1" Name="PeriodModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding PeriodModels}" SelectedItem="{Binding SelectedPeriodModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1010,10 +1012,12 @@
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenSemiTrimesterModelsPathCommand}"></Button>
-                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterModels}" SelectedItem="{Binding SelectedSemiTrimesterModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                                <ProgressBar Grid.Row="1" Name="SemiTrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterModels}" SelectedItem="{Binding SelectedSemiTrimesterModel}" MouseDoubleClick="SemiTrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1026,7 +1030,7 @@
                             <ItemsControl ItemsSource="{Binding Trimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button>
+                                        <Button Click="ExportTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock Text="Trimestre"></TextBlock>
                                                 <TextBlock Text="{Binding}"></TextBlock>
@@ -1038,10 +1042,12 @@
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenTrimesterModelsPathCommand}"></Button>
-                                <ListView Grid.Row="1" VerticalAlignment="Top" ItemsSource="{Binding TrimesterModels}" SelectedItem="{Binding SelectedTrimesterModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
+                                <ProgressBar Grid.Row="1" Name="TrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding TrimesterModels}" SelectedItem="{Binding SelectedTrimesterModel}" MouseDoubleClick="TrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>

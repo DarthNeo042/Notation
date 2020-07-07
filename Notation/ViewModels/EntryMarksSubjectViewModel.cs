@@ -27,6 +27,16 @@ namespace Notation.ViewModels
 
         public ObservableCollection<EntryMarksCoefficientViewModel> Coefficients { get; set; }
 
+        public string Average
+        {
+            get { return (string)GetValue(AverageProperty); }
+            set { SetValue(AverageProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Average.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty AverageProperty =
+            DependencyProperty.Register("Average", typeof(string), typeof(EntryMarksSubjectViewModel), new PropertyMetadata(""));
+
         public EntryMarksSubjectViewModel()
         {
             Coefficients = new ObservableCollection<EntryMarksCoefficientViewModel>();

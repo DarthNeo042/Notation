@@ -14,6 +14,48 @@ namespace Notation.Views
     /// </summary>
     public partial class MainWindow : Window
     {
+        public delegate void UpdatePeriodModelsDelegate(int value);
+        private UpdatePeriodModelsDelegate _updatePeriodModels;
+        private UpdatePeriodModelsDelegate _updatePeriodModelsDispatch;
+
+        private void UpdatePeriodModels(int value)
+        {
+            PeriodModelsProgressBar.Value = value;
+        }
+
+        private void UpdatePeriodModelsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updatePeriodModels, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
+        public delegate void UpdateSemiTrimesterModelsDelegate(int value);
+        private UpdateSemiTrimesterModelsDelegate _updateSemiTrimesterModels;
+        private UpdateSemiTrimesterModelsDelegate _updateSemiTrimesterModelsDispatch;
+
+        private void UpdateSemiTrimesterModels(int value)
+        {
+            SemiTrimesterModelsProgressBar.Value = value;
+        }
+
+        private void UpdateSemiTrimesterModelsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updateSemiTrimesterModels, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
+        public delegate void UpdateTrimesterModelsDelegate(int value);
+        private UpdateTrimesterModelsDelegate _updateTrimesterModels;
+        private UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch;
+
+        private void UpdateTrimesterModels(int value)
+        {
+            TrimesterModelsProgressBar.Value = value;
+        }
+
+        private void UpdateTrimesterModelsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updateTrimesterModels, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
         public MainWindow()
         {
             DataContext = MainViewModel.Instance;
@@ -21,6 +63,13 @@ namespace Notation.Views
             CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);
+
+            _updatePeriodModels = new UpdatePeriodModelsDelegate(UpdatePeriodModels);
+            _updatePeriodModelsDispatch = new UpdatePeriodModelsDelegate(UpdatePeriodModelsDispatch);
+            _updateSemiTrimesterModels = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModels);
+            _updateSemiTrimesterModelsDispatch = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModelsDispatch);
+            _updateTrimesterModels = new UpdateTrimesterModelsDelegate(UpdateTrimesterModels);
+            _updateTrimesterModelsDispatch = new UpdateTrimesterModelsDelegate(UpdateTrimesterModelsDispatch);
 
             InitializeComponent();
 
@@ -79,7 +128,10 @@ namespace Notation.Views
         {
             if (((Control)sender).DataContext is PeriodViewModel period)
             {
-                ExportUtils.ExportPeriodModels(period);
+                PeriodModelsProgressBar.Visibility = Visibility.Visible;
+                PeriodModelsProgressBar.Value = 0;
+                ExportUtils.ExportPeriodModels(period, _updatePeriodModelsDispatch);
+                PeriodModelsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -87,7 +139,21 @@ namespace Notation.Views
         {
             if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
             {
-                ExportUtils.ExportSemiTrimesterModels(semiTrimester);
+                SemiTrimesterModelsProgressBar.Visibility = Visibility.Visible;
+                SemiTrimesterModelsProgressBar.Value = 0;
+                ExportUtils.ExportSemiTrimesterModels(semiTrimester, _updateSemiTrimesterModelsDispatch);
+                SemiTrimesterModelsProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void ExportTrimester_Click(object sender, RoutedEventArgs e)
+        {
+            if (((Control)sender).DataContext is int trimester)
+            {
+                TrimesterModelsProgressBar.Visibility = Visibility.Visible;
+                TrimesterModelsProgressBar.Value = 0;
+                ExportUtils.ExportTrimesterModels(trimester, _updateTrimesterModelsDispatch);
+                TrimesterModelsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -110,6 +176,22 @@ namespace Notation.Views
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.PeriodModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedPeriodModel))
             {
                 Process.Start(Path.Combine(MainViewModel.Instance.Models.PeriodModelsPath, MainViewModel.Instance.Models.SelectedPeriodModel));
+            }
+        }
+
+        private void SemiTrimesterModel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.SemiTrimesterModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedSemiTrimesterModel))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Models.SemiTrimesterModelsPath, MainViewModel.Instance.Models.SelectedSemiTrimesterModel));
+            }
+        }
+
+        private void TrimesterModel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.TrimesterModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedTrimesterModel))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Models.TrimesterModelsPath, MainViewModel.Instance.Models.SelectedTrimesterModel));
             }
         }
 

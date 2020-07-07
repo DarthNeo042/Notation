@@ -76,7 +76,6 @@ namespace Notation.ViewModels
             Teachers = new ObservableCollection<TeacherViewModel>(MainViewModel.Instance.Parameters.Teachers);
 
             RightCommand = new RoutedUICommand("Right", "Right", typeof(MainViewModel));
-
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(RightCommand, RightExecuted),

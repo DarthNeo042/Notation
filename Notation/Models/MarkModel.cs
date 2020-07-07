@@ -62,8 +62,8 @@ namespace Notation.Models
 
                 foreach (int idSubject in idSubjects)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Mark] WHERE IdStudent = '{0}' AND IdClass = '{1}' AND IdPeriod = '{2}' AND [IdTeacher] = '{3}'"
-                        + " AND [IdSubject] = '{4}' AND [Year] = {5} ORDER BY [Order]", idStudent, idClass, idPeriod, idTeacher, idSubject, year), connection))
+                    using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Mark] WHERE IdStudent = {0} AND IdClass = {1} AND IdPeriod = {2} AND [IdTeacher] = {3}"
+                        + " AND [IdSubject] = {4} AND [Year] = {5} ORDER BY [Order]", idStudent, idClass, idPeriod, idTeacher, idSubject, year), connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -137,6 +137,56 @@ namespace Notation.Models
                     }
                 }
             }
+        }
+
+        public static double ReadPeriodSubjectAverage(PeriodViewModel period, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} AND IdSubject = {3}", period.Year, period.Id, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadPeriodMainSubjectAverage(PeriodViewModel period, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                    + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", period.Year, period.Id, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
         }
 
         public static double ReadPeriodTrimesterSubjectAverage(PeriodViewModel period, StudentViewModel student, SubjectViewModel subject)

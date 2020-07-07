@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace Notation.Views
 {
@@ -9,77 +8,71 @@ namespace Notation.Views
     /// </summary>
     public partial class Progress : Window
     {
-        private delegate void UpdateProgressBarDelegate(DependencyProperty dp, object value);
+        private delegate void UpdateDelegate(object value);
+        private UpdateDelegate _updateText;
+        private UpdateDelegate _updateValue;
 
-        public int ProgressValue
+        private void UpdateText(object value)
         {
-            get { return (int)GetValue(ProgressValueProperty); }
-            set { SetValue(ProgressValueProperty, value); }
+            Text = (string)value;
         }
 
-        // Using a DependencyProperty as the backing store for ProgressValue.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ProgressValueProperty =
-            DependencyProperty.Register("ProgressValue", typeof(int), typeof(Progress), new PropertyMetadata(0));
-
-        public string TextLabel
+        private void UpdateValue(object value)
         {
-            get { return (string)GetValue(TextLabelProperty); }
-            set { SetValue(TextLabelProperty, value); }
+            Value = (int)value;
+            Percentage = $"{(Value / ProgressBar.Maximum * 100).ToString("0.0")}%";
         }
 
-        // Using a DependencyProperty as the backing store for TextLabel.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TextLabelProperty =
-            DependencyProperty.Register("TextLabel", typeof(string), typeof(Progress), new PropertyMetadata(""));
-
-        public string ProgressLabel
+        public void UpdateText(string text)
         {
-            get { return (string)GetValue(ProgressLabelProperty); }
-            set { SetValue(ProgressLabelProperty, value); }
+            Dispatcher.Invoke(_updateText, System.Windows.Threading.DispatcherPriority.Background, new object[] { text });
         }
 
-        // Using a DependencyProperty as the backing store for ProgressLabel.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ProgressLabelProperty =
-            DependencyProperty.Register("ProgressLabel", typeof(string), typeof(Progress), new PropertyMetadata(""));
+        public void UpdateValue()
+        {
+            Dispatcher.Invoke(_updateValue, System.Windows.Threading.DispatcherPriority.Background, new object[] { Value + 1 });
+        }
+
+        public int Value
+        {
+            get { return (int)GetValue(ValueProperty); }
+            set { SetValue(ValueProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Value.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ValueProperty =
+            DependencyProperty.Register("Value", typeof(int), typeof(Progress), new PropertyMetadata(0));
 
         public string Text
         {
-            set
-            {
-                TextLabel = value;
-                ProgressLabel = string.Format("{0}%", (int)((ProgressBar.Value + 1) / ProgressBar.Maximum * 100));
-                Dispatcher.Invoke(_updatePbDelegate,
-                           System.Windows.Threading.DispatcherPriority.Background,
-                           new object[] { RangeBase.ValueProperty, ProgressBar.Value + 1 });
-            }
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
         }
 
-        private int _count;
+        // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(Progress), new PropertyMetadata(""));
 
-        public int Count
+        public string Percentage
         {
-            set
-            {
-                _count = value;
-                ProgressBar.Minimum = 0;
-                ProgressBar.Maximum = value;
-                ProgressBar.Value = 0;
-                ProgressValue = 0;
-            }
-            private get
-            {
-                return _count;
-            }
+            get { return (string)GetValue(PercentageProperty); }
+            set { SetValue(PercentageProperty, value); }
         }
 
-        private UpdateProgressBarDelegate _updatePbDelegate;
+        // Using a DependencyProperty as the backing store for Percentage.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PercentageProperty =
+            DependencyProperty.Register("Percentage", typeof(string), typeof(Progress), new PropertyMetadata(""));
 
-        public Progress()
+        public Progress(int count)
         {
             DataContext = this;
 
             InitializeComponent();
 
-            _updatePbDelegate = new UpdateProgressBarDelegate(ProgressBar.SetValue);
+            ProgressBar.Maximum = count;
+
+            _updateText = new UpdateDelegate(UpdateText);
+            _updateValue = new UpdateDelegate(UpdateValue);
         }
     }
 }

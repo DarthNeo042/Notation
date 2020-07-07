@@ -5,30 +5,30 @@ using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.Style;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using static Notation.Views.MainWindow;
 
 namespace Notation.Utils
 {
     static class ExportUtils
     {
-        public static void ExportPeriodModels(PeriodViewModel period)
+        public static void ExportPeriodModels(PeriodViewModel period, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
             string directory = FileUtils.SelectDirectory();
             if (!string.IsNullOrEmpty(directory))
             {
                 MainViewModel.Instance.Models.PeriodModels.Clear();
 
-                ExportPeriodCommentsModels(period, directory);
-                ExportPeriodMarksModels(period, directory);
+                ExportPeriodCommentsModels(period, directory, _updatePeriodModels);
+                ExportPeriodMarksModels(period, directory, _updatePeriodModels);
 
                 MainViewModel.Instance.Models.PeriodModelsPath = directory;
             }
         }
 
-        private static void ExportPeriodCommentsModels(PeriodViewModel period, string directory)
+        private static void ExportPeriodCommentsModels(PeriodViewModel period, string directory, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
             string filename = Path.Combine(directory, string.Format("Appréciations générales période {0}.xlsx", period.Number));
             File.Delete(filename);
@@ -64,14 +64,19 @@ namespace Notation.Utils
             excel.Save();
 
             MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
+
+            _updatePeriodModels(50);
         }
 
-        private static void ExportPeriodMarksModels(PeriodViewModel period, string directory)
+        private static void ExportPeriodMarksModels(PeriodViewModel period, string directory, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
+            int subjectCount = 0;
+            int classCount = 0;
             foreach (SubjectViewModel mainSubject in MainViewModel.Instance.Parameters.Subjects)
             {
                 if (mainSubject.ChildrenSubjects.Any())
                 {
+                    classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers.Where(t => t.Subjects.Contains(mainSubject)))
@@ -107,10 +112,16 @@ namespace Notation.Utils
                                     int maxCoeff2 = int.MinValue;
                                     int maxCoeff4 = int.MinValue;
 
-                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => string.Format("{0} {1}", s.LastName, s.FirstName)))
+                                    Dictionary<int, IEnumerable<MarkViewModel>> marksMap = new Dictionary<int, IEnumerable<MarkViewModel>>();
+                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
                                     {
-                                        IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                                        marksMap[student.Id] = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
                                             student.Id, teacher2.Id, _class.Id, period.Id, period.Year);
+                                    }
+
+                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                                    {
+                                        IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                                         int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
                                         int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
                                         int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
@@ -145,8 +156,7 @@ namespace Notation.Utils
                                     foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
                                     {
                                         workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-                                        IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher2.Id, _class.Id, period.Id, period.Year);
+                                        IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                                         int i = 0;
                                         foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
                                         {
@@ -184,10 +194,14 @@ namespace Notation.Utils
                                 MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                             }
                         }
+                        classCount++;
+                        _updatePeriodModels(50 + (subjectCount * 750 / MainViewModel.Instance.Parameters.Subjects.Count)
+                            + (750 / MainViewModel.Instance.Parameters.Subjects.Count * classCount / MainViewModel.Instance.Parameters.Classes.Count));
                     }
                 }
                 else
                 {
+                    classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers.Where(t => t.Subjects.Contains(mainSubject.ParentSubject ?? mainSubject)))
@@ -286,8 +300,14 @@ namespace Notation.Utils
                             }
                         }
                     }
+                    classCount++;
+                    _updatePeriodModels(50 + (subjectCount * 750 / MainViewModel.Instance.Parameters.Subjects.Count)
+                        + (750 / MainViewModel.Instance.Parameters.Subjects.Count * classCount / MainViewModel.Instance.Parameters.Classes.Count));
                 }
+                subjectCount++;
+                _updatePeriodModels(50 + (subjectCount * 750 / MainViewModel.Instance.Parameters.Subjects.Count));
             }
+            classCount = 0;
             foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
             {
                 foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers)
@@ -406,11 +426,14 @@ namespace Notation.Utils
                     excel.Save();
                     MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                 }
+                classCount++;
+                _updatePeriodModels(800 + (classCount * 200 / MainViewModel.Instance.Parameters.Classes.Count));
             }
         }
 
-        public static void ExportTrimesterGeneralCommentsModels(int trimester, string directory)
+        public static void ExportTrimesterGeneralCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
+            int classCount = 0;
             foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
             {
                 string filename = Path.Combine(directory, string.Format("Appréciations générales trimestre {0} - {1}.xlsx", trimester, _class.Name));
@@ -442,11 +465,17 @@ namespace Notation.Utils
                 workSheet.Column(3).Style.WrapText = true;
 
                 excel.Save();
+
+                MainViewModel.Instance.Models.TrimesterModels.Add(Path.GetFileName(filename));
+
+                classCount++;
+                _updateTrimesterModelsDispatch(900 + classCount * 100 / MainViewModel.Instance.Parameters.Classes.Count);
             }
         }
 
-        public static void ExportTrimesterSubjectCommentsModels(int trimester, string directory)
+        public static void ExportTrimesterSubjectCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
+            int subjectCount = 0;
             foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject == null))
             {
                 foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
@@ -456,7 +485,8 @@ namespace Notation.Utils
                         TeacherViewModel teacher2 = ModelUtils.GetTeacherFromClassAndSubject(_class, subject);
                         if (teacher2 != null)
                         {
-                            string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2}.xlsx", trimester, subject.Name, _class.Name));
+                            string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2} - {3}.xlsx",
+                                trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName), subject.Name, _class.Name));
                             File.Delete(filename);
 
                             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -492,10 +522,16 @@ namespace Notation.Utils
                             workSheet.Column(2).Style.WrapText = true;
 
                             excel.Save();
+
+                            MainViewModel.Instance.Models.TrimesterModels.Add(Path.GetFileName(filename));
                         }
                     }
                 }
+
+                subjectCount++;
+                _updateTrimesterModelsDispatch(subjectCount * 700 / MainViewModel.Instance.Parameters.Subjects.Count);
             }
+            int classCount = 0;
             foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
             {
                 foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers)
@@ -543,29 +579,39 @@ namespace Notation.Utils
 
                     workSheet.Column(1).AutoFit();
                     excel.Save();
+
+                    MainViewModel.Instance.Models.TrimesterModels.Add(Path.GetFileName(filename));
                 }
+
+                classCount++;
+                _updateTrimesterModelsDispatch(700 + classCount * 200 / MainViewModel.Instance.Parameters.Classes.Count);
             }
         }
 
-        public static void ExportTrimesterModels(int trimester)
+        public static void ExportTrimesterModels(int trimester, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
-                ExportTrimesterSubjectCommentsModels(trimester, directory);
-                ExportTrimesterGeneralCommentsModels(trimester, directory);
+                MainViewModel.Instance.Models.TrimesterModels.Clear();
 
-                Process.Start("explorer", string.Format("/root,{0}", directory));
+                ExportTrimesterSubjectCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
+                ExportTrimesterGeneralCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
+
+                MainViewModel.Instance.Models.TrimesterModelsPath = directory;
             }
         }
 
-        public static void ExportSemiTrimesterModels(SemiTrimesterViewModel semiTrimester)
+        public static void ExportSemiTrimesterModels(SemiTrimesterViewModel semiTrimester, UpdateSemiTrimesterModelsDelegate _updateSemiTrimesterModelsDispatch)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
+                MainViewModel.Instance.Models.SemiTrimesterModels.Clear();
+
+                int classCount = 0;
                 foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                 {
                     string filename = Path.Combine(directory, string.Format("Appréciations demi-trimestre {0} - {1}.xlsx", semiTrimester.Name, _class.Name));
@@ -605,9 +651,14 @@ namespace Notation.Utils
                     _textValidation.Formula2.Value = 180;
 
                     excel.Save();
+
+                    MainViewModel.Instance.Models.SemiTrimesterModels.Add(Path.GetFileName(filename));
+
+                    classCount++;
+                    _updateSemiTrimesterModelsDispatch(classCount * 1000 / MainViewModel.Instance.Parameters.Classes.Count);
                 }
 
-                Process.Start("explorer", string.Format("/root,{0}", directory));
+                MainViewModel.Instance.Models.SemiTrimesterModelsPath = directory;
             }
         }
 
@@ -1053,7 +1104,7 @@ namespace Notation.Utils
                     if (!subject.ChildrenSubjects.Any())
                     {
                         value = MarkModel.ReadPeriodTrimesterSubjectAverage(period, student, subject);
-                        if (value == -1)
+                        if (value == double.MinValue)
                         {
                             workSheet.Cells[i, j].Value = "";
                         }
@@ -1070,7 +1121,7 @@ namespace Notation.Utils
                         foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
                         {
                             value = MarkModel.ReadPeriodTrimesterSubjectAverage(period, student, subject2);
-                            if (value == -1)
+                            if (value == double.MinValue)
                             {
                                 workSheet.Cells[i, j].Value = "";
                             }
@@ -1098,7 +1149,7 @@ namespace Notation.Utils
             j = 2;
             foreach (SubjectViewModel subject in _class.Level.Subjects)
             {
-                if (subject.ChildrenSubjects.Any())
+                if (!subject.ChildrenSubjects.Any())
                 {
                     workSheet.Cells[i, j + 1].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 1), RowColumnToCell(i - 1, j + 1));
                     workSheet.Cells[i, j + 2].Formula = string.Format("SUM({0}:{1})", RowColumnToCell(3, j + 2), RowColumnToCell(i - 1, j + 2));
@@ -1229,7 +1280,7 @@ namespace Notation.Utils
                     if (!subject.ChildrenSubjects.Any())
                     {
                         value = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject);
-                        if (value == -1)
+                        if (value == double.MinValue)
                         {
                             workSheet.Cells[i, j].Value = "";
                         }
@@ -1246,7 +1297,7 @@ namespace Notation.Utils
                         foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
                         {
                             value = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
-                            if (value == -1)
+                            if (value == double.MinValue)
                             {
                                 workSheet.Cells[i, j].Value = "";
                             }
