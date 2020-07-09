@@ -3593,7 +3593,7 @@
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value EvaluationMode="Constant">Compte-rendu des études</Value>
+                                            <Value>Compte-rendu de discipline</Value>
                                             <Style>
                                               <FontStyle>Italic</FontStyle>
                                               <FontFamily>Cambria</FontFamily>
@@ -3736,6 +3736,7 @@
                                       <PaddingBottom>2pt</PaddingBottom>
                                     </Style>
                                   </Textbox>
+                                  <rd:Selected>true</rd:Selected>
                                 </CellContents>
                               </TablixCell>
                             </TablixCells>

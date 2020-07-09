@@ -61,4 +61,8 @@
         <Setter Property="FontFamily" Value="Cambria"></Setter>
         <Setter Property="FontSize" Value="20"></Setter>
     </Style>
+    <Style TargetType="RadioButton">
+        <Setter Property="FontFamily" Value="Cambria"></Setter>
+        <Setter Property="FontSize" Value="20"></Setter>
+    </Style>
 </ResourceDictionary>

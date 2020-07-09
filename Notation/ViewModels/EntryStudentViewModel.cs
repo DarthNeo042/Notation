@@ -65,5 +65,9 @@ namespace Notation.ViewModels
                 }
             }
         }
+
+        public void LoadEntryPeriodComments()
+        {
+        }
     }
 }

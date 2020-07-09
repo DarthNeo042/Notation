@@ -153,6 +153,8 @@
     <Compile Include="ViewModels\EntryMarksMarkViewModel.cs" />
     <Compile Include="ViewModels\EntryMarksSubjectViewModel.cs" />
     <Compile Include="ViewModels\EntryMarksViewModel.cs" />
+    <Compile Include="ViewModels\EntryPeriodCommentsCommentViewModel.cs" />
+    <Compile Include="ViewModels\EntryPeriodCommentsViewModel.cs" />
     <Compile Include="ViewModels\EntryStudentViewModel.cs" />
     <Compile Include="ViewModels\EntryViewModel.cs" />
     <Compile Include="ViewModels\LevelViewModel.cs" />
@@ -190,6 +192,9 @@
     </Compile>
     <Compile Include="Views\EntryMarks.xaml.cs">
       <DependentUpon>EntryMarks.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntryPeriodComments.xaml.cs">
+      <DependentUpon>EntryPeriodComments.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -272,6 +277,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EntryMarks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntryPeriodComments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

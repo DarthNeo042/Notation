@@ -60,26 +60,11 @@ namespace Notation.ViewModels
             entryMarks.Load();
         }
 
-        public ICommand RightCommand { get; set; }
-
-        private void RightExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            SelectedClass.SelectedStudent.SelectedMarksSubject.SelectedCoefficient.SelectedMark = SelectedClass.SelectedStudent.SelectedMarksSubject.SelectedCoefficient.Marks[0];
-        }
-
-        public CommandBindingCollection Bindings { get; set; }
-
         public EntryMarksViewModel()
         {
             Classes = new ObservableCollection<EntryClassViewModel>();
             Periods = new ObservableCollection<PeriodViewModel>(MainViewModel.Instance.Parameters.Periods);
             Teachers = new ObservableCollection<TeacherViewModel>(MainViewModel.Instance.Parameters.Teachers);
-
-            RightCommand = new RoutedUICommand("Right", "Right", typeof(MainViewModel));
-            Bindings = new CommandBindingCollection()
-            {
-                new CommandBinding(RightCommand, RightExecuted),
-            };
 
             SelectedPeriod = Periods.FirstOrDefault(p => p.FromDate <= DateTime.Now.Date && p.ToDate > DateTime.Now.Date.AddDays(1));
             if (SelectedPeriod == null)

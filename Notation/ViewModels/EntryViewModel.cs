@@ -19,6 +19,7 @@ namespace Notation.ViewModels
 
         private void EntryPeriodCommentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            new EntryPeriodComments().ShowDialog();
         }
 
         public ICommand EntrySemiTrimesterCommentsCommand { get; set; }

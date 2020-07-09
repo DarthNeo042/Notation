@@ -79,153 +79,44 @@ namespace Notation.Utils
                     classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers.Where(t => t.Subjects.Contains(mainSubject)))
+                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject))
                         {
-                            TeacherViewModel teacher2 = ModelUtils.GetTeacherFromClassAndSubject(_class, mainSubject);
+                            string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
+                                string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
+                            File.Delete(filename);
 
-                            if (teacher2 != null)
+                            ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+
+                            ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+                            workSheet.Cells[1, 1].Value = "type";
+                            workSheet.Cells[1, 2].Value = "MRK_PER";
+                            workSheet.Cells[2, 1].Value = "année";
+                            workSheet.Cells[2, 2].Value = period.Year;
+                            workSheet.Cells[3, 1].Value = "période";
+                            workSheet.Cells[3, 2].Value = period.Number;
+                            workSheet.Cells[4, 1].Value = "professeur";
+                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                            workSheet.Cells[5, 1].Value = "matière";
+                            workSheet.Cells[6, 1].Value = "élève / coefficient";
+
+                            int column = 0;
+                            foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject != null && s.ParentSubject.Id == mainSubject.Id))
                             {
-                                string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
-                                    string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
-                                File.Delete(filename);
-
-                                ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
-
-                                ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
-                                workSheet.Cells[1, 1].Value = "type";
-                                workSheet.Cells[1, 2].Value = "MRK_PER";
-                                workSheet.Cells[2, 1].Value = "année";
-                                workSheet.Cells[2, 2].Value = period.Year;
-                                workSheet.Cells[3, 1].Value = "période";
-                                workSheet.Cells[3, 2].Value = period.Number;
-                                workSheet.Cells[4, 1].Value = "professeur";
-                                workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
-                                workSheet.Cells[5, 1].Value = "matière";
-                                workSheet.Cells[6, 1].Value = "élève / coefficient";
-
-                                int column = 0;
-                                foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject != null && s.ParentSubject.Id == mainSubject.Id))
-                                {
-                                    workSheet.Cells[5, 2 + column].Value = subject.Name;
-
-                                    int maxCoeff1 = int.MinValue;
-                                    int maxCoeff2 = int.MinValue;
-                                    int maxCoeff4 = int.MinValue;
-
-                                    Dictionary<int, IEnumerable<MarkViewModel>> marksMap = new Dictionary<int, IEnumerable<MarkViewModel>>();
-                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                                    {
-                                        marksMap[student.Id] = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher2.Id, _class.Id, period.Id, period.Year);
-                                    }
-
-                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                                    {
-                                        IEnumerable<MarkViewModel> marks = marksMap[student.Id];
-                                        int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
-                                        int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
-                                        int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
-                                        if (coeff1 > maxCoeff1)
-                                        {
-                                            maxCoeff1 = coeff1;
-                                        }
-                                        if (coeff2 > maxCoeff2)
-                                        {
-                                            maxCoeff2 = coeff2;
-                                        }
-                                        if (coeff4 > maxCoeff4)
-                                        {
-                                            maxCoeff4 = coeff4;
-                                        }
-                                    }
-
-                                    for (int i = 0; i < maxCoeff1; i++)
-                                    {
-                                        workSheet.Cells[6, 2 + i + column].Value = 1;
-                                    }
-                                    for (int i = 0; i < maxCoeff2; i++)
-                                    {
-                                        workSheet.Cells[6, 2 + maxCoeff1 + i + column].Value = 2;
-                                    }
-                                    for (int i = 0; i < maxCoeff4; i++)
-                                    {
-                                        workSheet.Cells[6, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = 4;
-                                    }
-
-                                    int row = 7;
-                                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                                    {
-                                        workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-                                        IEnumerable<MarkViewModel> marks = marksMap[student.Id];
-                                        int i = 0;
-                                        foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
-                                        {
-                                            workSheet.Cells[row, 2 + i + column].Value = mark.Mark;
-                                            i++;
-                                        }
-                                        i = 0;
-                                        foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
-                                        {
-                                            workSheet.Cells[row, 2 + maxCoeff1 + i + column].Value = mark.Mark;
-                                            i++;
-                                        }
-                                        i = 0;
-                                        foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
-                                        {
-                                            workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = mark.Mark;
-                                            i++;
-                                        }
-                                        row++;
-                                    }
-                                    if (maxCoeff1 + maxCoeff2 + maxCoeff4 > 0)
-                                    {
-                                        column += (maxCoeff1 + maxCoeff2 + maxCoeff4);
-                                    }
-                                    else
-                                    {
-                                        workSheet.Cells[6, 2 + column].Value = 1;
-                                        column++;
-                                    }
-                                }
-
-                                workSheet.Cells.AutoFitColumns();
-                                excel.Save();
-
-                                MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
-                            }
-                        }
-                        classCount++;
-                        _updatePeriodModels(50 + (subjectCount * 750 / MainViewModel.Instance.Parameters.Subjects.Count)
-                            + (750 / MainViewModel.Instance.Parameters.Subjects.Count * classCount / MainViewModel.Instance.Parameters.Classes.Count));
-                    }
-                }
-                else
-                {
-                    classCount = 0;
-                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
-                    {
-                        foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers.Where(t => t.Subjects.Contains(mainSubject.ParentSubject ?? mainSubject)))
-                        {
-                            TeacherViewModel teacher2 = ModelUtils.GetTeacherFromClassAndSubject(_class, mainSubject.ParentSubject ?? mainSubject);
-
-                            if (teacher2 != null)
-                            {
-                                string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
-                                File.Delete(filename);
-
-                                ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+                                workSheet.Cells[5, 2 + column].Value = subject.Name;
 
                                 int maxCoeff1 = int.MinValue;
                                 int maxCoeff2 = int.MinValue;
                                 int maxCoeff4 = int.MinValue;
 
-                                foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                                Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                                    _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
+
+                                foreach (StudentViewModel student in _class.Students)
                                 {
-                                    IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher2.Id, _class.Id, period.Id, period.Year);
-                                    int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id);
-                                    int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id);
-                                    int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id);
+                                    IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                    int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
+                                    int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
+                                    int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
                                     if (coeff1 > maxCoeff1)
                                     {
                                         maxCoeff1 = coeff1;
@@ -240,64 +131,160 @@ namespace Notation.Utils
                                     }
                                 }
 
-                                ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
-                                workSheet.Cells[1, 1].Value = "type";
-                                workSheet.Cells[1, 2].Value = "MRK_PER";
-                                workSheet.Cells[2, 1].Value = "année";
-                                workSheet.Cells[2, 2].Value = period.Year;
-                                workSheet.Cells[3, 1].Value = "période";
-                                workSheet.Cells[3, 2].Value = period.Number;
-                                workSheet.Cells[4, 1].Value = "professeur";
-                                workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
-                                workSheet.Cells[5, 1].Value = "matière";
-                                workSheet.Cells[5, 2].Value = mainSubject.Name;
-                                workSheet.Cells[6, 1].Value = "élève / coefficient";
-
                                 for (int i = 0; i < maxCoeff1; i++)
                                 {
-                                    workSheet.Cells[6, 2 + i].Value = 1;
+                                    workSheet.Cells[6, 2 + i + column].Value = 1;
                                 }
                                 for (int i = 0; i < maxCoeff2; i++)
                                 {
-                                    workSheet.Cells[6, 2 + maxCoeff1 + i].Value = 2;
+                                    workSheet.Cells[6, 2 + maxCoeff1 + i + column].Value = 2;
                                 }
                                 for (int i = 0; i < maxCoeff4; i++)
                                 {
-                                    workSheet.Cells[6, 2 + maxCoeff1 + maxCoeff2 + i].Value = 4;
+                                    workSheet.Cells[6, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = 4;
                                 }
 
                                 int row = 7;
-                                foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                                foreach (StudentViewModel student in _class.Students)
                                 {
                                     workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-                                    IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher2.Id, _class.Id, period.Id, period.Year);
+                                    IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                                     int i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id))
+                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
                                     {
-                                        workSheet.Cells[row, 2 + i].Value = mark.Mark;
+                                        workSheet.Cells[row, 2 + i + column].Value = mark.Mark;
                                         i++;
                                     }
                                     i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id))
+                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
                                     {
-                                        workSheet.Cells[row, 2 + maxCoeff1 + i].Value = mark.Mark;
+                                        workSheet.Cells[row, 2 + maxCoeff1 + i + column].Value = mark.Mark;
                                         i++;
                                     }
                                     i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id))
+                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
                                     {
-                                        workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i].Value = mark.Mark;
+                                        workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = mark.Mark;
                                         i++;
                                     }
                                     row++;
                                 }
-
-                                workSheet.Cells.AutoFitColumns();
-
-                                excel.Save();
-                                MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
+                                if (maxCoeff1 + maxCoeff2 + maxCoeff4 > 0)
+                                {
+                                    column += maxCoeff1 + maxCoeff2 + maxCoeff4;
+                                }
+                                else
+                                {
+                                    workSheet.Cells[6, 2 + column].Value = 1;
+                                    column++;
+                                }
                             }
+
+                            workSheet.Cells.AutoFitColumns();
+                            excel.Save();
+
+                            MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
+                        }
+                        classCount++;
+                        _updatePeriodModels(50 + (subjectCount * 750 / MainViewModel.Instance.Parameters.Subjects.Count)
+                            + (750 / MainViewModel.Instance.Parameters.Subjects.Count * classCount / MainViewModel.Instance.Parameters.Classes.Count));
+                    }
+                }
+                else
+                {
+                    classCount = 0;
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+                    {
+                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject.ParentSubject ?? mainSubject))
+                        {
+                            string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
+                            File.Delete(filename);
+
+                            ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+
+                            int maxCoeff1 = int.MinValue;
+                            int maxCoeff2 = int.MinValue;
+                            int maxCoeff4 = int.MinValue;
+
+                            Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                                _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
+
+                            foreach (StudentViewModel student in _class.Students)
+                            {
+                                IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id);
+                                int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id);
+                                int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id);
+                                if (coeff1 > maxCoeff1)
+                                {
+                                    maxCoeff1 = coeff1;
+                                }
+                                if (coeff2 > maxCoeff2)
+                                {
+                                    maxCoeff2 = coeff2;
+                                }
+                                if (coeff4 > maxCoeff4)
+                                {
+                                    maxCoeff4 = coeff4;
+                                }
+                            }
+
+                            ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+                            workSheet.Cells[1, 1].Value = "type";
+                            workSheet.Cells[1, 2].Value = "MRK_PER";
+                            workSheet.Cells[2, 1].Value = "année";
+                            workSheet.Cells[2, 2].Value = period.Year;
+                            workSheet.Cells[3, 1].Value = "période";
+                            workSheet.Cells[3, 2].Value = period.Number;
+                            workSheet.Cells[4, 1].Value = "professeur";
+                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                            workSheet.Cells[5, 1].Value = "matière";
+                            workSheet.Cells[5, 2].Value = mainSubject.Name;
+                            workSheet.Cells[6, 1].Value = "élève / coefficient";
+
+                            for (int i = 0; i < maxCoeff1; i++)
+                            {
+                                workSheet.Cells[6, 2 + i].Value = 1;
+                            }
+                            for (int i = 0; i < maxCoeff2; i++)
+                            {
+                                workSheet.Cells[6, 2 + maxCoeff1 + i].Value = 2;
+                            }
+                            for (int i = 0; i < maxCoeff4; i++)
+                            {
+                                workSheet.Cells[6, 2 + maxCoeff1 + maxCoeff2 + i].Value = 4;
+                            }
+
+                            int row = 7;
+                            foreach (StudentViewModel student in _class.Students)
+                            {
+                                workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                                IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                int i = 0;
+                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id))
+                                {
+                                    workSheet.Cells[row, 2 + i].Value = mark.Mark;
+                                    i++;
+                                }
+                                i = 0;
+                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id))
+                                {
+                                    workSheet.Cells[row, 2 + maxCoeff1 + i].Value = mark.Mark;
+                                    i++;
+                                }
+                                i = 0;
+                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id))
+                                {
+                                    workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i].Value = mark.Mark;
+                                    i++;
+                                }
+                                row++;
+                            }
+
+                            workSheet.Cells.AutoFitColumns();
+
+                            excel.Save();
+                            MainViewModel.Instance.Models.PeriodModels.Add(Path.GetFileName(filename));
                         }
                     }
                     classCount++;
@@ -351,10 +338,12 @@ namespace Notation.Utils
                         int maxCoeff2 = int.MinValue;
                         int maxCoeff4 = int.MinValue;
 
-                        foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                        Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                            _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
+
+                        foreach (StudentViewModel student in _class.Students)
                         {
-                            IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher.Id, _class.Id, period.Id, period.Year);
+                            IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                             int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
                             int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
                             int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
@@ -386,11 +375,10 @@ namespace Notation.Utils
                         }
 
                         int row = 7;
-                        foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                        foreach (StudentViewModel student in _class.Students)
                         {
-                            workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-                            IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
-                                            student.Id, teacher.Id, _class.Id, period.Id, period.Year);
+                            workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
+                            IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                             int i = 0;
                             foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
                             {
@@ -453,7 +441,7 @@ namespace Notation.Utils
                 workSheet.Cells[4, 3].Value = "appréciation du préfet de division";
 
                 int row = 5;
-                foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                foreach (StudentViewModel student in _class.Students)
                 {
                     workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
                 }
@@ -480,51 +468,47 @@ namespace Notation.Utils
             {
                 foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                 {
-                    foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers.Where(t => t.Subjects.Contains(subject)))
+                    foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, subject))
                     {
-                        TeacherViewModel teacher2 = ModelUtils.GetTeacherFromClassAndSubject(_class, subject);
-                        if (teacher2 != null)
+                        string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2} - {3}.xlsx",
+                            trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName), subject.Name, _class.Name));
+                        File.Delete(filename);
+
+                        ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+
+                        ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+                        workSheet.Cells[1, 1].Value = "type";
+                        workSheet.Cells[1, 2].Value = "APP_MAT_TRM";
+                        workSheet.Cells[2, 1].Value = "année";
+                        workSheet.Cells[2, 2].Value = subject.Year;
+                        workSheet.Cells[3, 1].Value = "trimestre";
+                        workSheet.Cells[3, 2].Value = trimester;
+                        workSheet.Cells[4, 1].Value = "professeur";
+                        workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                        workSheet.Cells[5, 1].Value = "élève / matière";
+                        workSheet.Cells[5, 2].Value = subject.Name;
+
+                        int row = 6;
+                        foreach (StudentViewModel student in _class.Students)
                         {
-                            string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2} - {3}.xlsx",
-                                trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName), subject.Name, _class.Name));
-                            File.Delete(filename);
-
-                            ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
-
-                            ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
-                            workSheet.Cells[1, 1].Value = "type";
-                            workSheet.Cells[1, 2].Value = "APP_MAT_TRM";
-                            workSheet.Cells[2, 1].Value = "année";
-                            workSheet.Cells[2, 2].Value = subject.Year;
-                            workSheet.Cells[3, 1].Value = "trimestre";
-                            workSheet.Cells[3, 2].Value = trimester;
-                            workSheet.Cells[4, 1].Value = "professeur";
-                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher2.FirstName) ? teacher2.LastName : string.Format("{0} {1}", teacher2.LastName, teacher2.FirstName);
-                            workSheet.Cells[5, 1].Value = "élève / matière";
-                            workSheet.Cells[5, 2].Value = subject.Name;
-
-                            int row = 6;
-                            foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                            {
-                                workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
-                            }
-
-                            IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
-                            _textValidation.ShowErrorMessage = true;
-                            _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
-                            _textValidation.ErrorTitle = "Commentaire trop long";
-                            _textValidation.Error = "Le commentaire ne doit pas dépasser 120 caractères.";
-                            _textValidation.Formula.Value = 0;
-                            _textValidation.Formula2.Value = 120;
-
-                            workSheet.Column(1).AutoFit();
-                            workSheet.Column(2).Width = 100;
-                            workSheet.Column(2).Style.WrapText = true;
-
-                            excel.Save();
-
-                            MainViewModel.Instance.Models.TrimesterModels.Add(Path.GetFileName(filename));
+                            workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
                         }
+
+                        IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
+                        _textValidation.ShowErrorMessage = true;
+                        _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
+                        _textValidation.ErrorTitle = "Commentaire trop long";
+                        _textValidation.Error = "Le commentaire ne doit pas dépasser 120 caractères.";
+                        _textValidation.Formula.Value = 0;
+                        _textValidation.Formula2.Value = 120;
+
+                        workSheet.Column(1).AutoFit();
+                        workSheet.Column(2).Width = 100;
+                        workSheet.Column(2).Style.WrapText = true;
+
+                        excel.Save();
+
+                        MainViewModel.Instance.Models.TrimesterModels.Add(Path.GetFileName(filename));
                     }
                 }
 
@@ -564,9 +548,9 @@ namespace Notation.Utils
                         j++;
                     }
                     int row = 6;
-                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                    foreach (StudentViewModel student in _class.Students)
                     {
-                        workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                        workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
                     }
 
                     IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
@@ -631,9 +615,9 @@ namespace Notation.Utils
                     workSheet.Cells[4, 3].Value = "chef d'établissement";
 
                     int row = 5;
-                    foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                    foreach (StudentViewModel student in _class.Students)
                     {
-                        workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                        workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
                     }
 
                     workSheet.Column(1).AutoFit();
@@ -1095,9 +1079,9 @@ namespace Notation.Utils
 
             double value;
             i = 4;
-            foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+            foreach (StudentViewModel student in _class.Students)
             {
-                workSheet.Cells[i, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                workSheet.Cells[i, 1].Value = $"{student.LastName} {student.FirstName}";
                 j = 2;
                 foreach (SubjectViewModel subject in _class.Level.Subjects)
                 {
@@ -1271,9 +1255,9 @@ namespace Notation.Utils
 
             double value;
             i = 4;
-            foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+            foreach (StudentViewModel student in _class.Students)
             {
-                workSheet.Cells[i, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                workSheet.Cells[i, 1].Value = $"{student.LastName} {student.FirstName}";
                 j = 2;
                 foreach (SubjectViewModel subject in _class.Level.Subjects)
                 {

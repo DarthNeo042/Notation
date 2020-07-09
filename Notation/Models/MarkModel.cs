@@ -25,7 +25,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Mark] WHERE [Year] = {0} AND [IdPeriod] = {1} ORDER BY [Order]", year, idPeriod), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Mark] WHERE [Year] = {year} AND [IdPeriod] = {idPeriod} ORDER BY [Order]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -56,14 +56,14 @@ namespace Notation.Models
         {
             List<MarkViewModel> marks = new List<MarkViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            if (idSubjects.Any())
             {
-                connection.Open();
-
-                foreach (int idSubject in idSubjects)
+                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Mark] WHERE IdStudent = {0} AND IdClass = {1} AND IdPeriod = {2} AND [IdTeacher] = {3}"
-                        + " AND [IdSubject] = {4} AND [Year] = {5} ORDER BY [Order]", idStudent, idClass, idPeriod, idTeacher, idSubject, year), connection))
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand($"SELECT * FROM [Mark] WHERE IdStudent = {idStudent} AND IdClass = {idClass} AND IdPeriod = {idPeriod}"
+                        + $" AND [IdTeacher] = {idTeacher} AND [IdSubject] IN ({string.Join(",", idSubjects)}) AND [Year] = {year} ORDER BY [Order]", connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -78,7 +78,7 @@ namespace Notation.Models
                                     IdClass = idClass,
                                     IdPeriod = idPeriod,
                                     IdStudent = idStudent,
-                                    IdSubject = idSubject,
+                                    IdSubject = (int)reader["IdSubject"],
                                     IdTeacher = idTeacher,
                                     Year = year,
                                 });
@@ -91,13 +91,61 @@ namespace Notation.Models
             return marks;
         }
 
+        public static Dictionary<int, List<MarkViewModel>> Read(IEnumerable<int> idSubjects, IEnumerable<int> idStudents, int idTeacher, int idClass, int idPeriod, int year)
+        {
+            Dictionary<int, List<MarkViewModel>> marks = new Dictionary<int, List<MarkViewModel>>();
+
+            if (idSubjects.Any() && idStudents.Any())
+            {
+                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand($"SELECT * FROM [Mark] WHERE IdStudent IN ({string.Join(", ", idStudents)}) AND IdClass = {idClass} AND IdPeriod = {idPeriod}"
+                        + $" AND [IdTeacher] = {idTeacher} AND [IdSubject] IN ({string.Join(",", idSubjects)}) AND [Year] = {year} ORDER BY [Order]", connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!marks.ContainsKey((int)reader["idStudent"]))
+                                {
+                                    marks[(int)reader["idStudent"]] = new List<MarkViewModel>();
+                                }
+                                marks[(int)reader["idStudent"]].Add(new MarkViewModel()
+                                {
+                                    Id = (int)reader["Id"],
+                                    Coefficient = (int)(decimal)reader["Coefficient"],
+                                    Mark = (int)(decimal)reader["Mark"],
+                                    Order = (int)reader["Order"],
+                                    IdClass = idClass,
+                                    IdPeriod = idPeriod,
+                                    IdStudent = (int)reader["idStudent"],
+                                    IdSubject = (int)reader["IdSubject"],
+                                    IdTeacher = idTeacher,
+                                    Year = year,
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (int idStudent in idStudents.Where(s => !marks.ContainsKey(s)))
+            {
+                marks[idStudent] = new List<MarkViewModel>();
+            }
+
+            return marks;
+        }
+
         public static TeacherViewModel ReadTeacherFromClassAndSubject(int year, int idClass, int idSubject)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT TOP 1 IdTeacher FROM Mark WHERE [Year] = {0} AND IdClass = {1} AND IdSubject = {2}", year, idClass, idSubject), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT TOP 1 IdTeacher FROM Mark WHERE [Year] = {year} AND IdClass = {idClass} AND IdSubject = {idSubject}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
