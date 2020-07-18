@@ -923,6 +923,8 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="150"></ColumnDefinition>
                                         <ColumnDefinition Width="100"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
+                                        <ColumnDefinition Width="30"></ColumnDefinition>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -933,10 +935,16 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Rouge (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BaseParameters.ColorR, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <Button Grid.Row="0" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorRCommand}"></Button>
+                                    <Button Grid.Row="0" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorRCommand}"></Button>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Vert (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseParameters.ColorG, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <Button Grid.Row="1" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorGCommand}"></Button>
+                                    <Button Grid.Row="1" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorGCommand}"></Button>
                                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Bleu (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BaseParameters.ColorB, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                    <Button Grid.Row="2" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorBCommand}"></Button>
+                                    <Button Grid.Row="2" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorBCommand}"></Button>
                                 </Grid>
                             </GroupBox>
                             <Grid Grid.Row="4">

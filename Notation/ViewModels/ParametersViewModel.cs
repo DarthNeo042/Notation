@@ -1087,6 +1087,78 @@ namespace Notation.ViewModels
             ModificationStudent = null;
         }
 
+        public ICommand PlusColorRCommand { get; set; }
+
+        private void PlusColorRCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorR < 255;
+        }
+
+        private void PlusColorRExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorR = (byte)(BaseParameters.ColorR - (BaseParameters.ColorR % 5) + 5);
+        }
+
+        public ICommand MinusColorRCommand { get; set; }
+
+        private void MinusColorRCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorR > 0;
+        }
+
+        private void MinusColorRExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorR = (byte)(BaseParameters.ColorR - (BaseParameters.ColorR % 5) - (BaseParameters.ColorR % 5 == 0 ? 5 : 0));
+        }
+
+        public ICommand PlusColorGCommand { get; set; }
+
+        private void PlusColorGCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorG < 255;
+        }
+
+        private void PlusColorGExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorG = (byte)(BaseParameters.ColorG - (BaseParameters.ColorG % 5) + 5);
+        }
+
+        public ICommand MinusColorGCommand { get; set; }
+
+        private void MinusColorGCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorG > 0;
+        }
+
+        private void MinusColorGExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorG = (byte)(BaseParameters.ColorG - (BaseParameters.ColorG % 5) - (BaseParameters.ColorG % 5 == 0 ? 5 : 0));
+        }
+
+        public ICommand PlusColorBCommand { get; set; }
+
+        private void PlusColorBCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorB < 255;
+        }
+
+        private void PlusColorBExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorB = (byte)(BaseParameters.ColorB - (BaseParameters.ColorB % 5) + 5);
+        }
+
+        public ICommand MinusColorBCommand { get; set; }
+
+        private void MinusColorBCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = BaseParameters.ColorB > 0;
+        }
+
+        private void MinusColorBExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            BaseParameters.ColorB = (byte)(BaseParameters.ColorB - (BaseParameters.ColorB % 5) - (BaseParameters.ColorB % 5 == 0 ? 5 : 0));
+        }
+
         public ICommand SaveBaseParametersCommand { get; set; }
 
         private void SaveBaseParametersExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -1195,6 +1267,12 @@ namespace Notation.ViewModels
             CancelBaseParametersCommand = new RoutedUICommand("CancelBaseParameters", "CancelBaseParameters", typeof(ParametersViewModel));
             SaveYearParametersCommand = new RoutedUICommand("SaveYearParameters", "SaveYearParameters", typeof(ParametersViewModel));
             CancelYearParametersCommand = new RoutedUICommand("CancelYearParameters", "CancelYearParameters", typeof(ParametersViewModel));
+            PlusColorRCommand = new RoutedUICommand("PlusColorR", "PlusColorR", typeof(ParametersViewModel));
+            MinusColorRCommand = new RoutedUICommand("MinusColorR", "MinusColorR", typeof(ParametersViewModel));
+            PlusColorGCommand = new RoutedUICommand("PlusColorG", "PlusColorG", typeof(ParametersViewModel));
+            MinusColorGCommand = new RoutedUICommand("MinusColorG", "MinusColorG", typeof(ParametersViewModel));
+            PlusColorBCommand = new RoutedUICommand("PlusColorB", "PlusColorB", typeof(ParametersViewModel));
+            MinusColorBCommand = new RoutedUICommand("MinusColorB", "MinusColorB", typeof(ParametersViewModel));
 
             Bindings = new CommandBindingCollection()
             {
@@ -1257,6 +1335,12 @@ namespace Notation.ViewModels
                 new CommandBinding(CancelBaseParametersCommand, CancelBaseParametersExecuted),
                 new CommandBinding(SaveYearParametersCommand, SaveYearParametersExecuted),
                 new CommandBinding(CancelYearParametersCommand, CancelYearParametersExecuted),
+                new CommandBinding(PlusColorRCommand, PlusColorRExecuted, PlusColorRCanExecute),
+                new CommandBinding(MinusColorRCommand, MinusColorRExecuted, MinusColorRCanExecute),
+                new CommandBinding(PlusColorGCommand, PlusColorGExecuted, PlusColorGCanExecute),
+                new CommandBinding(MinusColorGCommand, MinusColorGExecuted, MinusColorGCanExecute),
+                new CommandBinding(PlusColorBCommand, PlusColorBExecuted, PlusColorBCanExecute),
+                new CommandBinding(MinusColorBCommand, MinusColorBExecuted, MinusColorBCanExecute),
             };
         }
 
