@@ -6,7 +6,6 @@ using Notation.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -55,24 +54,23 @@ namespace Notation.Utils
 
     public static class SSRSUtils
     {
-        static public void CreatePeriodReport(PeriodViewModel period)
+        static public void CreatePeriodReport(PeriodViewModel period, MainWindow.UpdatePeriodReportsDelegate _updatePeriodReportsDispatch)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Show();
+                    MainViewModel.Instance.Reports.PeriodReports.Clear();
 
-                    foreach (IGrouping<int, MarkViewModel> studentGroup in MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent))
+                    int studentCount = 0;
+                    IEnumerable<IGrouping<int, MarkViewModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
+                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups)
                     {
                         StudentViewModel student = MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => s.Id == studentGroup.Key);
                         if (student != null)
                         {
-                            progress.Text = string.Format("{0} {1}", student.LastName, student.FirstName);
-
                             try
                             {
                                 GeneratePeriodReport(studentGroup.ToList(), directory, student, period, student.Class);
@@ -82,16 +80,17 @@ namespace Notation.Utils
                                 MessageBox.Show(e.Message);
                             }
                         }
+                        studentCount++;
+                        _updatePeriodReportsDispatch(studentCount * 950 / studentGroups.Count());
                     }
 
                     CreatePeriodReportSummary(directory, period);
+                    _updatePeriodReportsDispatch(1000);
 
-                    progress.Close();
-                    Process.Start("explorer", string.Format("/root,{0}", directory));
+                    MainViewModel.Instance.Reports.PeriodReportsPath = directory;
                 }
                 catch (Exception e)
                 {
-                    progress.Close();
                     MessageBox.Show(e.Message);
                 }
             }
@@ -266,6 +265,8 @@ namespace Notation.Utils
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
+
+            MainViewModel.Instance.Reports.PeriodReports.Add(Path.GetFileName(filename));
         }
 
         static public void CreatePeriodReportSummary(string directory, PeriodViewModel period)
@@ -286,17 +287,17 @@ namespace Notation.Utils
             }
         }
 
-        static public void CreateSemiTrimesterReport(SemiTrimesterViewModel semiTrimester)
+        static public void CreateSemiTrimesterReport(SemiTrimesterViewModel semiTrimester, MainWindow.UpdateSemiTrimesterReportsDelegate _updateSemiTrimesterReportsDispatch)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Show();
+                    MainViewModel.Instance.Reports.SemiTrimesterReports.Clear();
 
+                    int studentCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester = new SSRSUtils_SemiTrimester();
@@ -337,8 +338,6 @@ namespace Notation.Utils
                         }
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            progress.Text = string.Format("{0} {1}", student.LastName, student.FirstName);
-
                             try
                             {
                                 GenerateSemiTrimesterReport(directory, semiTrimester, student, _class, SSRSUtils_SemiTrimester);
@@ -347,17 +346,15 @@ namespace Notation.Utils
                             {
                                 MessageBox.Show(e.Message);
                             }
+                            studentCount++;
+                            _updateSemiTrimesterReportsDispatch(studentCount * 1000 / MainViewModel.Instance.Parameters.Students.Count);
                         }
                     }
 
-                    //CreateSemiTrimesterReportSummary(directory);
-
-                    progress.Close();
-                    Process.Start("explorer", string.Format("/root,{0}", directory));
+                    MainViewModel.Instance.Reports.SemiTrimesterReportsPath = directory;
                 }
                 catch (Exception e)
                 {
-                    progress.Close();
                     MessageBox.Show(e.Message);
                 }
             }
@@ -492,19 +489,21 @@ namespace Notation.Utils
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
+
+            MainViewModel.Instance.Reports.SemiTrimesterReports.Add(Path.GetFileName(filename));
         }
 
-        static public void CreateTrimesterReport(int trimester)
+        static public void CreateTrimesterReport(int trimester, MainWindow.UpdateTrimesterReportsDelegate _updateTrimesterReportsDispatch)
         {
             string directory = FileUtils.SelectDirectory();
 
             if (!string.IsNullOrEmpty(directory))
             {
-                Progress progress = new Progress(MainViewModel.Instance.Parameters.Students.Count);
                 try
                 {
-                    progress.Show();
+                    MainViewModel.Instance.Reports.TrimesterReports.Clear();
 
+                    int studentCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         SSRSUtils_Trimester SSRSUtils_Trimester = new SSRSUtils_Trimester();
@@ -545,11 +544,11 @@ namespace Notation.Utils
                         }
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            progress.Text = string.Format("{0} {1}", student.LastName, student.FirstName);
-
                             try
                             {
                                 GenerateTrimesterReport(directory, trimester, student, _class, SSRSUtils_Trimester);
+                                studentCount++;
+                                _updateTrimesterReportsDispatch(studentCount * 1000 / MainViewModel.Instance.Parameters.Students.Count);
                             }
                             catch (Exception e)
                             {
@@ -558,12 +557,10 @@ namespace Notation.Utils
                         }
                     }
 
-                    progress.Close();
-                    Process.Start("explorer", string.Format("/root,{0}", directory));
+                    MainViewModel.Instance.Reports.TrimesterReportsPath = directory;
                 }
                 catch (Exception e)
                 {
-                    progress.Close();
                     MessageBox.Show(e.Message);
                 }
             }
@@ -698,6 +695,8 @@ namespace Notation.Utils
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
+
+            MainViewModel.Instance.Reports.TrimesterReports.Add(Path.GetFileName(filename));
         }
     }
 }

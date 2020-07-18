@@ -64,12 +64,55 @@ namespace Notation.Views
             ImportProgressBar.Value = value;
         }
 
+        public delegate void UpdatePeriodReportsDelegate(int value);
+        private UpdatePeriodReportsDelegate _updatePeriodReports;
+        private UpdatePeriodReportsDelegate _updatePeriodReportsDispatch;
+
+        private void UpdatePeriodReports(int value)
+        {
+            PeriodReportsProgressBar.Value = value;
+        }
+
+        private void UpdatePeriodReportsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updatePeriodReports, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
+        public delegate void UpdateSemiTrimesterReportsDelegate(int value);
+        private UpdateSemiTrimesterReportsDelegate _updateSemiTrimesterReports;
+        private UpdateSemiTrimesterReportsDelegate _updateSemiTrimesterReportsDispatch;
+
+        private void UpdateSemiTrimesterReports(int value)
+        {
+            SemiTrimesterReportsProgressBar.Value = value;
+        }
+
+        private void UpdateSemiTrimesterReportsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updateSemiTrimesterReports, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
+        public delegate void UpdateTrimesterReportsDelegate(int value);
+        private UpdateTrimesterReportsDelegate _updateTrimesterReports;
+        private UpdateTrimesterReportsDelegate _updateTrimesterReportsDispatch;
+
+        private void UpdateTrimesterReports(int value)
+        {
+            TrimesterReportsProgressBar.Value = value;
+        }
+
+        private void UpdateTrimesterReportsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updateTrimesterReports, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
         public MainWindow()
         {
             DataContext = MainViewModel.Instance;
             CommandBindings.AddRange(MainViewModel.Instance.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
+            CommandBindings.AddRange(MainViewModel.Instance.Reports.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);
 
             _updatePeriodModels = new UpdatePeriodModelsDelegate(UpdatePeriodModels);
@@ -79,6 +122,13 @@ namespace Notation.Views
             _updateTrimesterModels = new UpdateTrimesterModelsDelegate(UpdateTrimesterModels);
             _updateTrimesterModelsDispatch = new UpdateTrimesterModelsDelegate(UpdateTrimesterModelsDispatch);
             _updateImport = new UpdateImportDelegate(UpdateImport);
+
+            _updatePeriodReports = new UpdatePeriodReportsDelegate(UpdatePeriodReports);
+            _updatePeriodReportsDispatch = new UpdatePeriodReportsDelegate(UpdatePeriodReportsDispatch);
+            _updateSemiTrimesterReports = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReports);
+            _updateSemiTrimesterReportsDispatch = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReportsDispatch);
+            _updateTrimesterReports = new UpdateTrimesterReportsDelegate(UpdateTrimesterReports);
+            _updateTrimesterReportsDispatch = new UpdateTrimesterReportsDelegate(UpdateTrimesterReportsDispatch);
 
             InitializeComponent();
 
@@ -222,7 +272,10 @@ namespace Notation.Views
         {
             if (((Control)sender).DataContext is PeriodViewModel period)
             {
-                SSRSUtils.CreatePeriodReport(period);
+                PeriodReportsProgressBar.Visibility = Visibility.Visible;
+                PeriodReportsProgressBar.Value = 0;
+                SSRSUtils.CreatePeriodReport(period, _updatePeriodReportsDispatch);
+                PeriodReportsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -230,7 +283,10 @@ namespace Notation.Views
         {
             if (((Control)sender).DataContext is SemiTrimesterViewModel semiTrimester)
             {
-                SSRSUtils.CreateSemiTrimesterReport(semiTrimester);
+                SemiTrimesterReportsProgressBar.Visibility = Visibility.Visible;
+                SemiTrimesterReportsProgressBar.Value = 0;
+                SSRSUtils.CreateSemiTrimesterReport(semiTrimester, _updateSemiTrimesterReportsDispatch);
+                SemiTrimesterReportsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -238,7 +294,34 @@ namespace Notation.Views
         {
             if (((Control)sender).DataContext is int trimester)
             {
-                SSRSUtils.CreateTrimesterReport(trimester);
+                TrimesterReportsProgressBar.Visibility = Visibility.Visible;
+                TrimesterReportsProgressBar.Value = 0;
+                SSRSUtils.CreateTrimesterReport(trimester, _updateTrimesterReportsDispatch);
+                TrimesterReportsProgressBar.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void PeriodReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.PeriodReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedPeriodReport))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Reports.PeriodReportsPath, MainViewModel.Instance.Reports.SelectedPeriodReport));
+            }
+        }
+
+        private void SemiTrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.SemiTrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedSemiTrimesterReport))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Reports.SemiTrimesterReportsPath, MainViewModel.Instance.Reports.SelectedSemiTrimesterReport));
+            }
+        }
+
+        private void TrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.TrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedTrimesterReport))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Reports.TrimesterReportsPath, MainViewModel.Instance.Reports.SelectedTrimesterReport));
             }
         }
 

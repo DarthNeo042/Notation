@@ -147,11 +147,11 @@ namespace Notation.ViewModels
             {
                 Periods.Add(period);
             }
-            foreach (SemiTrimesterViewModel semiTrimester in MainViewModel.Instance.Parameters.SemiTrimesters.OrderBy(s => s.FromDate))
+            foreach (SemiTrimesterViewModel semiTrimester in MainViewModel.Instance.Parameters.SemiTrimesters)
             {
                 SemiTrimesters.Add(semiTrimester);
             }
-            foreach (int trimester in Periods.Select(p => p.Trimester).Distinct().OrderBy(t => t))
+            foreach (int trimester in Periods.Select(p => p.Trimester).Distinct())
             {
                 Trimesters.Add(trimester);
             }
