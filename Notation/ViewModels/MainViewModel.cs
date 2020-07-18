@@ -156,6 +156,22 @@ namespace Notation.ViewModels
             }
         }
 
+        public ICommand DeleteYearCommand { get; set; }
+
+        private void DeleteYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectedYear != 0;
+        }
+
+        private void DeleteYearExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (MessageBox.Show($"Voulez-vous supprimer l'année {SelectedYear}/{SelectedYear + 1} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes
+                && MessageBox.Show($"Êtes vous vraiment sûr de vouloir supprimer l'année {SelectedYear}/{SelectedYear + 1} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                YearUtils.DeleteYear(SelectedYear);
+            }
+        }
+
         public CommandBindingCollection Bindings { get; set; }
 
         public MainViewModel()
@@ -168,11 +184,13 @@ namespace Notation.ViewModels
             Years = new ObservableCollection<int>();
 
             AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));
+            DeleteYearCommand = new RoutedUICommand("DeleteYear", "DeleteYear", typeof(MainViewModel));
             LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
 
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(AddYearCommand, AddYearExecuted, AddYearCanExecute),
+                new CommandBinding(DeleteYearCommand, DeleteYearExecuted, DeleteYearCanExecute),
                 new CommandBinding(LoginCommand, LoginExecuted),
             };
 

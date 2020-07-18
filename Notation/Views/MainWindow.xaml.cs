@@ -56,6 +56,14 @@ namespace Notation.Views
             Dispatcher.Invoke(_updateTrimesterModels, System.Windows.Threading.DispatcherPriority.Background, value);
         }
 
+        public delegate void UpdateImportDelegate(int value);
+        private UpdateImportDelegate _updateImport;
+
+        private void UpdateImport(int value)
+        {
+            ImportProgressBar.Value = value;
+        }
+
         public MainWindow()
         {
             DataContext = MainViewModel.Instance;
@@ -70,6 +78,7 @@ namespace Notation.Views
             _updateSemiTrimesterModelsDispatch = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModelsDispatch);
             _updateTrimesterModels = new UpdateTrimesterModelsDelegate(UpdateTrimesterModels);
             _updateTrimesterModelsDispatch = new UpdateTrimesterModelsDelegate(UpdateTrimesterModelsDispatch);
+            _updateImport = new UpdateImportDelegate(UpdateImport);
 
             InitializeComponent();
 
@@ -82,6 +91,14 @@ namespace Notation.Views
                 ComboPeriodTrimester.Items.Add(i);
             }
             ComboTeacherTitle.ItemsSource = new List<string>() { "M.", "Mme", "Mlle", "Ab.", "Fr." };
+
+            MainViewModel.Instance.Parameters.BaseParametersChangedEvent += Parameters_BaseParametersChangedEvent;
+            Parameters_BaseParametersChangedEvent();
+        }
+
+        private void Parameters_BaseParametersChangedEvent()
+        {
+            AdminPassword.Password = MainViewModel.Instance.Parameters.BaseParameters?.AdminPassword;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -163,11 +180,17 @@ namespace Notation.Views
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
+                ImportProgressBar.Visibility = Visibility.Visible;
+                ImportProgressBar.Value = 0;
+                int fileCount = 0;
                 foreach (string file in files)
                 {
                     ExportUtils.Import(file);
+                    fileCount++;
+                    Dispatcher.Invoke(_updateImport, System.Windows.Threading.DispatcherPriority.Background, fileCount * 1000 / files.Length);
                 }
-                MessageBox.Show("Import réussi.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
+                ImportProgressBar.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Import terminé.", "Fin", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
@@ -228,6 +251,14 @@ namespace Notation.Views
             else
             {
                 EntryTab.IsSelected = true;
+            }
+        }
+
+        private void AdminPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (MainViewModel.Instance.Parameters.BaseParameters != null)
+            {
+                MainViewModel.Instance.Parameters.BaseParameters.AdminPassword = AdminPassword.Password;
             }
         }
     }

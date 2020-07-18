@@ -915,7 +915,7 @@
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Login :"></TextBlock>
                                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BaseParameters.AdminLogin}"></TextBox>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Mot de passe :"></TextBlock>
-                                    <PasswordBox Grid.Row="1" Grid.Column="1" Name="AdminPassword"></PasswordBox>
+                                    <PasswordBox Grid.Row="1" Grid.Column="1" Name="AdminPassword" PasswordChanged="AdminPassword_PasswordChanged"></PasswordBox>
                                 </Grid>
                             </GroupBox>
                             <GroupBox Grid.Row="2" Header="Couleur de fond" Background="LightGray">
@@ -989,6 +989,7 @@
                                 <ProgressBar Grid.Row="1" Name="PeriodModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding PeriodModels}" SelectedItem="{Binding SelectedPeriodModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
                             </Grid>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de demi-trimestre">
@@ -1019,6 +1020,7 @@
                                 <ProgressBar Grid.Row="1" Name="SemiTrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterModels}" SelectedItem="{Binding SelectedSemiTrimesterModel}" MouseDoubleClick="SemiTrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de trimestre">
@@ -1049,6 +1051,7 @@
                                 <ProgressBar Grid.Row="1" Name="TrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding TrimesterModels}" SelectedItem="{Binding SelectedTrimesterModel}" MouseDoubleClick="TrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Import">
@@ -1063,6 +1066,7 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Background="DimGray" VerticalAlignment="Stretch" Drop="ImportModel_Drop" AllowDrop="True"></TextBlock>
                             <TextBlock Grid.Column="0" Text="Veuillez glisser les fichiers ici" TextAlignment="Center" Drop="ImportModel_Drop" AllowDrop="True" Foreground="LightGoldenrodYellow"></TextBlock>
+                            <ProgressBar Grid.Column="1" Name="ImportProgressBar" Visibility="Collapsed" Maximum="1000" Height="20" VerticalAlignment="Top"></ProgressBar>
                         </Grid>
                     </TabItem>
                 </TabControl>
@@ -1094,6 +1098,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins de demi-trimestre">
@@ -1114,6 +1119,7 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins de trimestre">
@@ -1134,10 +1140,12 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins annuels">
                         <Grid Background="AliceBlue">
+                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                         </Grid>
                     </TabItem>
                 </TabControl>
@@ -1165,6 +1173,7 @@
                         <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterComments}"
                                 Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
                     </StackPanel>
+                    <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
                 </Grid>
             </TabItem>
         </TabControl>

@@ -1,4 +1,5 @@
-﻿using Notation.ViewModels;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Notation.Models
     {
         public static void ReadTeacherClasss(ObservableCollection<TeacherViewModel> teachers, ObservableCollection<ClassViewModel> classes, int year)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -39,7 +40,7 @@ namespace Notation.Models
 
         public static void SaveTeacherClasses(TeacherViewModel teacher)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -59,7 +60,7 @@ namespace Notation.Models
 
         public static void SaveClassTeachers(ClassViewModel _class)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -73,6 +74,18 @@ namespace Notation.Models
                     {
                         command.ExecuteNonQuery();
                     }
+                }
+            }
+        }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM TeacherClass WHERE Year = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
                 }
             }
         }

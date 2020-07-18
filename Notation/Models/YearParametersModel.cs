@@ -1,4 +1,5 @@
-﻿using Notation.ViewModels;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System.Data.SqlClient;
 
 namespace Notation.Models
@@ -9,7 +10,7 @@ namespace Notation.Models
         {
             YearParametersViewModel yearParameters = null;
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -35,7 +36,7 @@ namespace Notation.Models
 
         public static void Create(YearParametersViewModel yearParameters)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -49,12 +50,24 @@ namespace Notation.Models
 
         public static void Save(YearParametersViewModel yearParameters)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("UPDATE YearParameters SET DivisionPrefect = '{0}' WHERE Id = {1} AND Year = {2}",
                     yearParameters.DivisionPrefect, yearParameters.Id, yearParameters.Year), connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM YearParameters WHERE Year = {year}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

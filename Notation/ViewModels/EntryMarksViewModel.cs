@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 
 namespace Notation.ViewModels
 {
@@ -56,8 +55,7 @@ namespace Notation.ViewModels
 
         private static void SelectedTeacherChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            EntryMarksViewModel entryMarks = (EntryMarksViewModel)d;
-            entryMarks.Load();
+            ((EntryMarksViewModel)d).Load();
         }
 
         public EntryMarksViewModel()

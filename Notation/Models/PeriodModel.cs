@@ -1,4 +1,5 @@
-﻿using Notation.ViewModels;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,7 +12,7 @@ namespace Notation.Models
         {
             List<PeriodViewModel> periods = new List<PeriodViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -40,7 +41,7 @@ namespace Notation.Models
 
         public static void Save(PeriodViewModel period)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -64,11 +65,23 @@ namespace Notation.Models
 
         public static void Delete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("DELETE [Period] WHERE Year = {0} AND Id = {1}", year, id) , connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM Period WHERE Year = {year}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

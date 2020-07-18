@@ -187,6 +187,18 @@ namespace Notation.Models
             }
         }
 
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE Year = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static double ReadPeriodSubjectAverage(PeriodViewModel period, StudentViewModel student, SubjectViewModel subject)
         {
             double average = double.MinValue;

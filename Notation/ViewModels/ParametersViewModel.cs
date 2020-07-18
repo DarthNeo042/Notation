@@ -186,7 +186,16 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for BaseParameters.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BaseParametersProperty =
-            DependencyProperty.Register("BaseParameters", typeof(BaseParametersViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("BaseParameters", typeof(BaseParametersViewModel), typeof(ParametersViewModel), new PropertyMetadata(null, BaseParametersChanged));
+
+        public delegate void BaseParametersChangedEventHandler();
+
+        public event BaseParametersChangedEventHandler BaseParametersChangedEvent;
+
+        private static void BaseParametersChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((ParametersViewModel)d).BaseParametersChangedEvent?.Invoke();
+        }
 
         public YearParametersViewModel YearParameters
         {
@@ -1121,6 +1130,7 @@ namespace Notation.ViewModels
             Students = new ObservableCollection<StudentViewModel>();
 
             Calendar = new CalendarViewModel();
+            YearParameters = new YearParametersViewModel();
 
             GetBaseName();
 

@@ -1,5 +1,5 @@
-﻿using Notation.ViewModels;
-using System.Collections.Generic;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace Notation.Models
     {
         public static void ReadLevelSubjects(ObservableCollection<LevelViewModel> levels, ObservableCollection<SubjectViewModel> subjects, int year)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -40,7 +40,7 @@ namespace Notation.Models
 
         public static void SaveLevelSubjects(LevelViewModel level)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -60,7 +60,7 @@ namespace Notation.Models
 
         public static void SaveSubjectLevels(SubjectViewModel subject)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -74,6 +74,18 @@ namespace Notation.Models
                     {
                         command.ExecuteNonQuery();
                     }
+                }
+            }
+        }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM LevelSubject WHERE Year = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
                 }
             }
         }

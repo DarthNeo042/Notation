@@ -1,4 +1,5 @@
-﻿using Notation.ViewModels;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -10,7 +11,7 @@ namespace Notation.Models
         {
             List<TeacherViewModel> Teachers = new List<TeacherViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -40,7 +41,7 @@ namespace Notation.Models
 
         public static void Save(TeacherViewModel Teacher)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -48,13 +49,13 @@ namespace Notation.Models
                 if (Teacher.Id == 0)
                 {
                     query = string.Format("INSERT INTO [Teacher]([Year], FirstName, LastName, [Login], [Password], [Title]) VALUES({0}, '{1}', '{2}', '{3}', '{4}', '{5}')",
-                        Teacher.Year, Teacher.FirstName, Teacher.LastName, Teacher.Login, Teacher.Password, Teacher.Title);
+                        Teacher.Year, Teacher.FirstName.Replace("'", "''"), Teacher.LastName.Replace("'", "''"), Teacher.Login, Teacher.Password, Teacher.Title);
                 }
                 else
                 {
                     query = string.Format("UPDATE [Teacher] SET FirstName = '{0}', LastName = '{1}', [Login] = '{2}', [Password] = '{3}', [Title] = '{4}' "
                         + "WHERE [Teacher].Id = {5} AND [Teacher].[Year] = {6}",
-                        Teacher.FirstName, Teacher.LastName, Teacher.Login, Teacher.Password, Teacher.Title, Teacher.Id, Teacher.Year);
+                        Teacher.FirstName.Replace("'", "''"), Teacher.LastName.Replace("'", "''"), Teacher.Login, Teacher.Password, Teacher.Title, Teacher.Id, Teacher.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -65,7 +66,7 @@ namespace Notation.Models
 
         public static void Delete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -76,11 +77,23 @@ namespace Notation.Models
             }
         }
 
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM Teacher WHERE Year = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public static IEnumerable<int> Login(string login, string passord)
         {
             List<int> years = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -103,7 +116,7 @@ namespace Notation.Models
         {
             TeacherViewModel teacher = null;
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 

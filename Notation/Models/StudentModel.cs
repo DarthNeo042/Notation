@@ -1,4 +1,5 @@
-﻿using Notation.ViewModels;
+﻿using Notation.Properties;
+using Notation.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,7 +13,7 @@ namespace Notation.Models
         {
             List<StudentViewModel> Students = new List<StudentViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -51,7 +52,7 @@ namespace Notation.Models
 
         public static void Save(StudentViewModel student)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -59,13 +60,13 @@ namespace Notation.Models
                 if (student.Id == 0)
                 {
                     query = string.Format("INSERT INTO [Student]([Year], LastName, FirstName, BirthDate, IdClass) VALUES({0}, '{1}', '{2}', '{3}', {4})",
-                        student.Year, student.LastName, student.FirstName, student.BirthDate.ToShortDateString(), student.Class != null ? student.Class.Id.ToString() : "NULL");
+                        student.Year, student.LastName.Replace("'", "''"), student.FirstName.Replace("'", "''"), student.BirthDate.ToShortDateString(), student.Class != null ? student.Class.Id.ToString() : "NULL");
                 }
                 else
                 {
                     query = string.Format("UPDATE [Student] SET LastName = '{0}', FirstName = '{1}', BirthDate = '{2}', IdClass = {3}"
                         + " WHERE [Student].Id = {4} AND [Student].[Year] = {5}",
-                        student.LastName, student.FirstName, student.BirthDate.ToShortDateString(), student.Class != null ? student.Class.Id.ToString() : "NULL", student.Id, student.Year);
+                        student.LastName.Replace("'", "''"), student.FirstName.Replace("'", "''"), student.BirthDate.ToShortDateString(), student.Class != null ? student.Class.Id.ToString() : "NULL", student.Id, student.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -76,7 +77,7 @@ namespace Notation.Models
 
         public static void SaveClass(ClassViewModel _class)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
@@ -106,11 +107,23 @@ namespace Notation.Models
 
         public static void Delete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("DELETE [Student] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM Student WHERE Year = {year}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

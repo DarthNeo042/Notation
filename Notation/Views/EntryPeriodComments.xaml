@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notation.Views"
         mc:Ignorable="d"
-        Title="InputMarks" Height="1080" Width="1920"
+        Title="Saisie des commentaires généraux de période" Height="1080" Width="1920"
         WindowState="Maximized">
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="DarkGray"></Setter>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid Background="AliceBlue">
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
@@ -62,7 +72,7 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Elèves :"></TextBlock>
-                <ListView Grid.Row="1" ItemsSource="{Binding SelectedClass.Students}" SelectedItem="{Binding SelectedClass.SelectedStudent}" VerticalAlignment="Stretch">
+                <ListView Grid.Row="1" ItemsSource="{Binding SelectedClass.Students}" SelectedItem="{Binding SelectedClass.SelectedStudent}" VerticalAlignment="Stretch" SelectionChanged="ListView_SelectionChanged">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -93,11 +103,11 @@
                         <RowDefinition Height="30"></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Compte rendu des études :"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="0"></TextBox>
-                    <RadioButton Grid.Row="0" Grid.Column="1" Content="1 : 1er degré - bien"></RadioButton>
-                    <RadioButton Grid.Row="1" Grid.Column="1" Content="2 : 2ème degré - doit progresser"></RadioButton>
-                    <RadioButton Grid.Row="2" Grid.Column="1" Content="3 : 3ème degré - insuffisant"></RadioButton>
-                    <RadioButton Grid.Row="3" Grid.Column="1" Content="A : Avertissement"></RadioButton>
+                    <TextBox Grid.Row="1" Grid.Column="0" Name="StudiesTextBox" TextChanged="PeriodComment_TextChanged" LostFocus="PeriodComment_LostFocus" PreviewKeyDown="PeriodComment_KeyDown"></TextBox>
+                    <RadioButton Grid.Row="0" Grid.Column="1" Name="Studies1Radio" Content="1 : 1er degré - bien"></RadioButton>
+                    <RadioButton Grid.Row="1" Grid.Column="1" Name="Studies2Radio" Content="2 : 2ème degré - doit progresser"></RadioButton>
+                    <RadioButton Grid.Row="2" Grid.Column="1" Name="Studies3Radio" Content="3 : 3ème degré - insuffisant"></RadioButton>
+                    <RadioButton Grid.Row="3" Grid.Column="1" Name="StudiesARadio" Content="A : Avertissement"></RadioButton>
                 </Grid>
                 <Grid Grid.Row="3">
                     <Grid.ColumnDefinitions>
@@ -111,11 +121,11 @@
                         <RowDefinition Height="30"></RowDefinition>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Compte rendu de discipline :"></TextBlock>
-                    <TextBox Grid.Row="1" Grid.Column="0"></TextBox>
-                    <RadioButton Grid.Row="0" Grid.Column="1" Content="1 : 1er degré - bien"></RadioButton>
-                    <RadioButton Grid.Row="1" Grid.Column="1" Content="2 : 2ème degré - doit progresser"></RadioButton>
-                    <RadioButton Grid.Row="2" Grid.Column="1" Content="3 : 3ème degré - insuffisant"></RadioButton>
-                    <RadioButton Grid.Row="3" Grid.Column="1" Content="A : Avertissement"></RadioButton>
+                    <TextBox Grid.Row="1" Grid.Column="0" Name="DisciplineTextBox" TextChanged="PeriodComment_TextChanged" LostFocus="PeriodComment_LostFocus" PreviewKeyDown="PeriodComment_KeyDown"></TextBox>
+                    <RadioButton Grid.Row="0" Grid.Column="1" Name="Discipline1Radio" Content="1 : 1er degré - bien"></RadioButton>
+                    <RadioButton Grid.Row="1" Grid.Column="1" Name="Discipline2Radio" Content="2 : 2ème degré - doit progresser"></RadioButton>
+                    <RadioButton Grid.Row="2" Grid.Column="1" Name="Discipline3Radio" Content="3 : 3ème degré - insuffisant"></RadioButton>
+                    <RadioButton Grid.Row="3" Grid.Column="1" Name="DisciplineARadio" Content="A : Avertissement"></RadioButton>
                 </Grid>
             </Grid>
         </Grid>

@@ -1,5 +1,6 @@
 ﻿using Notation.Models;
 using Notation.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
@@ -17,6 +18,7 @@ namespace Notation.Utils
             };
 
             CreatePeriods(mainViewModel, year);
+            CreateSemiTrimesters(mainViewModel, year);
             CreateLevels(mainViewModel, year);
             CreateSubjects(mainViewModel, year);
             CreateTeachers(mainViewModel, year);
@@ -31,6 +33,7 @@ namespace Notation.Utils
 
             MessageBox.Show("Création de la nouvelle année réussie.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
 
+            MainViewModel.Instance.LoadYears();
             MainViewModel.Instance.SelectedYear = year;
         }
 
@@ -49,6 +52,23 @@ namespace Notation.Utils
                 });
             }
             mainViewModel.Parameters.LoadPeriods();
+        }
+
+        private static void CreateSemiTrimesters(MainViewModel mainViewModel, int year)
+        {
+            List<SemiTrimesterViewModel> semiTrimesters = new List<SemiTrimesterViewModel>();
+            foreach (SemiTrimesterViewModel semiTrimester in MainViewModel.Instance.Parameters.SemiTrimesters)
+            {
+                semiTrimesters.Add(new SemiTrimesterViewModel()
+                {
+                    Name = semiTrimester.Name,
+                    Period1 = mainViewModel.Parameters.Periods.FirstOrDefault(p => p.Number == semiTrimester.Period1.Number),
+                    Period2 = mainViewModel.Parameters.Periods.FirstOrDefault(p => p.Number == semiTrimester.Period2.Number),
+                    Year = year,
+                });
+            }
+            SemiTrimesterModel.Save(semiTrimesters);
+            mainViewModel.Parameters.LoadSemiTrimesters();
         }
 
         private static void CreateLevels(MainViewModel mainViewModel, int year)
@@ -188,10 +208,36 @@ namespace Notation.Utils
         {
             YearParametersModel.Create(new YearParametersViewModel()
             {
-                DivisionPrefect = mainViewModel.Parameters.YearParameters.DivisionPrefect,
+                DivisionPrefect = MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect,
                 Year = year,
             });
             mainViewModel.Parameters.LoadYearParameters();
+        }
+
+        public static void DeleteYear(int year)
+        {
+            TrimesterCommentModel.DeleteAll(year);
+            TrimesterSubjectCommentModel.DeleteAll(year);
+            SemiTrimesterCommentModel.DeleteAll(year);
+            PeriodCommentModel.DeleteAll(year);
+            MarkModel.DeleteAll(year);
+            TeacherClassModel.DeleteAll(year);
+            LevelSubjectModel.DeleteAll(year);
+            SubjectTeacherModel.DeleteAll(year);
+            SemiTrimesterModel.DeleteAll(year);
+            PeriodModel.DeleteAll(year);
+            ClassModel.DeleteAll(year);
+            LevelModel.DeleteAll(year);
+            StudentModel.DeleteAll(year);
+            SubjectModel.DeleteAll(year);
+            TeacherModel.DeleteAll(year);
+            YearParametersModel.DeleteAll(year);
+            YearModel.Delete(year);
+
+            MessageBox.Show("Suppresion de l'année réussie.", "Réussite", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            MainViewModel.Instance.LoadYears();
+            MainViewModel.Instance.SelectedYear = year - 1;
         }
     }
 }

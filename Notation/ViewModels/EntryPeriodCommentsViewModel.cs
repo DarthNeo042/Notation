@@ -54,6 +54,8 @@ namespace Notation.ViewModels
             {
                 SelectedPeriod = Periods.FirstOrDefault();
             }
+
+            Load();
         }
 
         public void Load()

@@ -63,5 +63,17 @@ namespace Notation.Models
 
             return null;
         }
+
+        public static void DeleteAll(int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand($"DELETE FROM PeriodComment WHERE Year = {year}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
