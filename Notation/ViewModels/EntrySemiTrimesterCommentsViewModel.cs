@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace Notation.ViewModels
 {
-    public class EntryPeriodCommentsViewModel : DependencyObject
+    public class EntrySemiTrimesterCommentsViewModel : DependencyObject
     {
         public delegate void SelectedClassChangedEventHandler();
 
@@ -22,37 +22,37 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for SelectedClass.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedClassProperty =
-            DependencyProperty.Register("SelectedClass", typeof(EntryClassViewModel), typeof(EntryPeriodCommentsViewModel), new PropertyMetadata(null, SelectedClassChanged));
+            DependencyProperty.Register("SelectedClass", typeof(EntryClassViewModel), typeof(EntrySemiTrimesterCommentsViewModel), new PropertyMetadata(null, SelectedClassChanged));
 
         private static void SelectedClassChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            EntryPeriodCommentsViewModel entryPeriodComments = (EntryPeriodCommentsViewModel)d;
-            entryPeriodComments.SelectedClassChangedEvent?.Invoke();
+            EntrySemiTrimesterCommentsViewModel entrySemiTrimesterComments = (EntrySemiTrimesterCommentsViewModel)d;
+            entrySemiTrimesterComments.SelectedClassChangedEvent?.Invoke();
         }
 
-        public ObservableCollection<PeriodViewModel> Periods { get; set; }
+        public ObservableCollection<SemiTrimesterViewModel> SemiTrimesters { get; set; }
 
-        public PeriodViewModel SelectedPeriod
+        public SemiTrimesterViewModel SelectedSemiTrimester
         {
-            get { return (PeriodViewModel)GetValue(SelectedPeriodProperty); }
-            set { SetValue(SelectedPeriodProperty, value); }
+            get { return (SemiTrimesterViewModel)GetValue(SelectedSemiTrimesterProperty); }
+            set { SetValue(SelectedSemiTrimesterProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedPeriod.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedPeriodProperty =
-            DependencyProperty.Register("SelectedPeriod", typeof(PeriodViewModel), typeof(EntryPeriodCommentsViewModel), new PropertyMetadata(null));
+        // Using a DependencyProperty as the backing store for SelectedSemiTrimester.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedSemiTrimesterProperty =
+            DependencyProperty.Register("SelectedSemiTrimester", typeof(SemiTrimesterViewModel), typeof(EntrySemiTrimesterCommentsViewModel), new PropertyMetadata(null));
 
         public CommandBindingCollection Bindings { get; set; }
 
-        public EntryPeriodCommentsViewModel()
+        public EntrySemiTrimesterCommentsViewModel()
         {
             Classes = new ObservableCollection<EntryClassViewModel>();
-            Periods = new ObservableCollection<PeriodViewModel>(MainViewModel.Instance.Parameters.Periods);
+            SemiTrimesters = new ObservableCollection<SemiTrimesterViewModel>(MainViewModel.Instance.Parameters.SemiTrimesters);
 
-            SelectedPeriod = Periods.FirstOrDefault(p => p.FromDate <= DateTime.Now.Date && p.ToDate > DateTime.Now.Date.AddDays(1));
-            if (SelectedPeriod == null)
+            SelectedSemiTrimester = SemiTrimesters.FirstOrDefault(p => p.FromDate <= DateTime.Now.Date && p.ToDate > DateTime.Now.Date.AddDays(1));
+            if (SelectedSemiTrimester == null)
             {
-                SelectedPeriod = Periods.FirstOrDefault();
+                SelectedSemiTrimester = SemiTrimesters.FirstOrDefault();
             }
 
             Load();

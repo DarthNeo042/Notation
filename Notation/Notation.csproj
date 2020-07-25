@@ -153,9 +153,12 @@
     <Compile Include="ViewModels\EntryMarksMarkViewModel.cs" />
     <Compile Include="ViewModels\EntryMarksSubjectViewModel.cs" />
     <Compile Include="ViewModels\EntryMarksViewModel.cs" />
-    <Compile Include="ViewModels\EntryPeriodCommentsCommentViewModel.cs" />
     <Compile Include="ViewModels\EntryPeriodCommentsViewModel.cs" />
+    <Compile Include="ViewModels\EntrySemiTrimesterCommentsViewModel.cs" />
     <Compile Include="ViewModels\EntryStudentViewModel.cs" />
+    <Compile Include="ViewModels\EntryTrimesterCommentsViewModel.cs" />
+    <Compile Include="ViewModels\EntryTrimesterSubjectCommentsSubjectViewModel.cs" />
+    <Compile Include="ViewModels\EntryTrimesterSubjectCommentsViewModel.cs" />
     <Compile Include="ViewModels\EntryViewModel.cs" />
     <Compile Include="ViewModels\LevelViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
@@ -195,6 +198,15 @@
     </Compile>
     <Compile Include="Views\EntryPeriodComments.xaml.cs">
       <DependentUpon>EntryPeriodComments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntrySemiTrimesterComments.xaml.cs">
+      <DependentUpon>EntrySemiTrimesterComments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntryTrimesterComments.xaml.cs">
+      <DependentUpon>EntryTrimesterComments.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EntryTrimesterSubjectComments.xaml.cs">
+      <DependentUpon>EntryTrimesterSubjectComments.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -278,6 +290,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EntryPeriodComments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntrySemiTrimesterComments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntryTrimesterComments.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EntryTrimesterSubjectComments.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

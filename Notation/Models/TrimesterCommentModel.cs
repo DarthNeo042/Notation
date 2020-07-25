@@ -49,15 +49,13 @@ namespace Notation.Models
                 string query = "";
                 if (trimesterComment.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [TrimesterComment]([Year], [Order], MainTeacherComment, DivisionPrefectComment, Trimester, IdStudent)"
-                        + " VALUES({0}, {1}, '{2}', '{3}', {4}, {5})", trimesterComment.Year, trimesterComment.Order,
-                        trimesterComment.MainTeacherComment, trimesterComment.DivisionPrefectComment, trimesterComment.Trimester, trimesterComment.Student.Id);
+                    query = string.Format("INSERT INTO [TrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, Trimester, IdStudent) VALUES({0}, '{1}', '{2}', {3}, {4})",
+                        trimesterComment.Year, trimesterComment.MainTeacherComment, trimesterComment.DivisionPrefectComment, trimesterComment.Trimester, trimesterComment.Student.Id);
                 }
                 else
                 {
-                    query = string.Format("UPDATE [TrimesterComment] SET [Order] = {0}, MainTeacherComment = '{1}', DivisionPrefectComment = '{2}', Trimester = {3}, IdStudent = {4}"
-                        + " WHERE Id = {5} AND [Year] = {6}", trimesterComment.Order, trimesterComment.MainTeacherComment,
-                        trimesterComment.DivisionPrefectComment, trimesterComment.Trimester, trimesterComment.Student.Id);
+                    query = string.Format("UPDATE [TrimesterComment] SET MainTeacherComment = '{0}', DivisionPrefectComment = '{1}', Trimester = {2}, IdStudent = {3} WHERE Id = {4} AND [Year] = {5}",
+                        trimesterComment.MainTeacherComment, trimesterComment.DivisionPrefectComment, trimesterComment.Trimester, trimesterComment.Student.Id, trimesterComment.Id, trimesterComment.Year);
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

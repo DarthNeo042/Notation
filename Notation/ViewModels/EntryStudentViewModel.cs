@@ -46,9 +46,28 @@ namespace Notation.ViewModels
 
         public ObservableCollection<EntryMarksSubjectViewModel> MarksSubjects { get; set; }
 
+        public EntryTrimesterSubjectCommentsSubjectViewModel SelectedTrimesterSubjectCommentsSubject
+        {
+            get { return (EntryTrimesterSubjectCommentsSubjectViewModel)GetValue(SelectedTrimesterSubjectCommentsSubjectProperty); }
+            set { SetValue(SelectedTrimesterSubjectCommentsSubjectProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedEntryTrimesterSubjectCommentSubject.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedTrimesterSubjectCommentsSubjectProperty =
+            DependencyProperty.Register("SelectedTrimesterSubjectCommentsSubject", typeof(EntryTrimesterSubjectCommentsSubjectViewModel), typeof(EntryStudentViewModel), new PropertyMetadata(null, SelectedTrimesterSubjectCommentsSubjectChanged));
+
+        private static void SelectedTrimesterSubjectCommentsSubjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            EntryStudentViewModel entryStudent = (EntryStudentViewModel)d;
+            entryStudent.SelectedSubjectChangedEvent?.Invoke();
+        }
+
+        public ObservableCollection<EntryTrimesterSubjectCommentsSubjectViewModel> TrimesterSubjectCommentsSubjects { get; set; }
+
         public EntryStudentViewModel()
         {
             MarksSubjects = new ObservableCollection<EntryMarksSubjectViewModel>();
+            TrimesterSubjectCommentsSubjects = new ObservableCollection<EntryTrimesterSubjectCommentsSubjectViewModel>();
         }
 
         public void LoadEntryMarks(TeacherViewModel teacher)
@@ -57,17 +76,20 @@ namespace Notation.ViewModels
             {
                 foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)))
                 {
-                    EntryMarksSubjectViewModel entryMarksSubject = new EntryMarksSubjectViewModel() { Subject = subject };
-                    entryMarksSubject.Coefficients.Add(new EntryMarksCoefficientViewModel() { Coefficient = 1, Name = "Leçons" });
-                    entryMarksSubject.Coefficients.Add(new EntryMarksCoefficientViewModel() { Coefficient = 2, Name = "Devoirs" });
-                    entryMarksSubject.Coefficients.Add(new EntryMarksCoefficientViewModel() { Coefficient = 4, Name = "Examens" });
-                    MarksSubjects.Add(entryMarksSubject);
+                    MarksSubjects.Add(new EntryMarksSubjectViewModel() { Subject = subject });
                 }
             }
         }
 
-        public void LoadEntryPeriodComments()
+        public void LoadEntryTrimesterSubjectComments(TeacherViewModel teacher)
         {
+            if (Student.Class != null && Student.Class.Level != null)
+            {
+                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)))
+                {
+                    TrimesterSubjectCommentsSubjects.Add(new EntryTrimesterSubjectCommentsSubjectViewModel() { Subject = subject });
+                }
+            }
         }
     }
 }

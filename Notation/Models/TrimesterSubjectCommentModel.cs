@@ -16,8 +16,8 @@ namespace Notation.Models
 
                 using (SqlCommand command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format("SELECT * FROM [TrimesterSubjectComment] WHERE IdStudent = '{0}' AND Trimester = {1} AND [Year] = {2} ORDER BY [Order]",
-                        student.Id, trimester, student.Year);
+                    command.CommandText = string.Format("SELECT * FROM [TrimesterSubjectComment] WHERE IdStudent = {0} AND IdSubject = {1} AND Trimester = {2} AND [Year] = {3}",
+                        student.Id, subject.Id, trimester, student.Year);
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -27,7 +27,6 @@ namespace Notation.Models
                             {
                                 Id = (int)reader["Id"],
                                 Comment = (string)reader["Comment"],
-                                Order = (int)reader["Order"],
                                 Student = student,
                                 Subject = subject,
                                 Trimester = trimester,

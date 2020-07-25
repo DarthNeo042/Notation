@@ -26,18 +26,21 @@ namespace Notation.ViewModels
 
         private void EntrySemiTrimesterCommentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            new EntrySemiTrimesterComments().ShowDialog();
         }
 
         public ICommand EntryTrimesterSubjectCommentsCommand { get; set; }
 
         private void EntryTrimesterSubjectCommentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            new EntryTrimesterSubjectComments().ShowDialog();
         }
 
         public ICommand EntryTrimesterCommentsCommand { get; set; }
 
         private void EntryTrimesterCommentsExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            new EntryTrimesterComments().ShowDialog();
         }
 
         public EntryViewModel()

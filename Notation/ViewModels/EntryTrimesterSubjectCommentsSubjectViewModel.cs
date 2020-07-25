@@ -2,7 +2,7 @@
 
 namespace Notation.ViewModels
 {
-    public class EntryMarksSubjectViewModel : DependencyObject
+    public class EntryTrimesterSubjectCommentsSubjectViewModel : DependencyObject
     {
         public SubjectViewModel Subject
         {
@@ -12,7 +12,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for Subject.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SubjectProperty =
-            DependencyProperty.Register("Subject", typeof(SubjectViewModel), typeof(EntryMarksSubjectViewModel), new PropertyMetadata(null));
+            DependencyProperty.Register("Subject", typeof(SubjectViewModel), typeof(EntryTrimesterSubjectCommentsSubjectViewModel), new PropertyMetadata(null));
 
         public string Average
         {
@@ -22,6 +22,6 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for Average.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AverageProperty =
-            DependencyProperty.Register("Average", typeof(string), typeof(EntryMarksSubjectViewModel), new PropertyMetadata(""));
+            DependencyProperty.Register("Average", typeof(string), typeof(EntryTrimesterSubjectCommentsSubjectViewModel), new PropertyMetadata(""));
     }
 }

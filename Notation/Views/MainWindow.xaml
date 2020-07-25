@@ -1206,10 +1206,10 @@
                         <Button Content="Notes" Command="{Binding EntryMarksCommand}"></Button>
                         <Button Content="Appréciations générales de période" Command="{Binding EntryPeriodCommentsCommand}"
                                 Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
-                        <Button Content="Appréciations générales de demi-trimestre" Command="{Binding EntrySemiTrimesterComments}"
+                        <Button Content="Appréciations générales de demi-trimestre" Command="{Binding EntrySemiTrimesterCommentsCommand}"
                                 Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
-                        <Button Content="Appréciations de matières de trimestre" Command="{Binding EntryTrimesterSubjectComments}"></Button>
-                        <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterComments}"
+                        <Button Content="Appréciations de matières de trimestre" Command="{Binding EntryTrimesterSubjectCommentsCommand}"></Button>
+                        <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterCommentsCommand}"
                                 Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
                     </StackPanel>
                 </Grid>
