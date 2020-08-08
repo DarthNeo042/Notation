@@ -78,17 +78,24 @@ namespace Notation.Models
             }
         }
 
-        public static void Delete(int year)
+        public static bool CanDeleteAll(int year)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand($"DELETE FROM SemiTrimester WHERE [Year] = {year}", connection))
+                using (SqlCommand command = new SqlCommand($"SELECT COUNT(1) AS Count FROM SemiTrimesterComment WHERE Year = {year}", connection))
                 {
-                    command.ExecuteNonQuery();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return (int)reader["Count"] == 0;
+                        }
+                    }
                 }
             }
+            return true;
         }
 
         public static void DeleteAll(int year)

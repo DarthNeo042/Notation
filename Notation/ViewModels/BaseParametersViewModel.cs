@@ -38,18 +38,18 @@ namespace Notation.ViewModels
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             BaseParametersViewModel baseParameters = (BaseParametersViewModel)d;
-            baseParameters.Color = new SolidColorBrush(new Color() { R = baseParameters.ColorR, G = baseParameters.ColorG, B = baseParameters.ColorB, A = 255 });
+            baseParameters.Color = new Color() { R = baseParameters.ColorR, G = baseParameters.ColorG, B = baseParameters.ColorB, A = 255 };
         }
 
-        public Brush Color
+        public Color Color
         {
-            get { return (Brush)GetValue(ColorProperty); }
+            get { return (Color)GetValue(ColorProperty); }
             set { SetValue(ColorProperty, value); }
         }
 
         // Using a DependencyProperty as the backing store for Color.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register("Color", typeof(Brush), typeof(BaseParametersViewModel), new PropertyMetadata(Brushes.White));
+            DependencyProperty.Register("Color", typeof(Color), typeof(BaseParametersViewModel), new PropertyMetadata(Colors.White));
 
         public string AdminLogin
         {

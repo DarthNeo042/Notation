@@ -106,6 +106,20 @@ namespace Notation.Views
             Dispatcher.Invoke(_updateTrimesterReports, System.Windows.Threading.DispatcherPriority.Background, value);
         }
 
+        public delegate void UpdateYearReportsDelegate(int value);
+        private UpdateYearReportsDelegate _updateYearReports;
+        private UpdateYearReportsDelegate _updateYearReportsDispatch;
+
+        private void UpdateYearReports(int value)
+        {
+            YearReportsProgressBar.Value = value;
+        }
+
+        private void UpdateYearReportsDispatch(int value)
+        {
+            Dispatcher.Invoke(_updateYearReports, System.Windows.Threading.DispatcherPriority.Background, value);
+        }
+
         public MainWindow()
         {
             DataContext = MainViewModel.Instance;
@@ -129,6 +143,8 @@ namespace Notation.Views
             _updateSemiTrimesterReportsDispatch = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReportsDispatch);
             _updateTrimesterReports = new UpdateTrimesterReportsDelegate(UpdateTrimesterReports);
             _updateTrimesterReportsDispatch = new UpdateTrimesterReportsDelegate(UpdateTrimesterReportsDispatch);
+            _updateYearReports = new UpdateYearReportsDelegate(UpdateYearReports);
+            _updateYearReportsDispatch = new UpdateYearReportsDelegate(UpdateYearReportsDispatch);
 
             InitializeComponent();
 
@@ -301,6 +317,14 @@ namespace Notation.Views
             }
         }
 
+        private void ReportYear_Click(object sender, RoutedEventArgs e)
+        {
+            YearReportsProgressBar.Visibility = Visibility.Visible;
+            YearReportsProgressBar.Value = 0;
+            SSRSUtils.CreateYearReport(MainViewModel.Instance.Reports.Year, _updateYearReportsDispatch);
+            YearReportsProgressBar.Visibility = Visibility.Collapsed;
+        }
+
         private void PeriodReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.PeriodReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedPeriodReport))
@@ -325,9 +349,17 @@ namespace Notation.Views
             }
         }
 
+        private void YearReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.YearReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedYearReport))
+            {
+                Process.Start(Path.Combine(MainViewModel.Instance.Reports.YearReportsPath, MainViewModel.Instance.Reports.SelectedYearReport));
+            }
+        }
+
         private void ParametersTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (MainViewModel.Instance.User.IsAdmin)
+            if (MainViewModel.Instance.User != null && MainViewModel.Instance.User.IsAdmin)
             {
                 ParametersTab.IsSelected = true;
             }

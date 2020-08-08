@@ -766,5 +766,230 @@ namespace Notation.Models
             double average = averages[student];
             return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
         }
+
+        public static double ReadYearSubjectAverage(int year, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} AND IdSubject = {2}", year, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadYearAverage(int year, StudentViewModel student)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                    + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
+                    + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
+                    + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", year, student.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadYearClassSubjectAverage(int year, ClassViewModel _class, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} AND IdSubject = {2}", year, _class.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadYearClassAverage(int year, ClassViewModel _class)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                    + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
+                    + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
+                    + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", year, _class.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadYearMainSubjectAverage(int year, StudentViewModel student, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                    + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {2}", year, student.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static double ReadYearClassMainSubjectAverage(int year, ClassViewModel _class, SubjectViewModel subject)
+        {
+            double average = double.MinValue;
+
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                    + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {2}", year, _class.Id, subject.Id), connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            average = reader.IsDBNull(reader.GetOrdinal("Average")) ? double.MinValue : (double)(decimal)reader["Average"];
+                        }
+                    }
+                }
+            }
+
+            return average;
+        }
+
+        public static void ReadYearMinMaxSubjectAverage(int year, ClassViewModel _class, SubjectViewModel subject, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadYearSubjectAverage(year, student, subject);
+                if (average != double.MinValue)
+                {
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
+                }
+            }
+        }
+
+        public static void ReadYearMinMaxMainSubjectAverage(int year, ClassViewModel _class, SubjectViewModel subject, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadYearMainSubjectAverage(year, student, subject);
+                if (average != double.MinValue)
+                {
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
+                }
+            }
+        }
+
+        public static void ReadYearMinMaxAverage(int year, ClassViewModel _class, out double minAverage, out double maxAverage)
+        {
+            minAverage = double.MaxValue;
+            maxAverage = double.MinValue;
+            foreach (StudentViewModel student in _class.Students)
+            {
+                double average = ReadYearAverage(year, student);
+                if (average != double.MinValue)
+                {
+                    if (average < minAverage)
+                    {
+                        minAverage = average;
+                    }
+                    if (average > maxAverage)
+                    {
+                        maxAverage = average;
+                    }
+                }
+            }
+        }
+
+        public static int ReadYearRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
+        {
+            double average = averages[student];
+            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
+        }
     }
 }

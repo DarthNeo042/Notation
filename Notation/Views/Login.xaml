@@ -9,18 +9,18 @@
         WindowStartupLocation="CenterScreen"
         KeyDown="Window_KeyDown"
         FocusManager.FocusedElement="{Binding ElementName=LoginText}"
-        Title="Authentification" Height="160" Width="450"
-        Background="AliceBlue">
+        Title="Authentification" Height="160" Width="400">
+    <Window.Background>
+        <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5" RadiusX="0.9" RadiusY="0.9">
+            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+            <GradientStop Offset="1.1" Color="Black"></GradientStop>
+        </RadialGradientBrush>
+    </Window.Background>
     <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Image Grid.Column="1" Grid.Row="0" Source="{StaticResource IconBackground}"></Image>
         <Grid Grid.Column="0" Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"></ColumnDefinition>

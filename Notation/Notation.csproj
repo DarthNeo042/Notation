@@ -130,6 +130,8 @@
     <Compile Include="Models\TrimesterSubjectCommentModel.cs" />
     <Compile Include="Models\YearModel.cs" />
     <Compile Include="Models\YearParametersModel.cs" />
+    <Compile Include="Reports\BulletinAnnuelHeaderDataSource.cs" />
+    <Compile Include="Reports\BulletinAnnuelLineDataSource.cs" />
     <Compile Include="Reports\BulletinDemiTrimestreHeaderDataSource.cs" />
     <Compile Include="Reports\BulletinDemiTrimestreLineDataSource.cs" />
     <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
@@ -233,6 +235,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Reports\BulletinAnnuel.rdlc">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\DataSources\Notation.Reports.BulletinAnnuelHeaderDataSource.datasource" />
     <None Include="Reports\BulletinTrimestre.rdlc">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -316,9 +323,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\IconBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icon.ico" />

@@ -7,7 +7,14 @@
         mc:Ignorable="d"
         Title="Saisie des notes" Height="1080" Width="1920"
         WindowState="Maximized">
-    <Grid Background="AliceBlue">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                <GradientStop Offset="2" Color="Black"></GradientStop>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -124,6 +131,6 @@
                          LostFocus="TrimesterSubjectComment_LostFocus" PreviewKeyDown="TrimesterSubjectComment_KeyDown"></TextBox>
             </Grid>
         </Grid>
-        <Image Source="{StaticResource IconBackground}" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+        <Image Source="{StaticResource Icon}" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
     </Grid>
 </Window>

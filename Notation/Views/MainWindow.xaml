@@ -8,8 +8,14 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         Loaded="Window_Loaded"
-        Background="{Binding Parameters.BaseParameters.Color}"
         Title="Notation 2.0" Height="1080" Width="1920">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="{Binding Parameters.BaseParameters.Color}"></GradientStop>
+            <GradientStop Offset="0.5" Color="{Binding Parameters.BaseParameters.Color}"></GradientStop>
+            <GradientStop Offset="1.5" Color="Black"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
     <Window.Resources>
         <converters:AdminToVisibilityConverter x:Key="AdminToVisibilityConverter"></converters:AdminToVisibilityConverter>
         <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
@@ -22,6 +28,7 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
+        <Image Source="{StaticResource Icon}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.RowSpan="2" Height="315" Width="315"></Image>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -65,7 +72,14 @@
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Parameters}">
                     <TabItem Header="Niveaux">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -74,7 +88,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -155,7 +169,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Matières">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -164,7 +185,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -285,7 +306,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Professeurs">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -294,7 +322,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -423,7 +451,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Classes">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -432,7 +467,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -573,7 +608,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Elèves">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -582,7 +624,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -651,7 +693,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Périodes">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -660,7 +709,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -722,7 +771,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Demi-trimestres">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
@@ -731,7 +787,7 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -817,7 +873,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Calendrier">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="300"></ColumnDefinition>
                                 <ColumnDefinition Width="200"></ColumnDefinition>
@@ -830,7 +893,7 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="5" Grid.RowSpan="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="5" Grid.RowSpan="3" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="0" Background="LightGray" VerticalAlignment="Stretch" Margin="0"></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Background="LightGray" VerticalAlignment="Stretch" Margin="0"></TextBlock>
                             <TextBlock Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="1" Background="White" VerticalAlignment="Stretch" Margin="0"></TextBlock>
@@ -844,14 +907,21 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Autres options">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="30"></RowDefinition>
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.RowSpan="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.RowSpan="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <GroupBox Grid.Row="0" Header="Paramétres" Background="LightGray">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -875,7 +945,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Base">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
@@ -884,7 +961,7 @@
                                 <RowDefinition Height="50"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.RowSpan="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.RowSpan="6" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <GroupBox Grid.Row="0" Header="Base" Background="LightGray">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -970,12 +1047,19 @@
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Models}">
                     <TabItem Header="Modèles de période">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl Grid.Column="0" ItemsSource="{Binding Periods}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1001,12 +1085,19 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de demi-trimestre">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl ItemsSource="{Binding SemiTrimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1032,12 +1123,19 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Modèles de trimestre">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl ItemsSource="{Binding Trimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1063,7 +1161,14 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Import">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -1089,12 +1194,19 @@
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Reports}">
                     <TabItem Header="Bulletins de période">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl ItemsSource="{Binding Periods}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1120,12 +1232,19 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins de demi-trimestre">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl ItemsSource="{Binding SemiTrimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1151,12 +1270,19 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins de trimestre">
-                        <Grid Background="AliceBlue">
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="3*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <ItemsControl ItemsSource="{Binding Trimesters}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -1182,8 +1308,41 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Bulletins annuels">
-                        <Grid Background="AliceBlue">
-                            <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                        <Grid>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="3*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Click="ReportYear_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Année"></TextBlock>
+                                        <TextBlock Text="{Binding Year}"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="35"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenYearReportsPathCommand}"></Button>
+                                <ProgressBar Grid.Row="1" Name="YearReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding YearReports}" SelectedItem="{Binding SelectedYearReport}" MouseDoubleClick="YearReport_MouseDoubleClick"></ListView>
+                            </Grid>
                         </Grid>
                     </TabItem>
                 </TabControl>
@@ -1196,12 +1355,19 @@
                         <TextBlock></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
-                <Grid Background="AliceBlue">
+                <Grid>
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                            <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                            <GradientStop Offset="2" Color="Black"></GradientStop>
+                        </LinearGradientBrush>
+                    </Grid.Background>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="3*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Image Source="{StaticResource IconBackground}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="162" Width="162"></Image>
+                    <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                     <StackPanel Grid.Column="0">
                         <Button Content="Notes" Command="{Binding EntryMarksCommand}"></Button>
                         <Button Content="Appréciations générales de période" Command="{Binding EntryPeriodCommentsCommand}"

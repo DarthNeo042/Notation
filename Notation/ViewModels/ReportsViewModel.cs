@@ -12,6 +12,16 @@ namespace Notation.ViewModels
         public ObservableCollection<SemiTrimesterViewModel> SemiTrimesters { get; set; }
         public ObservableCollection<int> Trimesters { get; set; }
 
+        public int Year
+        {
+            get { return (int)GetValue(YearProperty); }
+            set { SetValue(YearProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Year.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty YearProperty =
+            DependencyProperty.Register("Year", typeof(int), typeof(ReportsViewModel), new PropertyMetadata(0));
+
         public ObservableCollection<string> PeriodReports { get; set; }
 
         public string SelectedPeriodReport
@@ -114,6 +124,40 @@ namespace Notation.ViewModels
             Process.Start("explorer", string.Format("/root,{0}", TrimesterReportsPath));
         }
 
+        public ObservableCollection<string> YearReports { get; set; }
+
+        public string SelectedYearReport
+        {
+            get { return (string)GetValue(SelectedYearReportProperty); }
+            set { SetValue(SelectedYearReportProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SelectedYearReport.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SelectedYearReportProperty =
+            DependencyProperty.Register("SelectedYearReport", typeof(string), typeof(ReportsViewModel), new PropertyMetadata(""));
+
+        public string YearReportsPath
+        {
+            get { return (string)GetValue(YearReportsPathProperty); }
+            set { SetValue(YearReportsPathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for YearReportsPath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty YearReportsPathProperty =
+            DependencyProperty.Register("YearReportsPath", typeof(string), typeof(ReportsViewModel), new PropertyMetadata(""));
+
+        public ICommand OpenYearReportsPathCommand { get; set; }
+
+        private void OpenYearReportsPathCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(YearReportsPath);
+        }
+
+        private void OpenYearReportsPathExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Process.Start("explorer", string.Format("/root,{0}", YearReportsPath));
+        }
+
         public CommandBindingCollection Bindings { get; set; }
 
         public ReportsViewModel()
@@ -125,15 +169,18 @@ namespace Notation.ViewModels
             PeriodReports = new ObservableCollection<string>();
             SemiTrimesterReports = new ObservableCollection<string>();
             TrimesterReports = new ObservableCollection<string>();
+            YearReports = new ObservableCollection<string>();
 
             OpenPeriodReportsPathCommand = new RoutedUICommand("OpenPeriodReportsPath", "OpenPeriodReportsPath", typeof(ReportsViewModel));
             OpenSemiTrimesterReportsPathCommand = new RoutedUICommand("OpenSemiTrimesterReportsPath", "OpenSemiTrimesterReportsPath", typeof(ReportsViewModel));
             OpenTrimesterReportsPathCommand = new RoutedUICommand("OpenTrimesterReportsPath", "OpenTrimesterReportsPath", typeof(ReportsViewModel));
+            OpenYearReportsPathCommand = new RoutedUICommand("OpenYearReportsPath", "OpenYearReportsPath", typeof(ReportsViewModel));
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(OpenPeriodReportsPathCommand, OpenPeriodReportsPathExecuted, OpenPeriodReportsPathCanExecute),
                 new CommandBinding(OpenSemiTrimesterReportsPathCommand, OpenSemiTrimesterReportsPathExecuted, OpenSemiTrimesterReportsPathCanExecute),
                 new CommandBinding(OpenTrimesterReportsPathCommand, OpenTrimesterReportsPathExecuted, OpenTrimesterReportsPathCanExecute),
+                new CommandBinding(OpenYearReportsPathCommand, OpenYearReportsPathExecuted, OpenYearReportsPathCanExecute),
             };
         }
 
@@ -155,6 +202,8 @@ namespace Notation.ViewModels
             {
                 Trimesters.Add(trimester);
             }
+
+            Year = MainViewModel.Instance.Parameters.Year;
         }
     }
 }

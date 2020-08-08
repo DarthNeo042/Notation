@@ -260,10 +260,17 @@ namespace Notation.ViewModels
 
         private void DeletePeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            SemiTrimesterModel.Delete(SelectedPeriod.Year);
-            PeriodModel.Delete(SelectedPeriod.Year, SelectedPeriod.Id);
-            LoadPeriods();
-            GenerateSemiTrimester();
+            if (SemiTrimesterModel.CanDeleteAll(SelectedPeriod.Year) && PeriodModel.CanDelete(SelectedPeriod.Year, SelectedPeriod.Id))
+            {
+                SemiTrimesterModel.DeleteAll(SelectedPeriod.Year);
+                PeriodModel.Delete(SelectedPeriod.Year, SelectedPeriod.Id);
+                LoadData();
+                GenerateSemiTrimester();
+            }
+            else
+            {
+                MessageBox.Show("Impossible de supprimer des périodes une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand SavePeriodCommand { get; set; }
@@ -271,7 +278,7 @@ namespace Notation.ViewModels
         private void SavePeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             PeriodModel.Save(ModificationPeriod);
-            LoadPeriods(ModificationPeriod.Id);
+            LoadData(ModificationPeriod);
             GenerateSemiTrimester();
         }
 
@@ -318,11 +325,18 @@ namespace Notation.ViewModels
 
         private void AddSemiTrimesterPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            int index = SemiTrimesters.IndexOf(SelectedSemiTrimester);
-            SelectedSemiTrimester.Period2 = SemiTrimesters[index + 1].Period1;
-            SemiTrimesters.RemoveAt(index + 1);
-            SemiTrimesterModel.Save(SemiTrimesters);
-            LoadSemiTrimesters(SelectedSemiTrimester.Id);
+            if (SemiTrimesterModel.CanDeleteAll(SelectedSemiTrimester.Year))
+            {
+                int index = SemiTrimesters.IndexOf(SelectedSemiTrimester);
+                SelectedSemiTrimester.Period2 = SemiTrimesters[index + 1].Period1;
+                SemiTrimesters.RemoveAt(index + 1);
+                SemiTrimesterModel.Save(SemiTrimesters);
+                LoadData(SelectedSemiTrimester);
+            }
+            else
+            {
+                MessageBox.Show("Impossible de modifier les demi-trimestres une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand DeleteSemiTrimesterPeriodCommand { get; set; }
@@ -334,14 +348,21 @@ namespace Notation.ViewModels
 
         private void DeleteSemiTrimesterPeriodExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            SemiTrimesters.Add(new SemiTrimesterViewModel()
+            if (SemiTrimesterModel.CanDeleteAll(SelectedSemiTrimester.Year))
             {
-                Period1 = SelectedSemiTrimester.Period2,
-                Year = SelectedSemiTrimester.Year,
-            });
-            SelectedSemiTrimester.Period2 = null;
-            SemiTrimesterModel.Save(SemiTrimesters);
-            LoadSemiTrimesters(SelectedSemiTrimester.Id);
+                SemiTrimesters.Add(new SemiTrimesterViewModel()
+                {
+                    Period1 = SelectedSemiTrimester.Period2,
+                    Year = SelectedSemiTrimester.Year,
+                });
+                SelectedSemiTrimester.Period2 = null;
+                SemiTrimesterModel.Save(SemiTrimesters);
+                LoadData(SelectedSemiTrimester);
+            }
+            else
+            {
+                MessageBox.Show("Impossible de modifier les demi-trimestres une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand SaveSemiTrimesterCommand { get; set; }
@@ -349,7 +370,7 @@ namespace Notation.ViewModels
         private void SaveSemiTrimesterExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             SemiTrimesterModel.Save(ModificationSemiTrimester);
-            LoadSemiTrimesters(ModificationSemiTrimester.Id);
+            LoadData(ModificationSemiTrimester);
         }
 
         public ICommand CancelSemiTrimesterCommand { get; set; }
@@ -399,8 +420,13 @@ namespace Notation.ViewModels
 
         private void DeleteLevelExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            foreach (ClassViewModel _class in Classes.Where(c => c.Level?.Id == SelectedLevel.Id))
+            {
+                _class.Level = null;
+                ClassModel.Save(_class);
+            }
             LevelModel.Delete(SelectedLevel.Year, SelectedLevel.Id);
-            LoadLevels();
+            LoadData();
         }
 
         public ICommand UpLevelCommand { get; set; }
@@ -531,8 +557,10 @@ namespace Notation.ViewModels
 
         private void DeleteSubjectExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            SelectedSubject.Levels.Clear();
+            LevelSubjectModel.SaveSubjectLevels(SelectedSubject);
             SubjectModel.Delete(SelectedSubject.Year, SelectedSubject.Id);
-            LoadSubjects();
+            LoadData();
         }
 
         public ICommand UpSubjectCommand { get; set; }
@@ -828,7 +856,7 @@ namespace Notation.ViewModels
         private void DeleteTeacherExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             TeacherModel.Delete(SelectedTeacher.Year, SelectedTeacher.Id);
-            LoadTeachers();
+            LoadData();
         }
 
         public ICommand SaveTeacherCommand { get; set; }
@@ -894,7 +922,7 @@ namespace Notation.ViewModels
         private void DeleteClassExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             ClassModel.Delete(SelectedClass.Year, SelectedClass.Id);
-            LoadClasses();
+            LoadData();
         }
 
         public ICommand UpClassCommand { get; set; }
@@ -1063,7 +1091,7 @@ namespace Notation.ViewModels
         private void DeleteStudentExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             StudentModel.Delete(SelectedStudent.Year, SelectedStudent.Id);
-            LoadStudents();
+            LoadData();
         }
 
         public ICommand SaveStudentCommand { get; set; }
@@ -1344,6 +1372,20 @@ namespace Notation.ViewModels
             };
         }
 
+        public void LoadData(PeriodViewModel period)
+        {
+            int idPeriod = period.Id;
+            LoadData();
+            SelectedPeriod = Periods.FirstOrDefault(l => l.Id == idPeriod);
+        }
+
+        public void LoadData(SemiTrimesterViewModel semiTrimester)
+        {
+            int idSemiTrimester = semiTrimester.Id;
+            LoadData();
+            SelectedSemiTrimester = SemiTrimesters.FirstOrDefault(l => l.Id == idSemiTrimester);
+        }
+
         public void LoadData(LevelViewModel level)
         {
             int idLevel = level.Id;
@@ -1411,7 +1453,7 @@ namespace Notation.ViewModels
             TeacherClassModel.ReadTeacherClasss(Teachers, Classes, Year);
         }
 
-        public void LoadPeriods(int idPeriod = 0)
+        public void LoadPeriods()
         {
             Periods.Clear();
             if (Year != 0)
@@ -1423,10 +1465,9 @@ namespace Notation.ViewModels
             }
             ModificationPeriod = null;
             Calendar.LoadCalendarSummaries(Periods);
-            SelectedPeriod = Periods.FirstOrDefault(p => p.Id == idPeriod);
         }
 
-        public void LoadSemiTrimesters(int idSemiTrimester = 0)
+        public void LoadSemiTrimesters()
         {
             SemiTrimesters.Clear();
             if (Year != 0)
@@ -1437,7 +1478,6 @@ namespace Notation.ViewModels
                 }
             }
             Calendar.LoadCalendarSummaries(SemiTrimesters);
-            SelectedSemiTrimester = SemiTrimesters.FirstOrDefault(p => p.Id == idSemiTrimester);
         }
 
         public void LoadLevels()

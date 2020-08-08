@@ -112,6 +112,7 @@ namespace Notation.ViewModels
 
         private void LoginExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            User = null;
             Login = new LoginViewModel();
             Login form = new Login(Login);
             if (form.ShowDialog() ?? false)
