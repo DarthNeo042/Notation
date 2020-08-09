@@ -26,14 +26,15 @@ namespace Notation.Models
                             {
                                 Year = (int)reader["Year"],
                                 Id = (int)reader["Id"],
-                                Name = (string)reader["Name"],
                             };
-                            semiTrimester.Period1 = periods.FirstOrDefault(p => p.Id == (int)reader["idPeriod1"]);
 
+                            semiTrimester.Period1 = periods.FirstOrDefault(p => p.Id == (int)reader["idPeriod1"]);
                             if (!reader.IsDBNull(reader.GetOrdinal("IdPeriod2")))
                             {
                                 semiTrimester.Period2 = periods.FirstOrDefault(p => p.Id == (int)reader["idPeriod2"]);
                             }
+                            semiTrimester.Name = (string)reader["Name"];
+
                             semiTrimesters.Add(semiTrimester);
                         }
                     }
@@ -59,20 +60,23 @@ namespace Notation.Models
 
         public static void Save(IEnumerable<SemiTrimesterViewModel> semiTrimesters)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            if (semiTrimesters.Any())
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+                {
+                    connection.Open();
 
-                using (SqlCommand command = new SqlCommand($"DELETE FROM SemiTrimester WHERE [Year] = {semiTrimesters.First().Year}", connection))
-                {
-                    command.ExecuteNonQuery();
-                }
-                foreach (SemiTrimesterViewModel semiTrimester in semiTrimesters)
-                {
-                    using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [SemiTrimester]([Year], Name, IdPeriod1, IdPeriod2) VALUES({0}, '{1}', {2}, {3})",
-                        semiTrimester.Year, semiTrimester.Name, semiTrimester.Period1.Id, semiTrimester.Period2 != null ? semiTrimester.Period2.Id.ToString() : "NULL"), connection))
+                    using (SqlCommand command = new SqlCommand($"DELETE FROM SemiTrimester WHERE [Year] = {semiTrimesters.First().Year}", connection))
                     {
                         command.ExecuteNonQuery();
+                    }
+                    foreach (SemiTrimesterViewModel semiTrimester in semiTrimesters)
+                    {
+                        using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [SemiTrimester]([Year], Name, IdPeriod1, IdPeriod2) VALUES({0}, '{1}', {2}, {3})",
+                            semiTrimester.Year, semiTrimester.Name, semiTrimester.Period1.Id, semiTrimester.Period2 != null ? semiTrimester.Period2.Id.ToString() : "NULL"), connection))
+                        {
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
             }

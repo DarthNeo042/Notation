@@ -1,6 +1,7 @@
 ﻿using Notation.Models;
 using Notation.Utils;
 using Notation.Views;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -151,9 +152,10 @@ namespace Notation.ViewModels
 
         private void AddYearExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (MessageBox.Show($"Voulez-vous créer l'année {SelectedYear + 1}/{SelectedYear + 2} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            int year = SelectedYear == 0 ? DateTime.Now.Year - 1 : SelectedYear + 1;
+            if (MessageBox.Show($"Voulez-vous créer l'année {year + 1}/{year + 2} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                YearUtils.CreateYear(SelectedYear + 1);
+                YearUtils.CreateYear(year + 1);
             }
         }
 
@@ -171,6 +173,7 @@ namespace Notation.ViewModels
             {
                 YearUtils.DeleteYear(SelectedYear);
             }
+            SelectedYear = Years.LastOrDefault();
         }
 
         public CommandBindingCollection Bindings { get; set; }

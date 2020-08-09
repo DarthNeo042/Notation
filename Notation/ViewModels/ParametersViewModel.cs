@@ -302,9 +302,9 @@ namespace Notation.ViewModels
             {
                 Id = SelectedSemiTrimester.Id,
                 Year = SelectedSemiTrimester.Year,
-                Name = SelectedSemiTrimester.Name,
                 Period1 = SelectedSemiTrimester.Period1,
                 Period2 = SelectedSemiTrimester.Period2,
+                Name = SelectedSemiTrimester.Name,
             };
         }
 
@@ -877,6 +877,11 @@ namespace Notation.ViewModels
                 TeacherClassModel.SaveTeacherClasses(SelectedTeacher);
                 SelectedTeacher.Subjects.Clear();
                 SubjectTeacherModel.SaveTeacherSubjects(SelectedTeacher);
+                foreach (ClassViewModel _class in Classes.Where(c => c.MainTeacher != null && c.MainTeacher.Id == SelectedTeacher.Id))
+                {
+                    _class.MainTeacher = null;
+                    ClassModel.Save(_class);
+                }
                 TeacherModel.Delete(SelectedTeacher.Year, SelectedTeacher.Id);
                 LoadData();
             }
@@ -1534,9 +1539,9 @@ namespace Notation.ViewModels
             SemiTrimesters.Clear();
             if (Year != 0)
             {
-                foreach (SemiTrimesterViewModel SemiTrimester in SemiTrimesterModel.Read(Year, Periods))
+                foreach (SemiTrimesterViewModel semiTrimester in SemiTrimesterModel.Read(Year, Periods))
                 {
-                    SemiTrimesters.Add(SemiTrimester);
+                    SemiTrimesters.Add(semiTrimester);
                 }
             }
             Calendar.LoadCalendarSummaries(SemiTrimesters);

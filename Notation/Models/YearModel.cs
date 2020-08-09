@@ -57,7 +57,7 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            year = (int)reader["Year"];
+                            year = reader.IsDBNull(reader.GetOrdinal("Year")) ? 0 : (int)reader["Year"];
                         }
                     }
                 }

@@ -208,7 +208,7 @@ namespace Notation.Utils
         {
             YearParametersModel.Create(new YearParametersViewModel()
             {
-                DivisionPrefect = MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect,
+                DivisionPrefect = MainViewModel.Instance.Parameters.YearParameters != null ? MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "",
                 Year = year,
             });
             mainViewModel.Parameters.LoadYearParameters();
