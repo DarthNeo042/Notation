@@ -10,8 +10,7 @@ namespace Notation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            UserViewModel user = (UserViewModel)value;
-            return user != null && user.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
+            return ((UserViewModel)value)?.IsAdmin ?? false ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

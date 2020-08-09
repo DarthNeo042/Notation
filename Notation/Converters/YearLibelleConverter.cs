@@ -8,10 +8,9 @@ namespace Notation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int)
+            if (value is int year)
             {
-                int year = (int)value;
-                return year != 0 ? string.Format("{0}/{1}", year, year + 1) : "";
+                return year != 0 ? $"{year}/{year + 1}" : "";
             }
             return "";
         }

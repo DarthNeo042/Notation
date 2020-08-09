@@ -244,6 +244,8 @@ namespace Notation.Views
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
+                MainViewModel.Instance.Models.SuccessfulImport = false;
+
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 ImportProgressBar.Visibility = Visibility.Visible;
@@ -256,7 +258,8 @@ namespace Notation.Views
                     Dispatcher.Invoke(_updateImport, System.Windows.Threading.DispatcherPriority.Background, fileCount * 1000 / files.Length);
                 }
                 ImportProgressBar.Visibility = Visibility.Collapsed;
-                MessageBox.Show("Import terminé.", "Fin", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                MainViewModel.Instance.Models.SuccessfulImport = true;
             }
         }
 

@@ -46,7 +46,7 @@ namespace Notation.ViewModels
         private static void FirstNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TeacherViewModel teacher = (TeacherViewModel)d;
-            teacher.FirstName = NameUtils.FormatPascalFirstName(teacher.FirstName);
+            teacher.FirstName = NameUtils.FormatPascal(teacher.FirstName);
             GenerateLoginPassword(teacher);
         }
 

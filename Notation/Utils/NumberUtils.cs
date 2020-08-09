@@ -6,14 +6,12 @@
 
         public static string GetRankString(int number)
         {
-            string rankString = "";
-
             if (number > 0 && number <= _rankStrings.Length)
             {
-                rankString = _rankStrings[number - 1];
+                return _rankStrings[number - 1];
             }
 
-            return rankString;
+            return "";
         }
     }
 }

@@ -18,8 +18,8 @@
     </Window.Background>
     <Window.Resources>
         <converters:AdminToVisibilityConverter x:Key="AdminToVisibilityConverter"></converters:AdminToVisibilityConverter>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></converters:BooleanToVisibilityConverter>
         <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
-        <converters:SelectedToVisibilityConverter x:Key="SelectedToVisibilityConverter"></converters:SelectedToVisibilityConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
         <converters:YearLibelleConverter x:Key="YearLibelleConverter"></converters:YearLibelleConverter>
     </Window.Resources>
@@ -43,10 +43,18 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="100"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="11" Background="White" Height="35"></TextBlock>
+            <TextBlock Grid.Column="0" Grid.ColumnSpan="11" Height="35">
+                <TextBlock.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Offset="0" Color="White"></GradientStop>
+                        <GradientStop Offset="0.5" Color="#AFFFFFFF"></GradientStop>
+                        <GradientStop Offset="1" Color="White"></GradientStop>
+                    </LinearGradientBrush>
+                </TextBlock.Background>
+            </TextBlock>
             <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
             <TextBlock Grid.Column="1" Text="{Binding User.Name}"></TextBlock>
-            <Button Grid.Column="2" Content="Changer d'utilisateur" Command="{Binding LoginCommand}"></Button>
+            <Button Grid.Column="2" Content="Changer d'utilisateur" Command="{Binding LoginCommand}" Background="Yellow"></Button>
             <TextBlock Grid.Column="3" Text="Année :"></TextBlock>
             <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}">
                 <ComboBox.ItemTemplate>
@@ -55,11 +63,11 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Column="5" Content="Ajouter" Background="LimeGreen" Command="{Binding AddYearCommand}"></Button>
+            <Button Grid.Column="5" Content="Ajouter" Command="{Binding AddYearCommand}" Background="LimeGreen"></Button>
             <Button Grid.Column="6" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteYearCommand}"></Button>
             <TextBlock Grid.Column="7" Text="Base :"></TextBlock>
             <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}"></TextBlock>
-            <Button Grid.Column="10" Content="Aide"></Button>
+            <Button Grid.Column="10" Content="Aide" Background="LightSkyBlue"></Button>
         </Grid>
         <TabControl Grid.Row="1" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}" Name="ParametersTab" IsVisibleChanged="ParametersTab_IsVisibleChanged">
@@ -110,7 +118,7 @@
                                     <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationLevel, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -119,7 +127,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveLevelCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelLevelCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationLevel, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -209,7 +217,7 @@
                                     <DataGridCheckBoxColumn Binding="{Binding Option}" Header="Option" Width="*"></DataGridCheckBoxColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -218,7 +226,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSubjectCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSubjectCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSubject, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -342,7 +350,7 @@
                                     <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Column="1" Grid.Row="0" Visibility="{Binding ModificationTeacher, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="0" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -351,7 +359,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveTeacherCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelTeacherCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationTeacher, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -501,7 +509,7 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -510,7 +518,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveClassCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelClassCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationClass, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -644,7 +652,7 @@
                                     <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -653,7 +661,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveStudentCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelStudentCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationStudent, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -730,7 +738,7 @@
                                     <DataGridTextColumn Binding="{Binding ToDate, StringFormat=dd\/MM\/yyyy}" Header="Au" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -739,7 +747,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SavePeriodCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelPeriodCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -826,7 +834,7 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -835,7 +843,7 @@
                                 <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSemiTrimesterCommand}"></Button>
                                 <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSemiTrimesterCommand}"></Button>
                             </Grid>
-                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource SelectedToVisibilityConverter}}">
+                            <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
@@ -1179,7 +1187,15 @@
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Column="0" Background="DimGray" VerticalAlignment="Stretch" Drop="ImportModel_Drop" AllowDrop="True"></TextBlock>
                             <TextBlock Grid.Column="0" Text="Veuillez glisser les fichiers ici" TextAlignment="Center" Drop="ImportModel_Drop" AllowDrop="True" Foreground="LightGoldenrodYellow"></TextBlock>
-                            <ProgressBar Grid.Column="1" Name="ImportProgressBar" Visibility="Collapsed" Maximum="1000" Height="20" VerticalAlignment="Top"></ProgressBar>
+                            <Grid Grid.Row="0" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Visibility="{Binding SuccessfulImport, Converter={StaticResource BooleanToVisibilityConverter}}" Text="Import réussi"></TextBlock>
+                                <ProgressBar Grid.Row="1" Name="ImportProgressBar" Visibility="Collapsed" Maximum="1000" Height="20" VerticalAlignment="Top"></ProgressBar>
+                            </Grid>
                         </Grid>
                     </TabItem>
                 </TabControl>

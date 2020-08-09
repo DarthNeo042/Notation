@@ -5,11 +5,11 @@ using System.Windows.Data;
 
 namespace Notation.Converters
 {
-    public class SelectedToVisibilityConverter : IValueConverter
+    public class BooleanToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null ? Visibility.Hidden : Visibility.Visible;
+            return (bool)value ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
