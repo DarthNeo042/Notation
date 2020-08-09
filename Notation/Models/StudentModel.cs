@@ -105,6 +105,30 @@ namespace Notation.Models
             }
         }
 
+        public static bool CanDelete(int year, int id)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand($"SELECT(SELECT COUNT(1) FROM Mark WHERE IdStudent = {id} AND Year = {year})"
+                    + $" + (SELECT COUNT(1) FROM PeriodComment WHERE IdStudent = {id} AND Year = {year})"
+                    + $" + (SELECT COUNT(1) FROM SemiTrimesterComment WHERE IdStudent = {id} AND Year = {year})"
+                    + $" + (SELECT COUNT(1) FROM TrimesterSubjectComment WHERE IdStudent = {id} AND Year = {year})"
+                    + $" + (SELECT COUNT(1) FROM TrimesterComment WHERE IdStudent = {id} AND Year = {year}) AS Count", connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return (int)reader["Count"] == 0;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public static void Delete(int year, int id)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
@@ -112,6 +136,35 @@ namespace Notation.Models
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand(string.Format("DELETE [Student] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void DeleteMarksAndComments(int year, int id)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand($"DELETE [Mark] WHERE Year = {year} AND IdStudent = {id}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand($"DELETE [PeriodComment] WHERE Year = {year} AND IdStudent = {id}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand($"DELETE [SemiTrimesterComment] WHERE Year = {year} AND IdStudent = {id}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand($"DELETE [TrimesterSubjectComment] WHERE Year = {year} AND IdStudent = {id}", connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                using (SqlCommand command = new SqlCommand($"DELETE [TrimesterComment] WHERE Year = {year} AND IdStudent = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

@@ -64,6 +64,26 @@ namespace Notation.Models
             }
         }
 
+        public static bool CanDelete(int year, int id)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand($"SELECT COUNT(1) AS Count FROM Mark WHERE IdTeacher = {id} AND Year = {year}", connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return (int)reader["Count"] == 0;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public static void Delete(int year, int id)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))

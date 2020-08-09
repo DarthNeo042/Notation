@@ -557,10 +557,26 @@ namespace Notation.ViewModels
 
         private void DeleteSubjectExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            SelectedSubject.Levels.Clear();
-            LevelSubjectModel.SaveSubjectLevels(SelectedSubject);
-            SubjectModel.Delete(SelectedSubject.Year, SelectedSubject.Id);
-            LoadData();
+            if (SubjectModel.CanDelete(SelectedSubject.Year, SelectedSubject.Id))
+            {
+                SelectedSubject.Levels.Clear();
+                LevelSubjectModel.SaveSubjectLevels(SelectedSubject);
+                foreach (TeacherViewModel teacher in Teachers)
+                {
+                    SubjectViewModel subject = teacher.Subjects.FirstOrDefault(s => s.Id == SelectedSubject.Id);
+                    if (subject != null)
+                    {
+                        teacher.Subjects.Remove(subject);
+                    }
+                    SubjectTeacherModel.SaveTeacherSubjects(teacher);
+                }
+                SubjectModel.Delete(SelectedSubject.Year, SelectedSubject.Id);
+                LoadData();
+            }
+            else
+            {
+                MessageBox.Show("Impossible de supprimer des matières une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand UpSubjectCommand { get; set; }
@@ -855,8 +871,19 @@ namespace Notation.ViewModels
 
         private void DeleteTeacherExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            TeacherModel.Delete(SelectedTeacher.Year, SelectedTeacher.Id);
-            LoadData();
+            if (TeacherModel.CanDelete(SelectedTeacher.Year, SelectedTeacher.Id))
+            {
+                SelectedTeacher.Classes.Clear();
+                TeacherClassModel.SaveTeacherClasses(SelectedTeacher);
+                SelectedTeacher.Subjects.Clear();
+                SubjectTeacherModel.SaveTeacherSubjects(SelectedTeacher);
+                TeacherModel.Delete(SelectedTeacher.Year, SelectedTeacher.Id);
+                LoadData();
+            }
+            else
+            {
+                MessageBox.Show("Impossible de supprimer des professeurs une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand SaveTeacherCommand { get; set; }
@@ -921,6 +948,30 @@ namespace Notation.ViewModels
 
         private void DeleteClassExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            if (ClassModel.CanDelete(SelectedClass.Year, SelectedClass.Id))
+            {
+                foreach (StudentViewModel student in Students.Where(s => s.Class.Id == SelectedClass.Id))
+                {
+                    student.Class = null;
+                    StudentModel.Save(student);
+                }
+                foreach (TeacherViewModel teacher in Teachers)
+                {
+                    ClassViewModel _class = teacher.Classes.FirstOrDefault(c => c.Id == SelectedClass.Id);
+                    if (_class != null)
+                    {
+                        teacher.Classes.Remove(_class);
+                    }
+                    TeacherClassModel.SaveTeacherClasses(teacher);
+                }
+                ClassModel.Delete(SelectedClass.Year, SelectedClass.Id);
+                LoadData();
+            }
+            else
+            {
+                MessageBox.Show("Impossible de supprimer des matières une fois la saisie des bulletins commencée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
             ClassModel.Delete(SelectedClass.Year, SelectedClass.Id);
             LoadData();
         }
@@ -1090,6 +1141,17 @@ namespace Notation.ViewModels
 
         private void DeleteStudentExecuted(object sender, ExecutedRoutedEventArgs e)
         {
+            if (!StudentModel.CanDelete(SelectedStudent.Year, SelectedStudent.Id))
+            {
+                if (MessageBox.Show("Voulez-vous supprimer les notes et commentaires associés à cet élève ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    StudentModel.DeleteMarksAndComments(SelectedStudent.Year, SelectedStudent.Id);
+                }
+                else
+                {
+                    return;
+                }
+            }
             StudentModel.Delete(SelectedStudent.Year, SelectedStudent.Id);
             LoadData();
         }
