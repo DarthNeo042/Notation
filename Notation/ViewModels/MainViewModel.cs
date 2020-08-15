@@ -4,7 +4,10 @@ using Notation.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 
@@ -143,6 +146,29 @@ namespace Notation.ViewModels
             }
         }
 
+        public RoutedUICommand HelpCommand { get; set; }
+
+        private void HelpExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Notation.Resources.Aide.pdf"))
+            {
+                using (FileStream file = new FileStream("Aide.pdf", FileMode.Create))
+                {
+                    try
+                    {
+                        stream.CopyTo(file);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+            if (File.Exists("Aide.pdf"))
+            {
+                Process.Start("Aide.pdf");
+            }
+        }
+
         public ICommand AddYearCommand { get; set; }
 
         private void AddYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -190,12 +216,14 @@ namespace Notation.ViewModels
             AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));
             DeleteYearCommand = new RoutedUICommand("DeleteYear", "DeleteYear", typeof(MainViewModel));
             LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
+            HelpCommand = new RoutedUICommand("Help", "Help", typeof(MainViewModel));
 
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(AddYearCommand, AddYearExecuted, AddYearCanExecute),
                 new CommandBinding(DeleteYearCommand, DeleteYearExecuted, DeleteYearCanExecute),
                 new CommandBinding(LoginCommand, LoginExecuted),
+                new CommandBinding(HelpCommand, HelpExecuted),
             };
 
             LoadYears();

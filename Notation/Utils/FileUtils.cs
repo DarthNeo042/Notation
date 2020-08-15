@@ -1,28 +1,40 @@
-﻿using System;
+﻿using Notation.Properties;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
-using Notation.ViewModels;
+using System.Xml;
 
 namespace Notation.Utils
 {
     public static class FileUtils
     {
-        public static string SelectDirectory()
+        public static string SelectDirectory(string directory, string parameter)
         {
-            string directory = "";
-
             FolderBrowserDialog dialog = new FolderBrowserDialog()
             {
                 Description = "Sélectionnez un répertoire",
-                // TODO
-                //SelectedPath = MainViewModel.Singleton.Cookie.LastDirectory,
+                SelectedPath = directory,
             };
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 directory = dialog.SelectedPath;
-                // TODO
-                //MainViewModel.Singleton.Cookie.LastDirectory = directory;
             }
+
+            string configFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Notation.exe.config");
+
+            XmlDocument document = new XmlDocument();
+            document.Load(configFilename);
+            foreach (XmlNode node in document.GetElementsByTagName("setting"))
+            {
+                if (node.Attributes["name"].Value == parameter)
+                {
+                    node.FirstChild.FirstChild.Value = directory;
+                }
+            }
+            document.Save(configFilename);
+
+            Settings.Default.Reload();
 
             return directory;
         }

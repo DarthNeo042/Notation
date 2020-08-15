@@ -25,11 +25,75 @@ namespace Notation.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=localhost\\SQLEXPRESS;Initial Catalog=NotationCollege;User Id=admin;Pa" +
             "ssword=admin")]
         public string SQLConnection {
             get {
                 return ((string)(this["SQLConnection"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectoryPeriodModels {
+            get {
+                return ((string)(this["LastSelectedDirectoryPeriodModels"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectorySemiTrimesterModels {
+            get {
+                return ((string)(this["LastSelectedDirectorySemiTrimesterModels"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectoryTrimesterModels {
+            get {
+                return ((string)(this["LastSelectedDirectoryTrimesterModels"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectoryPeriodReports {
+            get {
+                return ((string)(this["LastSelectedDirectoryPeriodReports"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectorySemiTrimesterReports {
+            get {
+                return ((string)(this["LastSelectedDirectorySemiTrimesterReports"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectoryTrimesterReports {
+            get {
+                return ((string)(this["LastSelectedDirectoryTrimesterReports"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".")]
+        public string LastSelectedDirectoryYearReports {
+            get {
+                return ((string)(this["LastSelectedDirectoryYearReports"]));
             }
         }
     }

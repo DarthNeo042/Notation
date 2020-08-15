@@ -1,4 +1,5 @@
 ﻿using Notation.Models;
+using Notation.Properties;
 using Notation.ViewModels;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -16,7 +17,7 @@ namespace Notation.Utils
     {
         public static void ExportPeriodModels(PeriodViewModel period, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
             if (!string.IsNullOrEmpty(directory))
             {
                 MainViewModel.Instance.Models.PeriodModels.Clear();
@@ -574,7 +575,7 @@ namespace Notation.Utils
 
         public static void ExportTrimesterModels(int trimester, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryTrimesterModels, "LastSelectedDirectoryTrimesterModels");
 
             if (!string.IsNullOrEmpty(directory))
             {
@@ -589,7 +590,7 @@ namespace Notation.Utils
 
         public static void ExportSemiTrimesterModels(SemiTrimesterViewModel semiTrimester, UpdateSemiTrimesterModelsDelegate _updateSemiTrimesterModelsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectorySemiTrimesterModels, "LastSelectedDirectorySemiTrimesterModels");
 
             if (!string.IsNullOrEmpty(directory))
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Reporting.WebForms;
 using Notation.Models;
+using Notation.Properties;
 using Notation.Reports;
 using Notation.ViewModels;
 using Notation.Views;
@@ -76,7 +77,7 @@ namespace Notation.Utils
     {
         static public void CreatePeriodReport(PeriodViewModel period, MainWindow.UpdatePeriodReportsDelegate _updatePeriodReportsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodReports, "LastSelectedDirectoryPeriodReports");
 
             if (!string.IsNullOrEmpty(directory))
             {
@@ -309,7 +310,7 @@ namespace Notation.Utils
 
         static public void CreateSemiTrimesterReport(SemiTrimesterViewModel semiTrimester, MainWindow.UpdateSemiTrimesterReportsDelegate _updateSemiTrimesterReportsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectorySemiTrimesterReports, "LastSelectedDirectorySemiTrimesterReports");
 
             if (!string.IsNullOrEmpty(directory))
             {
@@ -515,7 +516,7 @@ namespace Notation.Utils
 
         static public void CreateTrimesterReport(int trimester, MainWindow.UpdateTrimesterReportsDelegate _updateTrimesterReportsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryTrimesterReports, "LastSelectedDirectoryTrimesterReports");
 
             if (!string.IsNullOrEmpty(directory))
             {
@@ -721,7 +722,7 @@ namespace Notation.Utils
 
         static public void CreateYearReport(int year, MainWindow.UpdateYearReportsDelegate _updateYearReportsDispatch)
         {
-            string directory = FileUtils.SelectDirectory();
+            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryYearReports, "LastSelectedDirectoryYearReports");
 
             if (!string.IsNullOrEmpty(directory))
             {
