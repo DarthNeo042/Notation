@@ -169,7 +169,7 @@ namespace Notation.Views
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance.LoginCommand.Execute(null, this);
+            MainViewModel.Instance.LoginCommand.Execute(null);
         }
 
         private void Period_MouseDoubleClick(object sender, MouseButtonEventArgs e)

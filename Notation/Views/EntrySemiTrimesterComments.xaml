@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Notation.Views"
         mc:Ignorable="d"
-        Title="Saisie des commentaires généraux de période" Height="1080" Width="1920"
+        Title="Saisie des appréciations générales de période" Height="1080" Width="1920"
         WindowState="Maximized">
     <Window.Resources>
         <Style TargetType="RadioButton">

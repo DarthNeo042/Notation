@@ -112,7 +112,7 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty EntryProperty =
             DependencyProperty.Register("Entry", typeof(EntryViewModel), typeof(MainViewModel), new PropertyMetadata(null));
 
-        public RoutedUICommand LoginCommand { get; set; }
+        public ICommand LoginCommand { get; set; }
 
         private void LoginExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -146,22 +146,31 @@ namespace Notation.ViewModels
             }
         }
 
-        public RoutedUICommand HelpCommand { get; set; }
+        public ICommand RefreshCommand { get; set; }
+
+        private void RefreshExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Parameters.LoadData();
+            Models.LoadData();
+            Reports.LoadData();
+        }
+
+        public ICommand HelpCommand { get; set; }
 
         private void HelpExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Notation.Resources.Aide.pdf"))
+            try
             {
-                using (FileStream file = new FileStream("Aide.pdf", FileMode.Create))
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Notation.Resources.Aide.pdf"))
                 {
-                    try
+                    using (FileStream file = new FileStream("Aide.pdf", FileMode.Create))
                     {
                         stream.CopyTo(file);
                     }
-                    catch
-                    {
-                    }
                 }
+            }
+            catch
+            {
             }
             if (File.Exists("Aide.pdf"))
             {
@@ -216,6 +225,7 @@ namespace Notation.ViewModels
             AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));
             DeleteYearCommand = new RoutedUICommand("DeleteYear", "DeleteYear", typeof(MainViewModel));
             LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
+            RefreshCommand = new RoutedUICommand("Refresh", "Refresh", typeof(MainViewModel));
             HelpCommand = new RoutedUICommand("Help", "Help", typeof(MainViewModel));
 
             Bindings = new CommandBindingCollection()
@@ -223,6 +233,7 @@ namespace Notation.ViewModels
                 new CommandBinding(AddYearCommand, AddYearExecuted, AddYearCanExecute),
                 new CommandBinding(DeleteYearCommand, DeleteYearExecuted, DeleteYearCanExecute),
                 new CommandBinding(LoginCommand, LoginExecuted),
+                new CommandBinding(RefreshCommand, RefreshExecuted),
                 new CommandBinding(HelpCommand, HelpExecuted),
             };
 

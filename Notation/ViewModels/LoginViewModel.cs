@@ -32,7 +32,7 @@ namespace Notation.ViewModels
         public event CloseEventHandler ValidateEvent;
         public event CloseEventHandler CancelEvent;
 
-        public RoutedUICommand ValidateCommand { get; set; }
+        public ICommand ValidateCommand { get; set; }
 
         private void ValidateCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
@@ -47,7 +47,7 @@ namespace Notation.ViewModels
             }
         }
 
-        public RoutedUICommand CancelCommand { get; set; }
+        public ICommand CancelCommand { get; set; }
 
         private void CancelCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {

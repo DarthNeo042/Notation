@@ -13,7 +13,7 @@
     <Window.Background>
         <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5" RadiusX="0.9" RadiusY="0.9">
             <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
-            <GradientStop Offset="1.1" Color="Black"></GradientStop>
+            <GradientStop Offset="1.2" Color="Black"></GradientStop>
         </RadialGradientBrush>
     </Window.Background>
     <Grid Margin="5">
