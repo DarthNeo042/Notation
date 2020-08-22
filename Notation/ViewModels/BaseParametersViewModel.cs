@@ -13,7 +13,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for ColorR.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorRProperty =
-            DependencyProperty.Register("ColorR", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)255, ColorChanged));
+            DependencyProperty.Register("ColorR", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)0, ColorChanged));
 
         public byte ColorG
         {
@@ -23,7 +23,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for ColorG.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorGProperty =
-            DependencyProperty.Register("ColorG", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)255, ColorChanged));
+            DependencyProperty.Register("ColorG", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)125, ColorChanged));
 
         public byte ColorB
         {
@@ -33,7 +33,7 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for ColorB.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ColorBProperty =
-            DependencyProperty.Register("ColorB", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)255, ColorChanged));
+            DependencyProperty.Register("ColorB", typeof(byte), typeof(BaseParametersViewModel), new PropertyMetadata((byte)250, ColorChanged));
 
         private static void ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -80,5 +80,10 @@ namespace Notation.ViewModels
         // Using a DependencyProperty as the backing store for Name.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NameProperty =
             DependencyProperty.Register("Name", typeof(string), typeof(BaseParametersViewModel), new PropertyMetadata(""));
+
+        public BaseParametersViewModel()
+        {
+            ColorChanged(this, new DependencyPropertyChangedEventArgs());
+        }
     }
 }

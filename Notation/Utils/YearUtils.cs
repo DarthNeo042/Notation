@@ -226,9 +226,9 @@ namespace Notation.Utils
             SubjectTeacherModel.DeleteAll(year);
             SemiTrimesterModel.DeleteAll(year);
             PeriodModel.DeleteAll(year);
+            StudentModel.DeleteAll(year);
             ClassModel.DeleteAll(year);
             LevelModel.DeleteAll(year);
-            StudentModel.DeleteAll(year);
             SubjectModel.DeleteAll(year);
             TeacherModel.DeleteAll(year);
             YearParametersModel.DeleteAll(year);

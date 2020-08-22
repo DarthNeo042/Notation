@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Notation.Utils;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -14,7 +15,13 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for LastName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty LastNameProperty =
-            DependencyProperty.Register("LastName", typeof(string), typeof(StudentViewModel), new PropertyMetadata(""));
+            DependencyProperty.Register("LastName", typeof(string), typeof(StudentViewModel), new PropertyMetadata("", LastNamePropertyChanged));
+
+        private static void LastNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            StudentViewModel student = (StudentViewModel)d;
+            student.LastName = student.LastName.ToUpper();
+        }
 
         public string FirstName
         {
@@ -24,8 +31,13 @@ namespace Notation.ViewModels
 
         // Using a DependencyProperty as the backing store for FirstName.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty FirstNameProperty =
-            DependencyProperty.Register("FirstName", typeof(string), typeof(StudentViewModel), new PropertyMetadata(""));
+            DependencyProperty.Register("FirstName", typeof(string), typeof(StudentViewModel), new PropertyMetadata("", FirstNamePropertyChanged));
 
+        private static void FirstNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            StudentViewModel student = (StudentViewModel)d;
+            student.FirstName = NameUtils.FormatPascal(student.FirstName);
+        }
         public DateTime BirthDate
         {
             get { return (DateTime)GetValue(BirthDateProperty); }

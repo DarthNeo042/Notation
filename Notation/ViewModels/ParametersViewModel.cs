@@ -266,6 +266,7 @@ namespace Notation.ViewModels
                 PeriodModel.Delete(SelectedPeriod.Year, SelectedPeriod.Id);
                 LoadData();
                 GenerateSemiTrimester();
+                SelectedPeriod = Periods.FirstOrDefault();
             }
             else
             {
@@ -427,6 +428,7 @@ namespace Notation.ViewModels
             }
             LevelModel.Delete(SelectedLevel.Year, SelectedLevel.Id);
             LoadData();
+            SelectedLevel = Levels.FirstOrDefault();
         }
 
         public ICommand UpLevelCommand { get; set; }
@@ -498,10 +500,17 @@ namespace Notation.ViewModels
 
         private void SaveLevelExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            LevelModel.Save(ModificationLevel);
-            ModificationLevel.Id = LevelModel.Read(ModificationLevel.Year).LastOrDefault(l => l.Name == ModificationLevel.Name).Id;
-            LevelSubjectModel.SaveLevelSubjects(ModificationLevel);
-            LoadData(ModificationLevel);
+            if (!string.IsNullOrEmpty(ModificationLevel.Name))
+            {
+                LevelModel.Save(ModificationLevel);
+                ModificationLevel.Id = LevelModel.Read(ModificationLevel.Year).LastOrDefault(l => l.Name == ModificationLevel.Name).Id;
+                LevelSubjectModel.SaveLevelSubjects(ModificationLevel);
+                LoadData(ModificationLevel);
+            }
+            else
+            {
+                MessageBox.Show("Vous devez saisir un nom.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand CancelLevelCommand { get; set; }
@@ -572,6 +581,7 @@ namespace Notation.ViewModels
                 }
                 SubjectModel.Delete(SelectedSubject.Year, SelectedSubject.Id);
                 LoadData();
+                SelectedSubject = Subjects.FirstOrDefault();
             }
             else
             {
@@ -745,17 +755,24 @@ namespace Notation.ViewModels
 
         private void SaveSubjectExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (ModificationSubject.ParentSubject != null && ModificationSubject.ParentSubject.Id == 0)
+            if (!string.IsNullOrEmpty(ModificationSubject.Name))
             {
-                ModificationSubject.ParentSubject = null;
+                if (ModificationSubject.ParentSubject != null && ModificationSubject.ParentSubject.Id == 0)
+                {
+                    ModificationSubject.ParentSubject = null;
+                }
+                SubjectModel.Save(ModificationSubject);
+                IEnumerable<SubjectViewModel> subjects = SubjectModel.ReadParents(ModificationSubject.Year);
+                subjects = SubjectModel.ReadChildren(ModificationSubject.Year, subjects);
+                ModificationSubject.Id = subjects.LastOrDefault(s => s.Name == ModificationSubject.Name).Id;
+                LevelSubjectModel.SaveSubjectLevels(ModificationSubject);
+                SubjectTeacherModel.SaveSubjectTeachers(ModificationSubject);
+                LoadData(ModificationSubject);
             }
-            SubjectModel.Save(ModificationSubject);
-            IEnumerable<SubjectViewModel> subjects = SubjectModel.ReadParents(ModificationSubject.Year);
-            subjects = SubjectModel.ReadChildren(ModificationSubject.Year, subjects);
-            ModificationSubject.Id = subjects.LastOrDefault(s => s.Name == ModificationSubject.Name).Id;
-            LevelSubjectModel.SaveSubjectLevels(ModificationSubject);
-            SubjectTeacherModel.SaveSubjectTeachers(ModificationSubject);
-            LoadData(ModificationSubject);
+            else
+            {
+                MessageBox.Show("Vous devez saisir un nom.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand CancelSubjectCommand { get; set; }
@@ -884,6 +901,7 @@ namespace Notation.ViewModels
                 }
                 TeacherModel.Delete(SelectedTeacher.Year, SelectedTeacher.Id);
                 LoadData();
+                SelectedTeacher = Teachers.FirstOrDefault();
             }
             else
             {
@@ -895,11 +913,18 @@ namespace Notation.ViewModels
 
         private void SaveTeacherExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            TeacherModel.Save(ModificationTeacher);
-            ModificationTeacher.Id = TeacherModel.Read(ModificationTeacher.Year).LastOrDefault(l => l.LastName == ModificationTeacher.LastName && l.FirstName == ModificationTeacher.FirstName).Id;
-            SubjectTeacherModel.SaveTeacherSubjects(ModificationTeacher);
-            TeacherClassModel.SaveTeacherClasses(ModificationTeacher);
-            LoadData(ModificationTeacher);
+            if (!string.IsNullOrEmpty(ModificationTeacher.LastName))
+            {
+                TeacherModel.Save(ModificationTeacher);
+                ModificationTeacher.Id = TeacherModel.Read(ModificationTeacher.Year).LastOrDefault(l => l.LastName == ModificationTeacher.LastName && l.FirstName == ModificationTeacher.FirstName).Id;
+                SubjectTeacherModel.SaveTeacherSubjects(ModificationTeacher);
+                TeacherClassModel.SaveTeacherClasses(ModificationTeacher);
+                LoadData(ModificationTeacher);
+            }
+            else
+            {
+                MessageBox.Show("Vous devez saisir un nom.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand CancelTeacherCommand { get; set; }
@@ -979,6 +1004,7 @@ namespace Notation.ViewModels
 
             ClassModel.Delete(SelectedClass.Year, SelectedClass.Id);
             LoadData();
+            SelectedClass = Classes.FirstOrDefault();
         }
 
         public ICommand UpClassCommand { get; set; }
@@ -1081,19 +1107,26 @@ namespace Notation.ViewModels
 
         private void SaveClassExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (ModificationClass.MainTeacher != null && ModificationClass.MainTeacher.Id == 0)
+            if (!string.IsNullOrEmpty(ModificationClass.Name))
             {
-                ModificationClass.MainTeacher = null;
+                if (ModificationClass.MainTeacher != null && ModificationClass.MainTeacher.Id == 0)
+                {
+                    ModificationClass.MainTeacher = null;
+                }
+                if (ModificationClass.Level != null && ModificationClass.Level.Id == 0)
+                {
+                    ModificationClass.Level = null;
+                }
+                ClassModel.Save(ModificationClass);
+                ModificationClass.Id = ClassModel.Read(ModificationClass.Year, MainViewModel.Instance.Parameters.Teachers, MainViewModel.Instance.Parameters.Levels).LastOrDefault(c => c.Name == ModificationClass.Name).Id;
+                TeacherClassModel.SaveClassTeachers(ModificationClass);
+                StudentModel.SaveClass(ModificationClass);
+                LoadData(ModificationClass);
             }
-            if (ModificationClass.Level != null && ModificationClass.Level.Id == 0)
+            else
             {
-                ModificationClass.Level = null;
+                MessageBox.Show("Vous devez saisir un nom.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            ClassModel.Save(ModificationClass);
-            ModificationClass.Id = ClassModel.Read(ModificationClass.Year, MainViewModel.Instance.Parameters.Teachers, MainViewModel.Instance.Parameters.Levels).LastOrDefault(c => c.Name == ModificationClass.Name).Id;
-            TeacherClassModel.SaveClassTeachers(ModificationClass);
-            StudentModel.SaveClass(ModificationClass);
-            LoadData(ModificationClass);
         }
 
         public ICommand CancelClassCommand { get; set; }
@@ -1159,20 +1192,28 @@ namespace Notation.ViewModels
             }
             StudentModel.Delete(SelectedStudent.Year, SelectedStudent.Id);
             LoadData();
+            SelectedStudent = Students.FirstOrDefault();
         }
 
         public ICommand SaveStudentCommand { get; set; }
 
         private void SaveStudentExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            if (ModificationStudent.Class != null && ModificationStudent.Class.Id == 0)
+            if (!string.IsNullOrEmpty(ModificationStudent.FirstName) && !string.IsNullOrEmpty(ModificationStudent.LastName))
             {
-                ModificationStudent.Class = null;
+                if (ModificationStudent.Class != null && ModificationStudent.Class.Id == 0)
+                {
+                    ModificationStudent.Class = null;
+                }
+                StudentModel.Save(ModificationStudent);
+                ModificationStudent.Id = StudentModel.Read(ModificationStudent.Year, MainViewModel.Instance.Parameters.Classes)
+                    .LastOrDefault(c => c.LastName == ModificationStudent.LastName && c.FirstName == ModificationStudent.FirstName).Id;
+                LoadData(ModificationStudent);
             }
-            StudentModel.Save(ModificationStudent);
-            ModificationStudent.Id = StudentModel.Read(ModificationStudent.Year, MainViewModel.Instance.Parameters.Classes)
-                .LastOrDefault(c => c.LastName == ModificationStudent.LastName && c.FirstName == ModificationStudent.FirstName).Id;
-            LoadData(ModificationStudent);
+            else
+            {
+                MessageBox.Show("Vous devez saisir un nom et un prénom.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public ICommand CancelStudentCommand { get; set; }

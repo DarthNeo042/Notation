@@ -20,6 +20,7 @@
         <converters:AdminToVisibilityConverter x:Key="AdminToVisibilityConverter"></converters:AdminToVisibilityConverter>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></converters:BooleanToVisibilityConverter>
         <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
+        <converters:ObjectToNotVisibilityConverter x:Key="ObjectToNotVisibilityConverter"></converters:ObjectToNotVisibilityConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
         <converters:YearLibelleConverter x:Key="YearLibelleConverter"></converters:YearLibelleConverter>
     </Window.Resources>
@@ -120,6 +121,13 @@
                                     <DataGridTextColumn Binding="{Binding Name}" Header="Nom" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddLevelCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -219,6 +227,13 @@
                                     <DataGridCheckBoxColumn Binding="{Binding Option}" Header="Option" Width="*"></DataGridCheckBoxColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -352,6 +367,13 @@
                                     <DataGridTextColumn Binding="{Binding FirstName}" Header="Prénom" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Column="1" Grid.Row="0" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -511,6 +533,13 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -654,6 +683,13 @@
                                     <DataGridTextColumn Binding="{Binding Class.Name}" Header="Classe" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddStudentCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
@@ -690,7 +726,7 @@
                                 <TextBlock Grid.Column="0" Grid.Row="5" Text="Classe :" TextAlignment="Right"></TextBlock>
                                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ModificationStudent.LastName}"></TextBox>
                                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding ModificationStudent.FirstName}"></TextBox>
-                                <DatePicker Grid.Column="1" Grid.Row="4" Text="{Binding ModificationStudent.BirthDate}"></DatePicker>
+                                <DatePicker Grid.Column="1" Grid.Row="4" SelectedDate="{Binding ModificationStudent.BirthDate}"></DatePicker>
                                 <ComboBox Grid.Column="1" Grid.Row="5" SelectedItem="{Binding ModificationStudent.Class}" ItemsSource="{Binding ModificationStudent.Classes}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
@@ -740,6 +776,13 @@
                                     <DataGridTextColumn Binding="{Binding ToDate, StringFormat=dd\/MM\/yyyy}" Header="Au" Width="*"></DataGridTextColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
+                            <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToNotVisibilityConverter}}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddPeriodCommand}"></Button>
+                            </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"></ColumnDefinition>
