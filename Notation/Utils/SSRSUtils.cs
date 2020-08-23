@@ -119,19 +119,19 @@ namespace Notation.Utils
 
         static private void GeneratePeriodReport(IEnumerable<MarkViewModel> marks, string directory, StudentViewModel student, PeriodViewModel period, ClassViewModel _class)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de période {0} de {1} de {2} {3}.pdf", period.Number, _class.Name, student.LastName, student.FirstName));
+            string filename = Path.Combine(directory, $"Bulletin de période {period.Number} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinPeriode.rdlc";
 
             BulletinPeriodeHeaderDataSource bulletinPeriodeHeader = new BulletinPeriodeHeaderDataSource()
             {
-                BirthDate = string.Format("né le {0}", student.BirthDate.ToShortDateString()),
+                BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Header1 = string.Format("Année {0} - {1}", student.Year, student.Year + 1),
-                Header2 = string.Format("Période du {0} au {1}", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString()),
-                Header3 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),
+                Header1 = $"Année {student.Year} - {student.Year + 1}",
+                Header2 = $"Période du {period.FromDate.ToShortDateString()} au {period.ToDate.ToShortDateString()}",
+                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
             };
 
             PeriodCommentViewModel periodComment = PeriodCommentModel.Read(period, student);
@@ -190,16 +190,16 @@ namespace Notation.Utils
                 };
                 if (subject.Option)
                 {
-                    bulletinPeriodeLine.Coefficient = string.Format("(option coeff. {0})", subject.Coefficient);
+                    bulletinPeriodeLine.Coefficient = $"(option coeff. {subject.Coefficient})";
                 }
                 else
                 {
-                    bulletinPeriodeLine.Coefficient = string.Format("(coeff. {0})", subject.Coefficient);
+                    bulletinPeriodeLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
                 TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
                 if (teacher != null)
                 {
-                    bulletinPeriodeLine.Teacher = string.Format("{0} {1}. {2}", teacher.Title, !string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "", teacher.LastName);
+                    bulletinPeriodeLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
                 }
                 i = 1;
                 foreach (int coefficient in coefficients)
@@ -238,11 +238,11 @@ namespace Notation.Utils
                     };
                     if (subject.Option)
                     {
-                        bulletinPeriodeLine.Coefficient = string.Format("(option coeff. {0})", subject2.Coefficient);
+                        bulletinPeriodeLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
                     }
                     else
                     {
-                        bulletinPeriodeLine.Coefficient = string.Format("(coeff. {0})", subject2.Coefficient);
+                        bulletinPeriodeLine.Coefficient = $"(coeff. {subject2.Coefficient})";
                     }
 
                     foreach (int coefficient in coefficients)
@@ -383,19 +383,19 @@ namespace Notation.Utils
 
         private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de demi-trimestre de {0} de {1} de {2} {3}.pdf", semiTrimester.Name, _class.Name, student.LastName, student.FirstName));
+            string filename = Path.Combine(directory, $"Bulletin de demi-trimestre de {semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinDemiTrimestre.rdlc";
 
             BulletinDemiTrimestreHeaderDataSource bulletinDemiTrimestreHeader = new BulletinDemiTrimestreHeaderDataSource()
             {
-                BirthDate = string.Format("né le {0}", student.BirthDate.ToShortDateString()),
+                BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Header1 = string.Format("Année {0} - {1}", student.Year, student.Year + 1),
-                Header2 = string.Format("Période du {0} au {1}", semiTrimester.FromDate.ToShortDateString(), semiTrimester.ToDate.ToShortDateString()),
-                Header3 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),                
+                Header1 = $"Année {student.Year} - {student.Year + 1}",
+                Header2 = $"Période du {semiTrimester.FromDate.ToShortDateString()} au {semiTrimester.ToDate.ToShortDateString()}",
+                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",                
             };
 
             SemiTrimesterCommentViewModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
@@ -444,16 +444,16 @@ namespace Notation.Utils
                 };
                 if (subject.Option)
                 {
-                    bulletinDemiTrimestreLine.Coefficient = string.Format("(option coeff. {0})", subject.Coefficient);
+                    bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject.Coefficient})";
                 }
                 else
                 {
-                    bulletinDemiTrimestreLine.Coefficient = string.Format("(coeff. {0})", subject.Coefficient);
+                    bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
                 TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
                 if (teacher != null)
                 {
-                    bulletinDemiTrimestreLine.Teacher = string.Format("{0} {1}. {2}", teacher.Title, !string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "", teacher.LastName);
+                    bulletinDemiTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
                 }
                 average = double.MinValue;
                 if (subject.ChildrenSubjects.Any())
@@ -482,11 +482,11 @@ namespace Notation.Utils
                     };
                     if (subject.Option)
                     {
-                        bulletinDemiTrimestreLine.Coefficient = string.Format("(option coeff. {0})", subject2.Coefficient);
+                        bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
                     }
                     else
                     {
-                        bulletinDemiTrimestreLine.Coefficient = string.Format("(coeff. {0})", subject2.Coefficient);
+                        bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject2.Coefficient})";
                     }
                     average = MarkModel.ReadSemiTrimesterSubjectAverage(semiTrimester, student, subject2);
                     if (average != double.MinValue)
@@ -589,19 +589,19 @@ namespace Notation.Utils
 
         private static void GenerateTrimesterReport(string directory, int trimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_Trimester SSRSUtils_Trimester)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de trimestre {0} de {1} de {2} {3}.pdf", trimester, _class.Name, student.LastName, student.FirstName));
+            string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinTrimestre.rdlc";
 
             BulletinDemiTrimestreHeaderDataSource bulletinDemiTrimestreHeader = new BulletinDemiTrimestreHeaderDataSource()
             {
-                BirthDate = string.Format("né le {0}", student.BirthDate.ToShortDateString()),
+                BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Header1 = string.Format("DU {0} TRIMESTRE", NumberUtils.GetRankString(trimester)),
-                Header2 = string.Format("Année {0} - {1}", student.Year, student.Year + 1),
-                Header3 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),
+                Header1 = $"DU {NumberUtils.GetRankString(trimester)} TRIMESTRE",
+                Header2 = $"Année {student.Year} - {student.Year + 1}",
+                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
             };
 
             TrimesterCommentViewModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
@@ -612,7 +612,7 @@ namespace Notation.Utils
             }
 
             bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
-                (_class.MainTeacher != null ? string.Format(" {0} {1} {2}", _class.MainTeacher.Title, !string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "", _class.MainTeacher.LastName) : "");
+                (_class.MainTeacher != null ? $" {_class.MainTeacher.Title} {(!string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "")} {_class.MainTeacher.LastName}" : "");
             bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
                 (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
@@ -650,16 +650,16 @@ namespace Notation.Utils
                 };
                 if (subject.Option)
                 {
-                    bulletinDemiTrimestreLine.Coefficient = string.Format("(option coeff. {0})", subject.Coefficient);
+                    bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject.Coefficient})";
                 }
                 else
                 {
-                    bulletinDemiTrimestreLine.Coefficient = string.Format("(coeff. {0})", subject.Coefficient);
+                    bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
                 TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
                 if (teacher != null)
                 {
-                    bulletinDemiTrimestreLine.Teacher = string.Format("{0} {1}. {2}", teacher.Title, !string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "", teacher.LastName);
+                    bulletinDemiTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
                 }
                 average = double.MinValue;
                 if (subject.ChildrenSubjects.Any())
@@ -688,11 +688,11 @@ namespace Notation.Utils
                     };
                     if (subject.Option)
                     {
-                        bulletinDemiTrimestreLine.Coefficient = string.Format("(option coeff. {0})", subject2.Coefficient);
+                        bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
                     }
                     else
                     {
-                        bulletinDemiTrimestreLine.Coefficient = string.Format("(coeff. {0})", subject2.Coefficient);
+                        bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject2.Coefficient})";
                     }
                     average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
                     if (average != double.MinValue)
@@ -795,18 +795,18 @@ namespace Notation.Utils
 
         private static void GenerateYearReport(string directory, int year, StudentViewModel student, ClassViewModel _class, SSRSUtils_Year SSRSUtils_Year)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de l'année {0}-{1} de {2} de {3} {4}.pdf", year, year + 1, _class.Name, student.LastName, student.FirstName));
+            string filename = Path.Combine(directory, $"Bulletin de l'année {year}-{year + 1} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinAnnuel.rdlc";
 
             BulletinAnnuelHeaderDataSource bulletinAnnuelHeader = new BulletinAnnuelHeaderDataSource()
             {
-                BirthDate = string.Format("né le {0}", student.BirthDate.ToShortDateString()),
+                BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Header1 = string.Format("Année {0} - {1}", student.Year, student.Year + 1),
-                Header2 = string.Format("Classe de {0}\tEffectif {1}", _class.Name, _class.Students.Count),
+                Header1 = $"Année {student.Year} - {student.Year + 1}",
+                Header2 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
             };
 
             double average = MarkModel.ReadYearAverage(year, student);
@@ -843,16 +843,16 @@ namespace Notation.Utils
                 };
                 if (subject.Option)
                 {
-                    bulletinAnnuelLine.Coefficient = string.Format("(option coeff. {0})", subject.Coefficient);
+                    bulletinAnnuelLine.Coefficient = $"(option coeff. {subject.Coefficient})";
                 }
                 else
                 {
-                    bulletinAnnuelLine.Coefficient = string.Format("(coeff. {0})", subject.Coefficient);
+                    bulletinAnnuelLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
                 TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
                 if (teacher != null)
                 {
-                    bulletinAnnuelLine.Teacher = string.Format("{0} {1}. {2}", teacher.Title, !string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "", teacher.LastName);
+                    bulletinAnnuelLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
                 }
                 average = double.MinValue;
                 if (subject.ChildrenSubjects.Any())
@@ -917,11 +917,11 @@ namespace Notation.Utils
                     };
                     if (subject.Option)
                     {
-                        bulletinAnnuelLine.Coefficient = string.Format("(option coeff. {0})", subject2.Coefficient);
+                        bulletinAnnuelLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
                     }
                     else
                     {
-                        bulletinAnnuelLine.Coefficient = string.Format("(coeff. {0})", subject2.Coefficient);
+                        bulletinAnnuelLine.Coefficient = $"(coeff. {subject2.Coefficient})";
                     }
                     average = MarkModel.ReadYearSubjectAverage(year, student, subject2);
                     if (average != double.MinValue)

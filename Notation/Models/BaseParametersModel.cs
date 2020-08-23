@@ -42,8 +42,8 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO BaseParameters(ColorR, ColorG, ColorB, AdminLogin, AdminPassword, [Name]) VALUES({0}, {1}, {2}, '{3}', '{4}', '{5}')",
-                    baseParameters.ColorR, baseParameters.ColorG, baseParameters.ColorB, baseParameters.AdminLogin, baseParameters.AdminPassword, baseParameters.Name), connection))
+                using (SqlCommand command = new SqlCommand("INSERT INTO BaseParameters(ColorR, ColorG, ColorB, AdminLogin, AdminPassword, [Name])"
+                    + $" VALUES({baseParameters.ColorR}, {baseParameters.ColorG}, {baseParameters.ColorB}, '{baseParameters.AdminLogin}', '{baseParameters.AdminPassword}', '{baseParameters.Name}')", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -56,8 +56,8 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("UPDATE BaseParameters SET ColorR = {0}, ColorG = {1}, ColorB = {2}, AdminLogin = '{3}', AdminPassword = '{4}', [Name] = '{5}'",
-                    baseParameters.ColorR, baseParameters.ColorG, baseParameters.ColorB, baseParameters.AdminLogin, baseParameters.AdminPassword, baseParameters.Name), connection))
+                using (SqlCommand command = new SqlCommand($"UPDATE BaseParameters SET ColorR = {baseParameters.ColorR}, ColorG = {baseParameters.ColorG}, ColorB = {baseParameters.ColorB},"
+                    + $" AdminLogin = '{baseParameters.AdminLogin}', AdminPassword = '{baseParameters.AdminPassword}', [Name] = '{baseParameters.Name}'", connection))
                 {
                     command.ExecuteNonQuery();
                 }

@@ -14,7 +14,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [YearParameters] WHERE Year = {0}", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [YearParameters] WHERE Year = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -40,8 +40,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO YearParameters(Year, DivisionPrefect) VALUES({0}, '{1}')",
-                    yearParameters.Year, yearParameters.DivisionPrefect), connection))
+                using (SqlCommand command = new SqlCommand($"INSERT INTO YearParameters(Year, DivisionPrefect) VALUES({yearParameters.Year}, '{yearParameters.DivisionPrefect}')", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -54,8 +53,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("UPDATE YearParameters SET DivisionPrefect = '{0}' WHERE Id = {1} AND Year = {2}",
-                    yearParameters.DivisionPrefect, yearParameters.Id, yearParameters.Year), connection))
+                using (SqlCommand command = new SqlCommand($"UPDATE YearParameters SET DivisionPrefect = '{yearParameters.DivisionPrefect}' WHERE Id = {yearParameters.Id} AND Year = {yearParameters.Year}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

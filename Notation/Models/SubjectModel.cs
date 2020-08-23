@@ -16,7 +16,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Subject] WHERE Year = {0} AND ParentSubjectId IS NULL ORDER BY [Order]", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Subject] WHERE Year = {year} AND ParentSubjectId IS NULL ORDER BY [Order]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -47,7 +47,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Subject] WHERE Year = {0} AND ParentSubjectId IS NOT NULL ORDER BY [Order] DESC", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Subject] WHERE Year = {year} AND ParentSubjectId IS NOT NULL ORDER BY [Order] DESC", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -83,16 +83,15 @@ namespace Notation.Models
                 string query = "";
                 if (subject.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [Subject]([Year], [Order], Name, Coefficient, [Option], ParentSubjectId) VALUES({0}, {1}, '{2}', {3}, {4}, {5})",
-                        subject.Year, subject.Order, subject.Name, subject.Coefficient.ToString().Replace(',', '.'), subject.Option ? 1 : 0,
-                        subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL");
+                    query = "INSERT INTO [Subject]([Year], [Order], Name, Coefficient, [Option], ParentSubjectId)"
+                        + $" VALUES({subject.Year}, {subject.Order}, '{subject.Name}', {subject.Coefficient.ToString().Replace(',', '.')},"
+                        + $" {(subject.Option ? 1 : 0)}, {(subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL")})";
                 }
                 else
                 {
-                    query = string.Format("UPDATE [Subject] SET Name = '{0}', [Order] = {1}, Coefficient = {2}, [Option] = {3}, ParentSubjectId = {4}"
-                        + " WHERE [Subject].Id = {5} AND [Subject].[Year] = {6}",
-                        subject.Name, subject.Order, subject.Coefficient.ToString().Replace(',', '.'), subject.Option ? 1 : 0,
-                        subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL", subject.Id, subject.Year);
+                    query = $"UPDATE [Subject] SET Name = '{subject.Name}', [Order] = {subject.Order}, Coefficient = {subject.Coefficient.ToString().Replace(',', '.')},"
+                        + $" [Option] = {(subject.Option ? 1 : 0)}, ParentSubjectId = {(subject.ParentSubject != null ? subject.ParentSubject.Id.ToString() : "NULL")}"
+                        + $" WHERE [Subject].Id = {subject.Id} AND [Subject].[Year] = {subject.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -128,7 +127,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Subject] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Subject] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

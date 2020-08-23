@@ -168,17 +168,16 @@ namespace Notation.Models
 
                 foreach (IGrouping<Group, MarkViewModel> markGroup in marks.GroupBy(m => new Group() { IdClass = m.IdClass, IdPeriod = m.IdPeriod, IdStudent = m.IdStudent, IdSubject = m.IdSubject, IdTeacher = m.IdTeacher }))
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("DELETE FROM Mark WHERE [Year] = {0} AND IdClass = {1} AND IdPeriod = {2} AND IdStudent = {3} AND IdSubject = {4} AND IdTeacher = {5}",
-                        year, markGroup.Key.IdClass, markGroup.Key.IdPeriod, markGroup.Key.IdStudent, markGroup.Key.IdSubject, markGroup.Key.IdTeacher), connection))
+                    using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE [Year] = {year} AND IdClass = {markGroup.Key.IdClass} AND IdPeriod = {markGroup.Key.IdPeriod}"
+                        + $" AND IdStudent = {markGroup.Key.IdStudent} AND IdSubject = {markGroup.Key.IdSubject} AND IdTeacher = {markGroup.Key.IdTeacher}", connection))
                     {
                         command.ExecuteNonQuery();
                     }
 
-                    foreach (MarkViewModel Mark in markGroup)
+                    foreach (MarkViewModel mark in markGroup)
                     {
-                        using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
-                            + " VALUES({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})",
-                            year, Mark.Mark, Mark.Coefficient, Mark.Order, Mark.IdClass, Mark.IdPeriod, Mark.IdStudent, Mark.IdSubject, Mark.IdTeacher), connection))
+                        using (SqlCommand command = new SqlCommand("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
+                            + $" VALUES({year}, {mark.Mark}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))
                         {
                             command.ExecuteNonQuery();
                         }
@@ -207,8 +206,8 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} AND IdSubject = {3}", period.Year, period.Id, student.Id, subject.Id), connection))
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} AND IdSubject = {student.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -231,10 +230,10 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", period.Year, period.Id, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {period.Year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -257,10 +256,10 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod INNER JOIN Period Period2"
                     + " ON Period2.[Year] = Mark.[Year] AND Period2.Trimester = Period.Trimester AND Period.Number <= Period2.Number"
-                    + " WHERE Mark.[Year] = {0} AND Period2.Id = {1} AND IdStudent = {2} AND IdSubject = {3}", period.Year, period.Id, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {period.Year} AND Period2.Id = {period.Id} AND IdStudent = {student.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -283,14 +282,14 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod INNER JOIN Period Period2"
                     + " ON Period2.[Year] = Mark.[Year] AND Period2.Trimester = Period.Trimester AND Period2.Number <= Period.Number"
-                    + " WHERE Mark.[Year] = {0} AND IdPeriod = {1} AND IdStudent = {2} GROUP BY IdSubject) SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage",
-                    period.Year, period.Id, student.Id), connection))
+                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} GROUP BY IdSubject) SubjectAverage"
+                    + " ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -313,9 +312,9 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} AND IdSubject = {3}", semiTrimester.Year, semiTrimester.Id, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdStudent = {student.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -338,13 +337,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, student.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdStudent = {student.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -367,9 +366,9 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} AND IdSubject = {3}", semiTrimester.Year, semiTrimester.Id, _class.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdClass = {_class.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -392,13 +391,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", semiTrimester.Year, semiTrimester.Id, _class.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdClass = {_class.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -421,11 +420,11 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", semiTrimester.Year, semiTrimester.Id, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdStudent = {student.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {semiTrimester.Year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -448,11 +447,11 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN SemiTrimester ON SemiTrimester.[Year] = Mark.[Year] AND(SemiTrimester.IdPeriod1 = Mark.IdPeriod OR SemiTrimester.IdPeriod2 = Mark.IdPeriod)"
-                    + " WHERE Mark.[Year] = {0} AND SemiTrimester.Id = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", semiTrimester.Year, semiTrimester.Id, _class.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {semiTrimester.Year} AND SemiTrimester.Id = {semiTrimester.Id} AND IdClass = {_class.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {semiTrimester.Year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -544,9 +543,9 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} AND IdSubject = {3}", student.Year, trimester, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {student.Year} AND Period.Trimester = {trimester} AND IdStudent = {student.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -569,13 +568,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", student.Year, trimester, student.Id), connection))
+                    + $" WHERE Mark.[Year] = {student.Year} AND Period.Trimester = {trimester} AND IdStudent = {student.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -598,9 +597,9 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} AND IdSubject = {3}", _class.Year, trimester, _class.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {_class.Year} AND Period.Trimester = {trimester} AND IdClass = {_class.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -623,13 +622,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", _class.Year, trimester, _class.Id), connection))
+                    + $" WHERE Mark.[Year] = {_class.Year} AND Period.Trimester = {trimester} AND IdClass = {_class.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -652,11 +651,11 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdStudent = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", student.Year, trimester, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {student.Year} AND Period.Trimester = {trimester} AND IdStudent = {student.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {student.Year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -679,11 +678,11 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod"
-                    + " WHERE Mark.[Year] = {0} AND Period.Trimester = {1} AND IdClass = {2} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {3}", _class.Year, trimester, _class.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {_class.Year} AND Period.Trimester = {trimester} AND IdClass = {_class.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {_class.Year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -775,8 +774,8 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} AND IdSubject = {2}", year, student.Id, subject.Id), connection))
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + $" WHERE Mark.[Year] = {year} AND IdStudent = {student.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -799,12 +798,12 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", year, student.Id), connection))
+                    + $" WHERE Mark.[Year] = {year} AND IdStudent = {student.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -827,8 +826,8 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} AND IdSubject = {2}", year, _class.Id, subject.Id), connection))
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
+                    + $" WHERE Mark.[Year] = {year} AND IdClass = {_class.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -851,12 +850,12 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(CoefficientAverage) / SUM(Coefficient), 1) AS Average"
                     + " FROM(SELECT CASE WHEN Subject.[Option] = 1 THEN CASE WHEN SubjectAverage.Average > 10 THEN(SubjectAverage.Average - 10) * Subject.Coefficient ELSE 0 END"
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} GROUP BY IdSubject)"
-                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", year, _class.Id), connection))
+                    + $" WHERE Mark.[Year] = {year} AND IdClass = {_class.Id} GROUP BY IdSubject)"
+                    + " SubjectAverage ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -879,10 +878,10 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdStudent = {1} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {2}", year, student.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {year} AND IdStudent = {student.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -905,10 +904,10 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
+                using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Average) / SUM(Coefficient), 1) AS Average FROM"
                     + " (SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + " WHERE Mark.[Year] = {0} AND IdClass = {1} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
-                    + " WHERE Subject.[Year] = {0} AND Subject.ParentSubjectId = {2}", year, _class.Id, subject.Id), connection))
+                    + $" WHERE Mark.[Year] = {year} AND IdClass = {_class.Id} GROUP BY IdSubject) AS SubjectAverage INNER JOIN Subject ON Subject.Id = SubjectAverage.IdSubject"
+                    + $" WHERE Subject.[Year] = {year} AND Subject.ParentSubjectId = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

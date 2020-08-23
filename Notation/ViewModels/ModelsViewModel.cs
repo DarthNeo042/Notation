@@ -43,7 +43,7 @@ namespace Notation.ViewModels
 
         private void OpenPeriodModelsPathExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Process.Start("explorer", string.Format("/root,{0}", PeriodModelsPath));
+            Process.Start("explorer", $"/root,{PeriodModelsPath}");
         }
 
         public ObservableCollection<string> SemiTrimesterModels { get; set; }
@@ -87,7 +87,7 @@ namespace Notation.ViewModels
 
         private void OpenSemiTrimesterModelsPathExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Process.Start("explorer", string.Format("/root,{0}", SemiTrimesterModelsPath));
+            Process.Start("explorer", $"/root,{SemiTrimesterModelsPath}");
         }
 
         public ObservableCollection<string> TrimesterModels { get; set; }
@@ -121,7 +121,7 @@ namespace Notation.ViewModels
 
         private void OpenTrimesterModelsPathExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            Process.Start("explorer", string.Format("/root,{0}", TrimesterModelsPath));
+            Process.Start("explorer", $"/root,{TrimesterModelsPath}");
         }
 
         public CommandBindingCollection Bindings { get; set; }

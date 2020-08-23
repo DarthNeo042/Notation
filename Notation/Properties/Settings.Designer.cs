@@ -25,17 +25,6 @@ namespace Notation.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=localhost\\SQLEXPRESS;Initial Catalog=NotationCollege;User Id=admin;Pa" +
-            "ssword=admin")]
-        public string SQLConnection {
-            get {
-                return ((string)(this["SQLConnection"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".")]
         public string LastSelectedDirectoryPeriodModels {
             get {
@@ -94,6 +83,17 @@ namespace Notation.Properties {
         public string LastSelectedDirectoryYearReports {
             get {
                 return ((string)(this["LastSelectedDirectoryYearReports"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=localhost\\SQLEXPRESS;Initial Catalog=NotationCollege;User Id=admin;Pa" +
+            "ssword=admin")]
+        public string SQLConnection {
+            get {
+                return ((string)(this["SQLConnection"]));
             }
         }
     }

@@ -15,6 +15,8 @@ namespace Notation.Utils
 {
     static class ExportUtils
     {
+        private const string ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
         public static void ExportPeriodModels(PeriodViewModel period, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
             string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
@@ -31,7 +33,7 @@ namespace Notation.Utils
 
         private static void ExportPeriodCommentsModels(PeriodViewModel period, string directory, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
-            string filename = Path.Combine(directory, string.Format("Appréciations générales période {0}.xlsx", period.Number));
+            string filename = Path.Combine(directory, $"Appréciations générales période {period.Number}.xlsx");
             File.Delete(filename);
 
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -52,7 +54,7 @@ namespace Notation.Utils
             {
                 foreach (StudentViewModel student in _class.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
                 {
-                    workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                    workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
                 }
             }
 
@@ -83,7 +85,7 @@ namespace Notation.Utils
                         foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject))
                         {
                             string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
-                                string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
+                                string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}"));
                             File.Delete(filename);
 
                             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -96,7 +98,7 @@ namespace Notation.Utils
                             workSheet.Cells[3, 1].Value = "période";
                             workSheet.Cells[3, 2].Value = period.Number;
                             workSheet.Cells[4, 1].Value = "professeur";
-                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}";
                             workSheet.Cells[5, 1].Value = "matière";
                             workSheet.Cells[6, 1].Value = "élève / coefficient";
 
@@ -148,7 +150,7 @@ namespace Notation.Utils
                                 int row = 7;
                                 foreach (StudentViewModel student in _class.Students)
                                 {
-                                    workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                                    workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
                                     IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                                     int i = 0;
                                     foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
@@ -198,7 +200,8 @@ namespace Notation.Utils
                     {
                         foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject.ParentSubject ?? mainSubject))
                         {
-                            string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
+                            string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
+                                string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}"));
                             File.Delete(filename);
 
                             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -238,7 +241,7 @@ namespace Notation.Utils
                             workSheet.Cells[3, 1].Value = "période";
                             workSheet.Cells[3, 2].Value = period.Number;
                             workSheet.Cells[4, 1].Value = "professeur";
-                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                            workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}";
                             workSheet.Cells[5, 1].Value = "matière";
                             workSheet.Cells[5, 2].Value = mainSubject.Name;
                             workSheet.Cells[6, 1].Value = "élève / coefficient";
@@ -259,7 +262,7 @@ namespace Notation.Utils
                             int row = 7;
                             foreach (StudentViewModel student in _class.Students)
                             {
-                                workSheet.Cells[row, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                                workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
                                 IEnumerable<MarkViewModel> marks = marksMap[student.Id];
                                 int i = 0;
                                 foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id))
@@ -300,7 +303,8 @@ namespace Notation.Utils
             {
                 foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers)
                 {
-                    string filename = Path.Combine(directory, string.Format("Notes période {0} - toutes les matières - {1} - {2}.xlsx", period.Number, _class.Name, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName)));
+                    string filename = Path.Combine(directory, string.Format("Notes période {0} - toutes les matières - {1} - {2}.xlsx", period.Number, _class.Name,
+                        string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}"));
                     File.Delete(filename);
 
                     ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -313,7 +317,7 @@ namespace Notation.Utils
                     workSheet.Cells[3, 1].Value = "période";
                     workSheet.Cells[3, 2].Value = period.Number;
                     workSheet.Cells[4, 1].Value = "professeur";
-                    workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                    workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}";
                     workSheet.Cells[5, 1].Value = "matière";
                     workSheet.Cells[6, 1].Value = "élève / coefficient";
 
@@ -425,7 +429,7 @@ namespace Notation.Utils
             int classCount = 0;
             foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
             {
-                string filename = Path.Combine(directory, string.Format("Appréciations générales trimestre {0} - {1}.xlsx", trimester, _class.Name));
+                string filename = Path.Combine(directory, $"Appréciations générales trimestre {trimester} - {_class.Name}.xlsx");
                 File.Delete(filename);
 
                 ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -444,7 +448,7 @@ namespace Notation.Utils
                 int row = 5;
                 foreach (StudentViewModel student in _class.Students)
                 {
-                    workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                    workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
                 }
 
                 workSheet.Column(1).AutoFit();
@@ -472,7 +476,7 @@ namespace Notation.Utils
                     foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, subject))
                     {
                         string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2} - {3}.xlsx",
-                            trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName), subject.Name, _class.Name));
+                            trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}", subject.Name, _class.Name));
                         File.Delete(filename);
 
                         ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -485,14 +489,14 @@ namespace Notation.Utils
                         workSheet.Cells[3, 1].Value = "trimestre";
                         workSheet.Cells[3, 2].Value = trimester;
                         workSheet.Cells[4, 1].Value = "professeur";
-                        workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                        workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}";
                         workSheet.Cells[5, 1].Value = "élève / matière";
                         workSheet.Cells[5, 2].Value = subject.Name;
 
                         int row = 6;
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            workSheet.Cells[row++, 1].Value = string.Format("{0} {1}", student.LastName, student.FirstName);
+                            workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
                         }
 
                         IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
@@ -521,7 +525,8 @@ namespace Notation.Utils
             {
                 foreach (TeacherViewModel teacher in MainViewModel.Instance.Parameters.Teachers)
                 {
-                    string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - toutes les matières - {1} - {2}.xlsx", trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName), _class.Name));
+                    string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - toutes les matières - {1} - {2}.xlsx", trimester,
+                        string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}", _class.Name));
                     File.Delete(filename);
 
                     ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -534,7 +539,7 @@ namespace Notation.Utils
                     workSheet.Cells[3, 1].Value = "trimestre";
                     workSheet.Cells[3, 2].Value = trimester;
                     workSheet.Cells[4, 1].Value = "professeur";
-                    workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : string.Format("{0} {1}", teacher.LastName, teacher.FirstName);
+                    workSheet.Cells[4, 2].Value = string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}";
                     workSheet.Cells[5, 1].Value = "élève / matière";
 
                     int j = 2;
@@ -599,7 +604,7 @@ namespace Notation.Utils
                 int classCount = 0;
                 foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                 {
-                    string filename = Path.Combine(directory, string.Format("Appréciations demi-trimestre {0} - {1}.xlsx", semiTrimester.Name, _class.Name));
+                    string filename = Path.Combine(directory, $"Appréciations demi-trimestre {semiTrimester.Name} - {_class.Name}.xlsx");
                     File.Delete(filename);
 
                     ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -649,7 +654,7 @@ namespace Notation.Utils
 
         private static StudentViewModel GetStudentFromName(string name)
         {
-            return MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => string.Format("{0} {1}", s.LastName, s.FirstName) == name);
+            return MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => $"{s.LastName} {s.FirstName}" == name);
         }
 
         private static TeacherViewModel GetTeacherFromName(string name)
@@ -989,7 +994,7 @@ namespace Notation.Utils
                         }
                         if (subject == null)
                         {
-                            MessageBox.Show(string.Format("{0} : matière invalide '{1}'", filename, workSheet.Cells[5, j].Text));
+                            MessageBox.Show($"{filename} : matière invalide '{workSheet.Cells[5, j].Text}'");
                             return false;
                         }
                     }
@@ -1032,13 +1037,12 @@ namespace Notation.Utils
         private static string RowColumnToCell(int row, int column)
         {
             column--;
-            string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            return string.Format("{0}{1}", (column >= 26 ? alphabet[column / 26 - 1].ToString() + alphabet[column % 26].ToString() : alphabet[column].ToString()), row);
+            return $"{(column >= 26 ? ALPHABET[column / 26 - 1].ToString() + ALPHABET[column % 26].ToString() : ALPHABET[column].ToString())}{row}";
         }
 
         public static void ExportPeriodSummary(string directory, ClassViewModel _class, PeriodViewModel period)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de période {0} de {1} (Résumé).xlsx", period.Number, _class.Name));
+            string filename = Path.Combine(directory, $"Bulletin de période {period.Number} de {_class.Name} (Résumé).xlsx");
             File.Delete(filename);
 
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -1214,7 +1218,7 @@ namespace Notation.Utils
 
         public static void ExportTrimesterSummary(string directory, ClassViewModel _class, int trimester)
         {
-            string filename = Path.Combine(directory, string.Format("Bulletin de trimestre {0} de {1} (Résumé).xlsx", trimester, _class.Name));
+            string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} (Résumé).xlsx");
             File.Delete(filename);
 
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));

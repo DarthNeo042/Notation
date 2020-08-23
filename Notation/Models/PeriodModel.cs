@@ -16,7 +16,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Period] WHERE Year = {0} ORDER BY [Trimester], [Number]", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Period] WHERE Year = {year} ORDER BY [Trimester], [Number]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -48,13 +48,13 @@ namespace Notation.Models
                 string query = "";
                 if (period.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [Period]([Year], Trimester, Number, FromDate, ToDate) VALUES({0}, {1}, {2}, '{3}', '{4}')",
-                        period.Year, period.Trimester, period.Number, period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
+                    query = "INSERT INTO [Period]([Year], Trimester, Number, FromDate, ToDate)"
+                        + $" VALUES({period.Year}, {period.Trimester}, {period.Number}, '{period.FromDate.ToShortDateString()}', '{period.ToDate.ToShortDateString()}')";
                 }
                 else
                 {
-                    query = string.Format("UPDATE [Period] SET Trimester = {0}, Number = {1}, FromDate = '{2}', ToDate = '{3}' WHERE [Period].Id = {4} AND [Period].[Year] = {5}",
-                        period.Trimester, period.Number, period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString(), period.Id, period.Year);
+                    query = $"UPDATE [Period] SET Trimester = {period.Trimester}, Number = {period.Number}, FromDate = '{period.FromDate.ToShortDateString()}', ToDate = '{period.ToDate.ToShortDateString()}'"
+                        + $" WHERE [Period].Id = {period.Id} AND [Period].[Year] = {period.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -91,7 +91,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Period] WHERE Year = {0} AND Id = {1}", year, id) , connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Period] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

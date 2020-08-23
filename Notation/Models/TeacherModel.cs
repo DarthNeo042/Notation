@@ -15,7 +15,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Teacher] WHERE Year = {0} ORDER BY [LastName], [FirstName]", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Teacher] WHERE Year = {year} ORDER BY [LastName], [FirstName]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -90,7 +90,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Teacher] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Teacher] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }
@@ -117,7 +117,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT [Year] FROM [Teacher] WHERE Login = '{0}' AND Password = '{1}' ORDER BY [Year]", login, passord), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT [Year] FROM [Teacher] WHERE Login = '{login}' AND Password = '{passord}' ORDER BY [Year]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -132,7 +132,7 @@ namespace Notation.Models
             return years;
         }
 
-        public static TeacherViewModel Login(string login, string passord, int year)
+        public static TeacherViewModel Login(string login, string password, int year)
         {
             TeacherViewModel teacher = null;
 
@@ -140,7 +140,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT TOP 1 * FROM [Teacher] WHERE Login = '{0}' AND Password = '{1}' AND [Year] = {2}", login, passord, year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT TOP 1 * FROM [Teacher] WHERE Login = '{login}' AND Password = '{password}' AND [Year] = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

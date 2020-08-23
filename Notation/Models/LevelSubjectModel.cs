@@ -14,7 +14,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [LevelSubject] WHERE Year = {0}", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [LevelSubject] WHERE Year = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -44,13 +44,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE FROM [LevelSubject] WHERE [Year] = {0} AND IdLevel = {1}", level.Year, level.Id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE FROM [LevelSubject] WHERE [Year] = {level.Year} AND IdLevel = {level.Id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }
                 foreach (SubjectViewModel subject in level.Subjects)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [LevelSubject]([Year], IdLevel, IdSubject) VALUES({0}, {1}, {2})", level.Year, level.Id, subject.Id), connection))
+                    using (SqlCommand command = new SqlCommand($"INSERT INTO [LevelSubject]([Year], IdLevel, IdSubject) VALUES({level.Year}, {level.Id}, {subject.Id})", connection))
                     {
                         command.ExecuteNonQuery();
                     }
@@ -64,13 +64,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE FROM [LevelSubject] WHERE [Year] = {0} AND IdSubject = {1}", subject.Year, subject.Id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE FROM [LevelSubject] WHERE [Year] = {subject.Year} AND IdSubject = {subject.Id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }
                 foreach (LevelViewModel level in subject.Levels)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [LevelSubject]([Year], IdSubject, IdLevel) VALUES({0}, {1}, {2})", subject.Year, subject.Id, level.Id), connection))
+                    using (SqlCommand command = new SqlCommand($"INSERT INTO [LevelSubject]([Year], IdSubject, IdLevel) VALUES({subject.Year}, {subject.Id}, {level.Id})", connection))
                     {
                         command.ExecuteNonQuery();
                     }

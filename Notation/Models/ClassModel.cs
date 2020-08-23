@@ -16,7 +16,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Class] WHERE [Year] = {0} ORDER BY [Order]", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Class] WHERE [Year] = {year} ORDER BY [Order]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -56,7 +56,7 @@ namespace Notation.Models
                 if (_class.Id == 0)
                 {
                     query = string.Format("INSERT INTO [Class]([Year], [Order], [Name], [IdLevel], [IdMainTeacher]) VALUES({0}, {1}, '{2}', {3}, {4})",
-                        _class.Year, _class.Order, _class.Name, _class.Level == null ? "NULL": _class.Level.Id.ToString(), _class.MainTeacher == null ? "NULL" : _class.MainTeacher.Id.ToString());
+                        _class.Year, _class.Order, _class.Name, _class.Level == null ? "NULL" : _class.Level.Id.ToString(), _class.MainTeacher == null ? "NULL" : _class.MainTeacher.Id.ToString());
                 }
                 else
                 {
@@ -77,7 +77,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand($"SELECT COUNT(1) AS Count FROM Mark WHERE IdSubject = {id} AND Year = {year}"))
+                using (SqlCommand command = new SqlCommand($"SELECT COUNT(1) AS Count FROM Mark WHERE IdSubject = {id} AND Year = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -97,7 +97,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Class] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Class] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

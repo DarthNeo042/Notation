@@ -17,7 +17,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Student] WHERE Year = {0} ORDER BY LastName, FirstName", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Student] WHERE Year = {year} ORDER BY LastName, FirstName", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -83,8 +83,7 @@ namespace Notation.Models
 
                 foreach (StudentViewModel student in _class.Students)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("UPDATE [Student] SET IdClass = {0} WHERE [Student].Id = {1} AND [Student].[Year] = {2}",
-                        _class.Id, student.Id, student.Year), connection))
+                    using (SqlCommand command = new SqlCommand($"UPDATE [Student] SET IdClass = {_class.Id} WHERE [Student].Id = {student.Id} AND [Student].[Year] = {student.Year}", connection))
                     {
                         command.ExecuteNonQuery();
                     }
@@ -96,8 +95,7 @@ namespace Notation.Models
                 }
                 foreach (StudentViewModel student in unassignedStudents)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("UPDATE [Student] SET IdClass = NULL WHERE [Student].Id = {1} AND [Student].[Year] = {2}",
-                        _class.Id, student.Id, student.Year), connection))
+                    using (SqlCommand command = new SqlCommand($"UPDATE [Student] SET IdClass = NULL WHERE [Student].Id = {student.Id} AND [Student].[Year] = {student.Year}", connection))
                     {
                         command.ExecuteNonQuery();
                     }
@@ -135,7 +133,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Student] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Student] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

@@ -14,11 +14,9 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = connection.CreateCommand())
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [SemiTrimesterComment] WHERE IdStudent = {student.Id} AND IdSemiTrimester = {semiTrimester.Id}"
+                    + $" AND [Year] = {semiTrimester.Year}", connection))
                 {
-                    command.CommandText = string.Format("SELECT * FROM [SemiTrimesterComment] WHERE IdStudent = {0} AND IdSemiTrimester = {1} AND [Year] = {2}",
-                        student.Id, semiTrimester.Id, semiTrimester.Year);
-
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
@@ -49,13 +47,14 @@ namespace Notation.Models
                 string query = "";
                 if (semiTrimesterComment.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent) VALUES({0}, '{1}', '{2}', {3}, {4})",
-                        semiTrimesterComment.Year, semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Id, semiTrimesterComment.Student.Id);
+                    query = "INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
+                        + $" VALUES({semiTrimesterComment.Year}, '{semiTrimesterComment.MainTeacherComment}', '{semiTrimesterComment.DivisionPrefectComment}',"
+                        + $" {semiTrimesterComment.SemiTrimester.Id}, {semiTrimesterComment.Student.Id})";
                 }
                 else
                 {
-                    query = string.Format("UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{0}', DivisionPrefectComment = '{1}', IdSemiTrimester = {2}, IdStudent = {3} WHERE Id = {4} AND [Year] = {5}",
-                        semiTrimesterComment.MainTeacherComment, semiTrimesterComment.DivisionPrefectComment, semiTrimesterComment.SemiTrimester.Id, semiTrimesterComment.Student.Id, semiTrimesterComment.Id, semiTrimesterComment.Year);
+                    query = $"UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{semiTrimesterComment.MainTeacherComment}', DivisionPrefectComment = '{semiTrimesterComment.DivisionPrefectComment}',"
+                        + $" IdSemiTrimester = {semiTrimesterComment.SemiTrimester.Id}, IdStudent = {semiTrimesterComment.Student.Id} WHERE Id = {semiTrimesterComment.Id} AND [Year] = {semiTrimesterComment.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

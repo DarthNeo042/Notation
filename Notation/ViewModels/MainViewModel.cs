@@ -136,7 +136,7 @@ namespace Notation.ViewModels
                     TeacherViewModel teacher = TeacherModel.Login(Login.Login, Login.Password, SelectedYear);
                     User = new UserViewModel()
                     {
-                        Name = string.Format("{0} {1} {2}", teacher.Title, teacher.FirstName, teacher.LastName),
+                        Name = $"{teacher.Title} {teacher.FirstName} {teacher.LastName}",
                         Teacher = teacher,
                     };
                 }

@@ -16,7 +16,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [SemiTrimester] WHERE Year = {0}", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [SemiTrimester] WHERE Year = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

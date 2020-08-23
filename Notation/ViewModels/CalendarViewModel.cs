@@ -64,14 +64,14 @@ namespace Notation.ViewModels
                     {
                         PeriodsSummary += "\r\n";
                     }
-                    DatesSummary += string.Format("Du {0} au {1}", period.FromDate.ToShortDateString(), period.ToDate.ToShortDateString());
-                    PeriodsSummary += string.Format("Période {0}", period.Number);
+                    DatesSummary += $"Du {period.FromDate.ToShortDateString()} au {period.ToDate.ToShortDateString()}";
+                    PeriodsSummary += $"Période {period.Number}";
                 }
                 if (!string.IsNullOrEmpty(TrimestersSummary))
                 {
                     TrimestersSummary += "\r\n";
                 }
-                TrimestersSummary += string.Format("Trimestre {0}", periodGroup.Key);
+                TrimestersSummary += $"Trimestre {periodGroup.Key}";
                 for (int i = 0; i < periodGroup.Count() - 1; i++)
                 {
                     if (!string.IsNullOrEmpty(TrimestersSummary))
@@ -93,7 +93,7 @@ namespace Notation.ViewModels
                 {
                     SemiTrimestersSummary += "\r\n";
                 }
-                SemiTrimestersSummary += string.Format("Demi-trimestre de {0}", semiTrimester.Name);
+                SemiTrimestersSummary += $"Demi-trimestre de {semiTrimester.Name}";
                 if (semiTrimester.Period2 != null)
                 {
                     if (!string.IsNullOrEmpty(SemiTrimestersSummary))

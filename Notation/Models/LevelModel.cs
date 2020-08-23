@@ -15,7 +15,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [Level] WHERE Year = {0} ORDER BY [Order]", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [Level] WHERE Year = {year} ORDER BY [Order]", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -45,11 +45,11 @@ namespace Notation.Models
                 string query = "";
                 if (Level.Id == 0)
                 {
-                    query = string.Format("INSERT INTO [Level]([Year], [Order], Name) VALUES({0}, {1}, '{2}')", Level.Year, Level.Order, Level.Name);
+                    query = $"INSERT INTO [Level]([Year], [Order], Name) VALUES({Level.Year}, {Level.Order}, '{Level.Name}')";
                 }
                 else
                 {
-                    query = string.Format("UPDATE [Level] SET Name = '{0}', [Order] = {1} WHERE [Level].Id = {2} AND [Level].[Year] = {3}", Level.Name, Level.Order, Level.Id, Level.Year);
+                    query = $"UPDATE [Level] SET Name = '{Level.Name}', [Order] = {Level.Order} WHERE [Level].Id = {Level.Id} AND [Level].[Year] = {Level.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -64,7 +64,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE [Level] WHERE Year = {0} AND Id = {1}", year, id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE [Level] WHERE Year = {year} AND Id = {id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

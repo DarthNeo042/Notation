@@ -14,7 +14,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("SELECT * FROM [TeacherClass] WHERE Year = {0}", year), connection))
+                using (SqlCommand command = new SqlCommand($"SELECT * FROM [TeacherClass] WHERE Year = {year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -44,13 +44,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE FROM [TeacherClass] WHERE [Year] = {0} AND IdTeacher = {1}", teacher.Year, teacher.Id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE FROM [TeacherClass] WHERE [Year] = {teacher.Year} AND IdTeacher = {teacher.Id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }
                 foreach (ClassViewModel _class in teacher.Classes)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [TeacherClass]([Year], IdTeacher, IdClass) VALUES({0}, {1}, {2})", teacher.Year, teacher.Id, _class.Id), connection))
+                    using (SqlCommand command = new SqlCommand($"INSERT INTO [TeacherClass]([Year], IdTeacher, IdClass) VALUES({teacher.Year}, {teacher.Id}, {_class.Id})", connection))
                     {
                         command.ExecuteNonQuery();
                     }
@@ -64,13 +64,13 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand(string.Format("DELETE FROM [TeacherClass] WHERE [Year] = {0} AND IdClass = {1}", _class.Year, _class.Id), connection))
+                using (SqlCommand command = new SqlCommand($"DELETE FROM [TeacherClass] WHERE [Year] = {_class.Year} AND IdClass = {_class.Id}", connection))
                 {
                     command.ExecuteNonQuery();
                 }
                 foreach (TeacherViewModel teacher in _class.Teachers)
                 {
-                    using (SqlCommand command = new SqlCommand(string.Format("INSERT INTO [TeacherClass]([Year], IdClass, IdTeacher) VALUES({0}, {1}, {2})", _class.Year, _class.Id, teacher.Id), connection))
+                    using (SqlCommand command = new SqlCommand($"INSERT INTO [TeacherClass]([Year], IdClass, IdTeacher) VALUES({_class.Year}, {_class.Id}, {teacher.Id})", connection))
                     {
                         command.ExecuteNonQuery();
                     }
