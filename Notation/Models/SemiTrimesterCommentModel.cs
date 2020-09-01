@@ -48,12 +48,12 @@ namespace Notation.Models
                 if (semiTrimesterComment.Id == 0)
                 {
                     query = "INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
-                        + $" VALUES({semiTrimesterComment.Year}, '{semiTrimesterComment.MainTeacherComment}', '{semiTrimesterComment.DivisionPrefectComment}',"
+                        + $" VALUES({semiTrimesterComment.Year}, '{semiTrimesterComment.MainTeacherComment.Replace("'", "''")}', '{semiTrimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
                         + $" {semiTrimesterComment.SemiTrimester.Id}, {semiTrimesterComment.Student.Id})";
                 }
                 else
                 {
-                    query = $"UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{semiTrimesterComment.MainTeacherComment}', DivisionPrefectComment = '{semiTrimesterComment.DivisionPrefectComment}',"
+                    query = $"UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{semiTrimesterComment.MainTeacherComment.Replace("'", "''")}', DivisionPrefectComment = '{semiTrimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
                         + $" IdSemiTrimester = {semiTrimesterComment.SemiTrimester.Id}, IdStudent = {semiTrimesterComment.Student.Id} WHERE Id = {semiTrimesterComment.Id} AND [Year] = {semiTrimesterComment.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))

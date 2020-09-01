@@ -207,7 +207,7 @@ namespace Notation.Models
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand("SELECT ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
-                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} AND IdSubject = {student.Id}", connection))
+                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} AND IdSubject = {subject.Id}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -287,8 +287,8 @@ namespace Notation.Models
                     + " ELSE SubjectAverage.Average * Subject.Coefficient END AS[CoefficientAverage], CASE WHEN Subject.[Option] = 1 THEN 0 ELSE Subject.Coefficient END AS Coefficient"
                     + " FROM Subject INNER JOIN(SELECT IdSubject, ROUND(SUM(Coefficient * Mark) / SUM(Coefficient), 1) AS Average FROM Mark"
                     + " INNER JOIN Period ON Period.[Year] = Mark.[Year] AND Period.Id = Mark.IdPeriod INNER JOIN Period Period2"
-                    + " ON Period2.[Year] = Mark.[Year] AND Period2.Trimester = Period.Trimester AND Period2.Number <= Period.Number"
-                    + $" WHERE Mark.[Year] = {period.Year} AND IdPeriod = {period.Id} AND IdStudent = {student.Id} GROUP BY IdSubject) SubjectAverage"
+                    + " ON Period2.[Year] = Mark.[Year] AND Period2.Trimester = Period.Trimester AND Period.Number <= Period2.Number"
+                    + $" WHERE Mark.[Year] = {period.Year} AND Period2.Id = {period.Id} AND IdStudent = {student.Id} GROUP BY IdSubject) SubjectAverage"
                     + " ON SubjectAverage.IdSubject = Subject.Id) AS SubjectCoefficientAverage", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -532,7 +532,7 @@ namespace Notation.Models
         public static int ReadSemiTrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
         {
             double average = averages[student];
-            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
+            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average) + 1;
         }
 
         public static double ReadTrimesterSubjectAverage(int trimester, StudentViewModel student, SubjectViewModel subject)
@@ -763,7 +763,7 @@ namespace Notation.Models
         public static int ReadtrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
         {
             double average = averages[student];
-            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
+            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average) + 1;
         }
 
         public static double ReadYearSubjectAverage(int year, StudentViewModel student, SubjectViewModel subject)
@@ -988,7 +988,7 @@ namespace Notation.Models
         public static int ReadYearRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
         {
             double average = averages[student];
-            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average);
+            return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average) + 1;
         }
     }
 }

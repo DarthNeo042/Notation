@@ -19,22 +19,25 @@ namespace Notation.Utils
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 directory = dialog.SelectedPath;
-            }
+                string configFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Notation.exe.config");
 
-            string configFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Notation.exe.config");
-
-            XmlDocument document = new XmlDocument();
-            document.Load(configFilename);
-            foreach (XmlNode node in document.GetElementsByTagName("setting"))
-            {
-                if (node.Attributes["name"].Value == parameter)
+                XmlDocument document = new XmlDocument();
+                document.Load(configFilename);
+                foreach (XmlNode node in document.GetElementsByTagName("setting"))
                 {
-                    node.FirstChild.FirstChild.Value = directory;
+                    if (node.Attributes["name"].Value == parameter)
+                    {
+                        node.FirstChild.FirstChild.Value = directory;
+                    }
                 }
-            }
-            document.Save(configFilename);
+                document.Save(configFilename);
 
-            Settings.Default.Reload();
+                Settings.Default.Reload();
+            }
+            else
+            {
+                directory = "";
+            }
 
             return directory;
         }

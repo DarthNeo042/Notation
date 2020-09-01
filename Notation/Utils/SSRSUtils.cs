@@ -87,7 +87,9 @@ namespace Notation.Utils
 
                     int studentCount = 0;
                     IEnumerable<IGrouping<int, MarkViewModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
-                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups)
+                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key))
+                        .OrderBy(s => MainViewModel.Instance.Parameters.Students.First(s2 => s2.Id == s.Key).LastName)
+                        .ThenBy(s => MainViewModel.Instance.Parameters.Students.First(s2 => s2.Id == s.Key).FirstName))
                     {
                         StudentViewModel student = MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => s.Id == studentGroup.Key);
                         if (student != null)
@@ -209,7 +211,7 @@ namespace Notation.Utils
                     {
                         if (!string.IsNullOrEmpty(marksStr))
                         {
-                            marksStr += "\t";
+                            marksStr += "    ";
                         }
                         marksStr += mark.Mark.ToString();
                     }
@@ -252,7 +254,7 @@ namespace Notation.Utils
                         {
                             if (!string.IsNullOrEmpty(marksStr))
                             {
-                                marksStr += "\t";
+                                marksStr += "    ";
                             }
                             marksStr += mark.Mark.ToString();
                         }
@@ -318,7 +320,7 @@ namespace Notation.Utils
                 {
                     MainViewModel.Instance.Reports.SemiTrimesterReports.Clear();
 
-                    int studentCount = 0;
+                    int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester = new SSRSUtils_SemiTrimester();
@@ -331,7 +333,7 @@ namespace Notation.Utils
                                 MarkModel.ReadSemiTrimesterMinMaxMainSubjectAverage(semiTrimester, _class, subject, out double minAverage, out double maxAverage);
                                 SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
                                 SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
-                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                                 {
                                     average = MarkModel.ReadSemiTrimesterClassSubjectAverage(semiTrimester, _class, subject2);
                                     SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject2, average);
@@ -355,9 +357,14 @@ namespace Notation.Utils
                         SSRSUtils_SemiTrimester.ClassMaxAverage = classMaxAverage;
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            SSRSUtils_SemiTrimester.StudentAverages[student] = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+                            double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+                            if (average != double.MinValue)
+                            {
+                                SSRSUtils_SemiTrimester.StudentAverages[student] = average;
+                            }
                         }
-                        foreach (StudentViewModel student in _class.Students)
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in SSRSUtils_SemiTrimester.StudentAverages.Keys)
                         {
                             try
                             {
@@ -367,9 +374,12 @@ namespace Notation.Utils
                             {
                                 MessageBox.Show(e.Message);
                             }
+
                             studentCount++;
-                            _updateSemiTrimesterReportsDispatch(studentCount * 1000 / MainViewModel.Instance.Parameters.Students.Count);
+                            _updateSemiTrimesterReportsDispatch(studentCount * 1000 / SSRSUtils_SemiTrimester.StudentAverages.Count
+                                + classCount * 1000 / SSRSUtils_SemiTrimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count);
                         }
+                        classCount++;
                     }
 
                     MainViewModel.Instance.Reports.SemiTrimesterReportsPath = directory;
@@ -470,7 +480,7 @@ namespace Notation.Utils
                 }
                 bulletinDemiTrimestreLines.Add(bulletinDemiTrimestreLine);
 
-                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
                     bulletinDemiTrimestreLine = new BulletinDemiTrimestreLineDataSource()
                     {
@@ -524,7 +534,7 @@ namespace Notation.Utils
                 {
                     MainViewModel.Instance.Reports.TrimesterReports.Clear();
 
-                    int studentCount = 0;
+                    int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         SSRSUtils_Trimester SSRSUtils_Trimester = new SSRSUtils_Trimester();
@@ -537,7 +547,7 @@ namespace Notation.Utils
                                 MarkModel.ReadTrimesterMinMaxMainSubjectAverage(trimester, _class, subject, out double minAverage, out double maxAverage);
                                 SSRSUtils_Trimester.ClassSubjectMinAverages.Add(subject, minAverage);
                                 SSRSUtils_Trimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
-                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                                 {
                                     average = MarkModel.ReadTrimesterClassSubjectAverage(trimester, _class, subject2);
                                     SSRSUtils_Trimester.ClassSubjectAverages.Add(subject2, average);
@@ -563,18 +573,21 @@ namespace Notation.Utils
                         {
                             SSRSUtils_Trimester.StudentAverages[student] = MarkModel.ReadTrimesterAverage(trimester, student);
                         }
-                        foreach (StudentViewModel student in _class.Students)
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in _class.Students.Where(s => SSRSUtils_Trimester.StudentAverages[s] != double.MinValue))
                         {
                             try
                             {
                                 GenerateTrimesterReport(directory, trimester, student, _class, SSRSUtils_Trimester);
-                                studentCount++;
-                                _updateTrimesterReportsDispatch(studentCount * 1000 / MainViewModel.Instance.Parameters.Students.Count);
                             }
                             catch (Exception e)
                             {
                                 MessageBox.Show(e.Message);
                             }
+
+                            studentCount++;
+                            _updateTrimesterReportsDispatch(studentCount * 1000 / SSRSUtils_Trimester.StudentAverages.Count
+                                + classCount * 1000 / SSRSUtils_Trimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count);
                         }
                     }
 
@@ -676,7 +689,7 @@ namespace Notation.Utils
                 }
                 bulletinDemiTrimestreLines.Add(bulletinDemiTrimestreLine);
 
-                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
                     bulletinDemiTrimestreLine = new BulletinDemiTrimestreLineDataSource()
                     {
@@ -730,7 +743,7 @@ namespace Notation.Utils
                 {
                     MainViewModel.Instance.Reports.YearReports.Clear();
 
-                    int studentCount = 0;
+                    int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
                         SSRSUtils_Year SSRSUtils_Year = new SSRSUtils_Year();
@@ -743,7 +756,7 @@ namespace Notation.Utils
                                 MarkModel.ReadYearMinMaxMainSubjectAverage(year, _class, subject, out double minAverage, out double maxAverage);
                                 SSRSUtils_Year.ClassSubjectMinAverages.Add(subject, minAverage);
                                 SSRSUtils_Year.ClassSubjectMaxAverages.Add(subject, maxAverage);
-                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                                 {
                                     average = MarkModel.ReadYearClassSubjectAverage(year, _class, subject2);
                                     SSRSUtils_Year.ClassSubjectAverages.Add(subject2, average);
@@ -769,18 +782,21 @@ namespace Notation.Utils
                         {
                             SSRSUtils_Year.StudentAverages[student] = MarkModel.ReadYearAverage(year, student);
                         }
-                        foreach (StudentViewModel student in _class.Students)
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in _class.Students.Where(s => SSRSUtils_Year.StudentAverages[s] != double.MinValue))
                         {
                             try
                             {
                                 GenerateYearReport(directory, year, student, _class, SSRSUtils_Year);
-                                studentCount++;
-                                _updateYearReportsDispatch(studentCount * 1000 / MainViewModel.Instance.Parameters.Students.Count);
                             }
                             catch (Exception e)
                             {
                                 MessageBox.Show(e.Message);
                             }
+
+                            studentCount++;
+                            _updateYearReportsDispatch(studentCount * 1000 / SSRSUtils_Year.StudentAverages.Count
+                                + classCount * 1000 / SSRSUtils_Year.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count);
                         }
                     }
 
@@ -905,7 +921,7 @@ namespace Notation.Utils
                 }
                 bulletinAnnuelLines.Add(bulletinAnnuelLine);
 
-                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects)
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
                     bulletinAnnuelLine = new BulletinAnnuelLineDataSource()
                     {

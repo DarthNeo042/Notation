@@ -74,9 +74,19 @@ namespace Notation.ViewModels
         {
             if (Student.Class != null && Student.Class.Level != null)
             {
-                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)))
+                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)).OrderBy(s => s.Order))
                 {
-                    MarksSubjects.Add(new EntryMarksSubjectViewModel() { Subject = subject });
+                    if (subject.ChildrenSubjects.Any())
+                    {
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            MarksSubjects.Add(new EntryMarksSubjectViewModel() { Subject = subject2 });
+                        }
+                    }
+                    else
+                    {
+                        MarksSubjects.Add(new EntryMarksSubjectViewModel() { Subject = subject });
+                    }
                 }
             }
         }
@@ -85,9 +95,19 @@ namespace Notation.ViewModels
         {
             if (Student.Class != null && Student.Class.Level != null)
             {
-                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)))
+                foreach (SubjectViewModel subject in Student.Class.Level.Subjects.Where(s => s.Teachers.Contains(teacher)).OrderBy(s => s.Order))
                 {
-                    TrimesterSubjectCommentsSubjects.Add(new EntryTrimesterSubjectCommentsSubjectViewModel() { Subject = subject });
+                    if (subject.ChildrenSubjects.Any())
+                    {
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            TrimesterSubjectCommentsSubjects.Add(new EntryTrimesterSubjectCommentsSubjectViewModel() { Subject = subject2 });
+                        }
+                    }
+                    else
+                    {
+                        TrimesterSubjectCommentsSubjects.Add(new EntryTrimesterSubjectCommentsSubjectViewModel() { Subject = subject });
+                    }
                 }
             }
         }

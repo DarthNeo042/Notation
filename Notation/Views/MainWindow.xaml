@@ -1246,6 +1246,39 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
+            <TabItem Name="EntryTab" IsSelected="true" DataContext="{Binding Entry}">
+                <TabItem.Header>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock></TextBlock>
+                        <TextBlock Text="Saisie"></TextBlock>
+                        <TextBlock></TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="3">
+                    <Grid.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                            <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                            <GradientStop Offset="2" Color="Black"></GradientStop>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
+                    <StackPanel Grid.Column="0">
+                        <Button Content="Notes" Command="{Binding EntryMarksCommand}"></Button>
+                        <Button Content="Appréciations générales de période" Command="{Binding EntryPeriodCommentsCommand}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                        <Button Content="Appréciations générales de demi-trimestre" Command="{Binding EntrySemiTrimesterCommentsCommand}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                        <Button Content="Appréciations de matières de trimestre" Command="{Binding EntryTrimesterSubjectCommentsCommand}"></Button>
+                        <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterCommentsCommand}"
+                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
@@ -1408,39 +1441,6 @@
                         </Grid>
                     </TabItem>
                 </TabControl>
-            </TabItem>
-            <TabItem Name="EntryTab" IsSelected="true" DataContext="{Binding Entry}">
-                <TabItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock></TextBlock>
-                        <TextBlock Text="Saisie"></TextBlock>
-                        <TextBlock></TextBlock>
-                    </StackPanel>
-                </TabItem.Header>
-                <Grid Margin="3">
-                    <Grid.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
-                            <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
-                            <GradientStop Offset="2" Color="Black"></GradientStop>
-                        </LinearGradientBrush>
-                    </Grid.Background>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="3*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
-                    <StackPanel Grid.Column="0">
-                        <Button Content="Notes" Command="{Binding EntryMarksCommand}"></Button>
-                        <Button Content="Appréciations générales de période" Command="{Binding EntryPeriodCommentsCommand}"
-                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
-                        <Button Content="Appréciations générales de demi-trimestre" Command="{Binding EntrySemiTrimesterCommentsCommand}"
-                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
-                        <Button Content="Appréciations de matières de trimestre" Command="{Binding EntryTrimesterSubjectCommentsCommand}"></Button>
-                        <Button Content="Appréciations générales de trimestre" Command="{Binding EntryTrimesterCommentsCommand}"
-                                Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Converter={StaticResource AdminToVisibilityConverter}}"></Button>
-                    </StackPanel>
-                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

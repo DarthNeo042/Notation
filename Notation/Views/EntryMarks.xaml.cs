@@ -346,15 +346,7 @@ namespace Notation.Views
             {
                 foreach (EntryMarksSubjectViewModel marksSubject in entryMarks.SelectedClass.SelectedStudent.MarksSubjects)
                 {
-                    double average = double.MinValue;
-                    if (marksSubject.Subject.ChildrenSubjects.Any())
-                    {
-                        average = MarkModel.ReadPeriodMainSubjectAverage(entryMarks.SelectedPeriod, entryMarks.SelectedClass.SelectedStudent.Student, marksSubject.Subject);
-                    }
-                    else
-                    {
-                        average = MarkModel.ReadPeriodSubjectAverage(entryMarks.SelectedPeriod, entryMarks.SelectedClass.SelectedStudent.Student, marksSubject.Subject);
-                    }
+                    double average = MarkModel.ReadPeriodSubjectAverage(entryMarks.SelectedPeriod, entryMarks.SelectedClass.SelectedStudent.Student, marksSubject.Subject);
                     marksSubject.Average = average != double.MinValue ? average.ToString("0.0") : "";
                 }
             }
