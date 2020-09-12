@@ -4064,21 +4064,24 @@
                                           <TablixCells>
                                             <TablixCell>
                                               <CellContents>
-                                                <Textbox Name="Textbox95">
+                                                <Textbox Name="MainTeacherReport">
                                                   <CanGrow>true</CanGrow>
                                                   <KeepTogether>true</KeepTogether>
                                                   <Paragraphs>
                                                     <Paragraph>
                                                       <TextRuns>
                                                         <TextRun>
-                                                          <Value />
-                                                          <Style />
+                                                          <Value>=Fields!MainTeacherReport.Value</Value>
+                                                          <Style>
+                                                            <FontFamily>Cambria</FontFamily>
+                                                            <FontSize>11pt</FontSize>
+                                                          </Style>
                                                         </TextRun>
                                                       </TextRuns>
                                                       <Style />
                                                     </Paragraph>
                                                   </Paragraphs>
-                                                  <rd:DefaultName>Textbox95</rd:DefaultName>
+                                                  <rd:DefaultName>MainTeacherReport</rd:DefaultName>
                                                   <Style>
                                                     <Border>
                                                       <Style>Solid</Style>
@@ -4547,21 +4550,24 @@
                                           <TablixCells>
                                             <TablixCell>
                                               <CellContents>
-                                                <Textbox Name="Textbox153">
+                                                <Textbox Name="DivisionPrefectReport">
                                                   <CanGrow>true</CanGrow>
                                                   <KeepTogether>true</KeepTogether>
                                                   <Paragraphs>
                                                     <Paragraph>
                                                       <TextRuns>
                                                         <TextRun>
-                                                          <Value />
-                                                          <Style />
+                                                          <Value>=Fields!DivisionPrefectReport.Value</Value>
+                                                          <Style>
+                                                            <FontFamily>Cambria</FontFamily>
+                                                            <FontSize>11pt</FontSize>
+                                                          </Style>
                                                         </TextRun>
                                                       </TextRuns>
                                                       <Style />
                                                     </Paragraph>
                                                   </Paragraphs>
-                                                  <rd:DefaultName>Textbox153</rd:DefaultName>
+                                                  <rd:DefaultName>DivisionPrefectReport</rd:DefaultName>
                                                   <Style>
                                                     <Border>
                                                       <Style>Solid</Style>
@@ -4573,6 +4579,7 @@
                                                     <PaddingBottom>2pt</PaddingBottom>
                                                   </Style>
                                                 </Textbox>
+                                                <rd:Selected>true</rd:Selected>
                                               </CellContents>
                                             </TablixCell>
                                           </TablixCells>

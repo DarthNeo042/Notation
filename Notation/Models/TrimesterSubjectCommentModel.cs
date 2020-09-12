@@ -15,7 +15,7 @@ namespace Notation.Models
                 connection.Open();
 
                 using (SqlCommand command = new SqlCommand($"SELECT * FROM [TrimesterSubjectComment] WHERE IdStudent = {student.Id} AND IdSubject = {subject.Id}"
-                    + "$ AND Trimester = {trimester} AND [Year] = {student.Year}", connection))
+                    + $" AND Trimester = {trimester} AND [Year] = {student.Year}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {

@@ -86,10 +86,15 @@ namespace Notation.Utils
                     MainViewModel.Instance.Reports.PeriodReports.Clear();
 
                     int studentCount = 0;
+
+                    Dictionary<int, string> students = new Dictionary<int, string>();
+                    foreach (StudentViewModel student in MainViewModel.Instance.Parameters.Students)
+                    {
+                        students[student.Id] = $"{student.LastName}{student.FirstName}";
+                    }
+
                     IEnumerable<IGrouping<int, MarkViewModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
-                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key))
-                        .OrderBy(s => MainViewModel.Instance.Parameters.Students.First(s2 => s2.Id == s.Key).LastName)
-                        .ThenBy(s => MainViewModel.Instance.Parameters.Students.First(s2 => s2.Id == s.Key).FirstName))
+                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key)).OrderBy(s => students[s.Key]))
                     {
                         StudentViewModel student = MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => s.Id == studentGroup.Key);
                         if (student != null)
@@ -607,7 +612,7 @@ namespace Notation.Utils
             ReportViewer report = new ReportViewer();
             report.LocalReport.ReportPath = @".\Reports\BulletinTrimestre.rdlc";
 
-            BulletinDemiTrimestreHeaderDataSource bulletinDemiTrimestreHeader = new BulletinDemiTrimestreHeaderDataSource()
+            BulletinTrimestreHeaderDataSource bulletinTrimestreHeader = new BulletinTrimestreHeaderDataSource()
             {
                 BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
@@ -620,40 +625,40 @@ namespace Notation.Utils
             TrimesterCommentViewModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
             if (trimesterComment != null)
             {
-                bulletinDemiTrimestreHeader.MainTeacherReport = trimesterComment.MainTeacherComment;
-                bulletinDemiTrimestreHeader.DivisionPrefectReport = trimesterComment.DivisionPrefectComment;
+                bulletinTrimestreHeader.MainTeacherReport = trimesterComment.MainTeacherComment;
+                bulletinTrimestreHeader.DivisionPrefectReport = trimesterComment.DivisionPrefectComment;
             }
 
-            bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
+            bulletinTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
                 (_class.MainTeacher != null ? $" {_class.MainTeacher.Title} {(!string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "")} {_class.MainTeacher.LastName}" : "");
-            bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
+            bulletinTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
                 (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
             double average = MarkModel.ReadTrimesterAverage(trimester, student);
             if (average != double.MinValue)
             {
-                bulletinDemiTrimestreHeader.Average = average.ToString("0.0");
+                bulletinTrimestreHeader.Average = average.ToString("0.0");
             }
             if (SSRSUtils_Trimester.ClassAverage != double.MinValue)
             {
-                bulletinDemiTrimestreHeader.ClassAverage = SSRSUtils_Trimester.ClassAverage.ToString("0.0");
+                bulletinTrimestreHeader.ClassAverage = SSRSUtils_Trimester.ClassAverage.ToString("0.0");
             }
             if (SSRSUtils_Trimester.ClassMinAverage != double.MaxValue)
             {
-                bulletinDemiTrimestreHeader.ClassMinAverage = SSRSUtils_Trimester.ClassMinAverage.ToString("0.0");
+                bulletinTrimestreHeader.ClassMinAverage = SSRSUtils_Trimester.ClassMinAverage.ToString("0.0");
             }
             if (SSRSUtils_Trimester.ClassMaxAverage != double.MinValue)
             {
-                bulletinDemiTrimestreHeader.ClassMaxAverage = SSRSUtils_Trimester.ClassMaxAverage.ToString("0.0");
+                bulletinTrimestreHeader.ClassMaxAverage = SSRSUtils_Trimester.ClassMaxAverage.ToString("0.0");
             }
             int ranking = MarkModel.ReadtrimesterRanking(student, SSRSUtils_Trimester.StudentAverages);
-            bulletinDemiTrimestreHeader.Ranking = $"{ranking}/{SSRSUtils_Trimester.StudentAverages.Count}";
+            bulletinTrimestreHeader.Ranking = $"{ranking}/{SSRSUtils_Trimester.StudentAverages.Count}";
 
-            List<BulletinDemiTrimestreLineDataSource> bulletinDemiTrimestreLines = new List<BulletinDemiTrimestreLineDataSource>();
+            List<BulletinTrimestreLineDataSource> bulletinTrimestreLines = new List<BulletinTrimestreLineDataSource>();
 
             foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
             {
-                BulletinDemiTrimestreLineDataSource bulletinDemiTrimestreLine = new BulletinDemiTrimestreLineDataSource()
+                BulletinTrimestreLineDataSource bulletinTrimestreLine = new BulletinTrimestreLineDataSource()
                 {
                     IsChildSubject = false,
                     Subject = subject.Name.ToUpper(),
@@ -663,16 +668,16 @@ namespace Notation.Utils
                 };
                 if (subject.Option)
                 {
-                    bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject.Coefficient})";
+                    bulletinTrimestreLine.Coefficient = $"(option coeff. {subject.Coefficient})";
                 }
                 else
                 {
-                    bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
+                    bulletinTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
                 TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
                 if (teacher != null)
                 {
-                    bulletinDemiTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
+                    bulletinTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
                 }
                 average = double.MinValue;
                 if (subject.ChildrenSubjects.Any())
@@ -685,13 +690,18 @@ namespace Notation.Utils
                 }
                 if (average != double.MinValue)
                 {
-                    bulletinDemiTrimestreLine.Average = average.ToString("0.0");
+                    bulletinTrimestreLine.Average = average.ToString("0.0");
                 }
-                bulletinDemiTrimestreLines.Add(bulletinDemiTrimestreLine);
+                TrimesterSubjectCommentViewModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
+                if (trimesterSubjectComment != null)
+                {
+                    bulletinTrimestreLine.SubjectComment = trimesterSubjectComment.Comment;
+                }
+                bulletinTrimestreLines.Add(bulletinTrimestreLine);
 
                 foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
-                    bulletinDemiTrimestreLine = new BulletinDemiTrimestreLineDataSource()
+                    bulletinTrimestreLine = new BulletinTrimestreLineDataSource()
                     {
                         IsChildSubject = true,
                         Subject = subject2.Name.ToUpper(),
@@ -701,26 +711,31 @@ namespace Notation.Utils
                     };
                     if (subject.Option)
                     {
-                        bulletinDemiTrimestreLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
+                        bulletinTrimestreLine.Coefficient = $"(option coeff. {subject2.Coefficient})";
                     }
                     else
                     {
-                        bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject2.Coefficient})";
+                        bulletinTrimestreLine.Coefficient = $"(coeff. {subject2.Coefficient})";
                     }
                     average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
                     if (average != double.MinValue)
                     {
-                        bulletinDemiTrimestreLine.Average = average.ToString("0.0");
+                        bulletinTrimestreLine.Average = average.ToString("0.0");
+                    }
+                    trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject2);
+                    if (trimesterSubjectComment != null)
+                    {
+                        bulletinTrimestreLine.SubjectComment = trimesterSubjectComment.Comment;
                     }
 
-                    bulletinDemiTrimestreLines.Add(bulletinDemiTrimestreLine);
+                    bulletinTrimestreLines.Add(bulletinTrimestreLine);
                 }
             }
 
-            ReportDataSource dataSource = new ReportDataSource("HeaderDataSet", new List<BulletinDemiTrimestreHeaderDataSource>() { bulletinDemiTrimestreHeader });
+            ReportDataSource dataSource = new ReportDataSource("HeaderDataSet", new List<BulletinTrimestreHeaderDataSource>() { bulletinTrimestreHeader });
             report.LocalReport.DataSources.Add(dataSource);
 
-            dataSource = new ReportDataSource("LineDataSet", bulletinDemiTrimestreLines);
+            dataSource = new ReportDataSource("LineDataSet", bulletinTrimestreLines);
             report.LocalReport.DataSources.Add(dataSource);
 
             byte[] bytes = report.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string extension, out string[] streamIds, out Warning[] warnings);
