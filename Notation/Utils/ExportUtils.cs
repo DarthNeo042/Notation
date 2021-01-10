@@ -82,7 +82,7 @@ namespace Notation.Utils
                     classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject))
+                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject, period))
                         {
                             string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
                                 string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}"));
@@ -198,7 +198,7 @@ namespace Notation.Utils
                     classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject.ParentSubject ?? mainSubject))
+                        foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, mainSubject.ParentSubject ?? mainSubject, period))
                         {
                             string filename = Path.Combine(directory, string.Format("Notes période {0} - {1} - {2} - {3}.xlsx", period.Number, mainSubject.Name, _class.Name,
                                 string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}"));
@@ -468,12 +468,14 @@ namespace Notation.Utils
 
         public static void ExportTrimesterSubjectCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
+            PeriodViewModel period = MainViewModel.Instance.Models.Periods.OrderBy(p => p.Number).FirstOrDefault(p => p.Trimester == trimester);
+
             int subjectCount = 0;
             foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject == null))
             {
                 foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                 {
-                    foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, subject))
+                    foreach (TeacherViewModel teacher in ModelUtils.GetTeachersFromClassAndSubject(_class, subject, period))
                     {
                         string filename = Path.Combine(directory, string.Format("Appréciations trimestre {0} - {1} - {2} - {3}.xlsx",
                             trimester, string.IsNullOrEmpty(teacher.FirstName) ? teacher.LastName : $"{teacher.LastName} {teacher.FirstName}", subject.Name, _class.Name));
@@ -1349,6 +1351,8 @@ namespace Notation.Utils
 
             workSheet.Column(1).AutoFit();
             excel.Save();
+
+            MainViewModel.Instance.Reports.TrimesterReports.Add(Path.GetFileName(filename));
         }
     }
 }

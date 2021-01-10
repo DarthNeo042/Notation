@@ -125,6 +125,7 @@ namespace Notation.Views
             DataContext = MainViewModel.Instance;
             CommandBindings.AddRange(MainViewModel.Instance.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
+            CommandBindings.AddRange(MainViewModel.Instance.Parameters.Utils.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Reports.Bindings);
             CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);

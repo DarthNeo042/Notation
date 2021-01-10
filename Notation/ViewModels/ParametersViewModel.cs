@@ -217,6 +217,16 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty CalendarProperty =
             DependencyProperty.Register("Calendar", typeof(CalendarViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
 
+        public UtilsViewModel Utils
+        {
+            get { return (UtilsViewModel)GetValue(UtilsProperty); }
+            set { SetValue(UtilsProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Utils.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty UtilsProperty =
+            DependencyProperty.Register("Utils", typeof(UtilsViewModel), typeof(ParametersViewModel), new PropertyMetadata(null));
+
         public ICommand AddPeriodCommand { get; set; }
 
         private void AddPeriodCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -1338,6 +1348,7 @@ namespace Notation.ViewModels
             Students = new ObservableCollection<StudentViewModel>();
 
             Calendar = new CalendarViewModel();
+            Utils = new UtilsViewModel();
             YearParameters = new YearParametersViewModel();
 
             GetBaseName();
@@ -1544,6 +1555,7 @@ namespace Notation.ViewModels
             LoadTeacherClasses();
 
             LoadYearParameters();
+            LoadUtils();
         }
 
         public void LoadLevelSubjects()
@@ -1670,6 +1682,11 @@ namespace Notation.ViewModels
         public void LoadYearParameters()
         {
             YearParameters = YearParametersModel.Read(Year);
+        }
+
+        public void LoadUtils()
+        {
+            Utils.LoadData();
         }
 
         private string GetBaseName()

@@ -959,6 +959,84 @@
                             <TextBlock Grid.Column="3" Grid.Row="1" Text="{Binding Calendar.PeriodsSummary}" VerticalAlignment="Top"></TextBlock>
                         </Grid>
                     </TabItem>
+                    <TabItem Header="Notes-professeurs" Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Utils}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                <ColumnDefinition Width="300"></ColumnDefinition>
+                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"></RowDefinition>
+                                <RowDefinition Height="35"></RowDefinition>
+                                <RowDefinition Height="35"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+                                    <GradientStop Offset="2" Color="Black"></GradientStop>
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="3" VerticalAlignment="Stretch" Background="White"> </TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Text="Période :" TextAlignment="Right"></TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Text="Classe :" TextAlignment="Right"></TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="2" Text="Matière :" TextAlignment="Right"></TextBlock>
+                            <StackPanel Grid.Column="4" Grid.Row="0" Orientation="Horizontal">
+                                <TextBlock Text="Nombres de notes :" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                                <TextBlock Text="{Binding NbMarks}" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                            <StackPanel Grid.Column="4" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock Text="Professseur :" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                                <TextBlock Text="{Binding ActualTeacher.Title}" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                                <TextBlock Text="{Binding ActualTeacher.FirstName}" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                                <TextBlock Text="{Binding ActualTeacher.LastName}" TextAlignment="Right" FontStyle="Italic"></TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="3" Grid.Row="2" Text="Professeur :" TextAlignment="Right"></TextBlock>
+                            <ComboBox Grid.Column="1" Grid.Row="0" SelectedItem="{Binding SelectedPeriod}" ItemsSource="{Binding Periods}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Période"></TextBlock>
+                                            <TextBlock Text="{Binding Number}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox Grid.Column="1" Grid.Row="1" SelectedItem="{Binding SelectedClass}" ItemsSource="{Binding Classes}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox Grid.Column="1" Grid.Row="2" SelectedItem="{Binding SelectedSubject}" ItemsSource="{Binding Subjects}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ComboBox Grid.Column="4" Grid.Row="2" SelectedItem="{Binding SelectedTeacher}" ItemsSource="{Binding Teachers}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}"></TextBlock>
+                                            <TextBlock Text="{Binding LastName}"></TextBlock>
+                                            <TextBlock Text="{Binding FirstName}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button Grid.Column="5" Grid.Row="2" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding AffectTeacherMarksCommand}"></Button>
+                            <Image Source="{StaticResource Icon}" Grid.RowSpan="6" Grid.ColumnSpan="7" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
+                        </Grid>
+                    </TabItem>
                     <TabItem Header="Autres options">
                         <Grid>
                             <Grid.Background>

@@ -203,7 +203,7 @@ namespace Notation.Utils
                 {
                     bulletinPeriodeLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
-                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
+                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
                 if (teacher != null)
                 {
                     bulletinPeriodeLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
@@ -465,7 +465,7 @@ namespace Notation.Utils
                 {
                     bulletinDemiTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
-                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
+                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, semiTrimester.Period1);
                 if (teacher != null)
                 {
                     bulletinDemiTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
@@ -594,6 +594,7 @@ namespace Notation.Utils
                             _updateTrimesterReportsDispatch(studentCount * 1000 / SSRSUtils_Trimester.StudentAverages.Count
                                 + classCount * 1000 / SSRSUtils_Trimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count);
                         }
+                        ExportUtils.ExportTrimesterSummary(directory, _class, trimester);
                     }
 
                     MainViewModel.Instance.Reports.TrimesterReportsPath = directory;
@@ -607,6 +608,8 @@ namespace Notation.Utils
 
         private static void GenerateTrimesterReport(string directory, int trimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_Trimester SSRSUtils_Trimester)
         {
+            PeriodViewModel period = MainViewModel.Instance.Reports.Periods.OrderBy(p => p.Number).FirstOrDefault(p => p.Trimester == trimester);
+
             string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
@@ -674,7 +677,7 @@ namespace Notation.Utils
                 {
                     bulletinTrimestreLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
-                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
+                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
                 if (teacher != null)
                 {
                     bulletinTrimestreLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";
@@ -826,6 +829,8 @@ namespace Notation.Utils
 
         private static void GenerateYearReport(string directory, int year, StudentViewModel student, ClassViewModel _class, SSRSUtils_Year SSRSUtils_Year)
         {
+            PeriodViewModel period = MainViewModel.Instance.Models.Periods.OrderBy(p => p.Number).FirstOrDefault();
+
             string filename = Path.Combine(directory, $"Bulletin de l'année {year}-{year + 1} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             ReportViewer report = new ReportViewer();
@@ -880,7 +885,7 @@ namespace Notation.Utils
                 {
                     bulletinAnnuelLine.Coefficient = $"(coeff. {subject.Coefficient})";
                 }
-                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject);
+                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
                 if (teacher != null)
                 {
                     bulletinAnnuelLine.Teacher = $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}";

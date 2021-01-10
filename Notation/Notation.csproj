@@ -151,6 +151,7 @@
     <Compile Include="ViewModels\TrimesterCommentViewModel.cs" />
     <Compile Include="ViewModels\TrimesterSubjectCommentViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
+    <Compile Include="ViewModels\UtilsViewModel.cs" />
     <Compile Include="ViewModels\YearParametersViewModel.cs" />
     <Compile Include="Views\AddClasses.xaml.cs">
       <DependentUpon>AddClasses.xaml</DependentUpon>

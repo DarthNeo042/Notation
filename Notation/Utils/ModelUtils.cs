@@ -7,9 +7,9 @@ namespace Notation.Utils
 {
     public static class ModelUtils
     {
-        public static TeacherViewModel GetTeacherFromClassAndSubject(ClassViewModel _class, SubjectViewModel subject)
+        public static TeacherViewModel GetTeacherFromClassAndSubject(ClassViewModel _class, SubjectViewModel subject, PeriodViewModel period)
         {
-            TeacherViewModel teacher = MarkModel.ReadTeacherFromClassAndSubject(_class.Year, _class.Id, subject.Id);
+            TeacherViewModel teacher = MarkModel.ReadTeacherFromClassAndSubject(_class.Year, _class.Id, subject.Id, period.Id);
 
             if (teacher == null)
             {
@@ -19,9 +19,9 @@ namespace Notation.Utils
             return teacher;
         }
 
-        public static IEnumerable<TeacherViewModel> GetTeachersFromClassAndSubject(ClassViewModel _class, SubjectViewModel subject)
+        public static IEnumerable<TeacherViewModel> GetTeachersFromClassAndSubject(ClassViewModel _class, SubjectViewModel subject, PeriodViewModel period)
         {
-            TeacherViewModel teacher = MarkModel.ReadTeacherFromClassAndSubject(_class.Year, _class.Id, subject.Id);
+            TeacherViewModel teacher = MarkModel.ReadTeacherFromClassAndSubject(_class.Year, _class.Id, subject.Id, period.Id);
 
             if (teacher == null)
             {

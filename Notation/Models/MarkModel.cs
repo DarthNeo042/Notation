@@ -139,13 +139,13 @@ namespace Notation.Models
             return marks;
         }
 
-        public static TeacherViewModel ReadTeacherFromClassAndSubject(int year, int idClass, int idSubject)
+        public static TeacherViewModel ReadTeacherFromClassAndSubject(int year, int idClass, int idSubject, int idPeriod)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand($"SELECT TOP 1 IdTeacher FROM Mark WHERE [Year] = {year} AND IdClass = {idClass} AND IdSubject = {idSubject}", connection))
+                using (SqlCommand command = new SqlCommand($"SELECT TOP 1 IdTeacher FROM Mark WHERE [Year] = {year} AND IdClass = {idClass} AND IdSubject = {idSubject} AND IdPeriod = {idPeriod}", connection))
                 {
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -160,7 +160,7 @@ namespace Notation.Models
             return null;
         }
 
-        public static void Save(IEnumerable<MarkViewModel> marks, int year)
+        public static void Save(IEnumerable<MarkViewModel> marks, int year, bool replaceTeacher = false)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -169,7 +169,7 @@ namespace Notation.Models
                 foreach (IGrouping<Group, MarkViewModel> markGroup in marks.GroupBy(m => new Group() { IdClass = m.IdClass, IdPeriod = m.IdPeriod, IdStudent = m.IdStudent, IdSubject = m.IdSubject, IdTeacher = m.IdTeacher }))
                 {
                     using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE [Year] = {year} AND IdClass = {markGroup.Key.IdClass} AND IdPeriod = {markGroup.Key.IdPeriod}"
-                        + $" AND IdStudent = {markGroup.Key.IdStudent} AND IdSubject = {markGroup.Key.IdSubject} AND IdTeacher = {markGroup.Key.IdTeacher}", connection))
+                        + $" AND IdStudent = {markGroup.Key.IdStudent} AND IdSubject = {markGroup.Key.IdSubject}{(!replaceTeacher ? $" AND IdTeacher = {markGroup.Key.IdTeacher}" : "")}", connection))
                     {
                         command.ExecuteNonQuery();
                     }

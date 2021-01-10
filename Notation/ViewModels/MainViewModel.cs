@@ -182,7 +182,7 @@ namespace Notation.ViewModels
 
         private void AddYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !Years.Contains(SelectedYear + 1);
+            e.CanExecute = (User?.IsAdmin ?? false) && !Years.Contains(SelectedYear + 1);
         }
 
         private void AddYearExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -198,7 +198,7 @@ namespace Notation.ViewModels
 
         private void DeleteYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = SelectedYear != 0;
+            e.CanExecute = (User?.IsAdmin ?? false) && SelectedYear != 0;
         }
 
         private void DeleteYearExecuted(object sender, ExecutedRoutedEventArgs e)
