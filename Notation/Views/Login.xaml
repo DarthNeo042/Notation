@@ -12,8 +12,8 @@
         Title="Authentification" Height="160" Width="400">
     <Window.Background>
         <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5" RadiusX="0.9" RadiusY="0.9">
-            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
-            <GradientStop Offset="1.2" Color="Black"></GradientStop>
+            <GradientStop Offset="0" Color="White"></GradientStop>
+            <GradientStop Offset="0.8" Color="Black" x:Name="Color"></GradientStop>
         </RadialGradientBrush>
     </Window.Background>
     <Grid Margin="5">
@@ -40,8 +40,18 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Name="Validate" Grid.Column="0" Content="Valider" Command="{Binding ValidateCommand}" Background="LimeGreen"></Button>
-            <Button Name="Cancel" Grid.Column="1" Content="Annuler" Command="{Binding CancelCommand}" Background="OrangeRed"></Button>
+            <Button Name="Validate" Grid.Column="0" Command="{Binding ValidateCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Valider"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Name="Cancel" Grid.Column="1" Command="{Binding CancelCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Annuler"></TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </Window>

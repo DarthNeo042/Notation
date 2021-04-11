@@ -37,13 +37,13 @@
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="120"></ColumnDefinition>
-                <ColumnDefinition Width="120"></ColumnDefinition>
+                <ColumnDefinition Width="140"></ColumnDefinition>
+                <ColumnDefinition Width="140"></ColumnDefinition>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="250"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="140"></ColumnDefinition>
+                <ColumnDefinition Width="140"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Grid.ColumnSpan="12" Height="35">
                 <TextBlock.Background>
@@ -56,7 +56,12 @@
             </TextBlock>
             <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
             <TextBlock Grid.Column="1" Text="{Binding User.Name}"></TextBlock>
-            <Button Grid.Column="2" Content="Changer d'utilisateur" Command="{Binding LoginCommand}" Background="Yellow"></Button>
+            <Button Grid.Column="2" Command="{Binding LoginCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource User}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Changer d'utilisateur"></TextBlock>
+                </StackPanel>
+            </Button>
             <TextBlock Grid.Column="3" Text="Année :"></TextBlock>
             <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}">
                 <ComboBox.ItemTemplate>
@@ -65,12 +70,32 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Button Grid.Column="5" Content="Ajouter" Command="{Binding AddYearCommand}" Background="LimeGreen"></Button>
-            <Button Grid.Column="6" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteYearCommand}"></Button>
+            <Button Grid.Column="5" Command="{Binding AddYearCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Ajouter"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="6" Command="{Binding DeleteYearCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Supprimer"></TextBlock>
+                </StackPanel>
+            </Button>
             <TextBlock Grid.Column="7" Text="Base :"></TextBlock>
             <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}"></TextBlock>
-            <Button Grid.Column="10" Content="Rafraîchir" Background="Gray" Command="{Binding RefreshCommand}"></Button>
-            <Button Grid.Column="11" Content="Aide" Background="LightSkyBlue" Command="{Binding HelpCommand}"></Button>
+            <Button Grid.Column="10" Command="{Binding RefreshCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Refresh}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Rafraîchir"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="11" Command="{Binding HelpCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Help}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Aide"></TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
         <TabControl Grid.Row="1" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}" Name="ParametersTab" IsVisibleChanged="ParametersTab_IsVisibleChanged">
@@ -102,18 +127,37 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddLevelCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifyLevel" Content="Modifier" Background="Goldenrod" Command="{Binding ModifyLevelCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteLevelCommand}"></Button>
-                                <Button Grid.Column="3" Content="▲" Background="LightSkyBlue" Command="{Binding UpLevelCommand}"></Button>
-                                <Button Grid.Column="4" Content="▼" Background="LightSkyBlue" Command="{Binding DownLevelCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifyLevel" Command="{Binding ModifyLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="3" Command="{Binding UpLevelCommand}">
+                                    <Image Source="{StaticResource Up}" Width="30" Height="30"></Image>
+                                </Button>
+                                <Button Grid.Column="4" Command="{Binding DownLevelCommand}">
+                                    <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Levels}" SelectedItem="{Binding SelectedLevel}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Level_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -126,16 +170,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddLevelCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveLevelCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelLevelCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelLevelCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationLevel, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -165,12 +224,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddLevelSubjectsCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteLevelSubjectCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddLevelSubjectsCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteLevelSubjectCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" ItemsSource="{Binding ModificationLevel.Subjects}" SelectedItem="{Binding ModificationLevel.SelectedSubject}" MaxHeight="300"
                                             AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
@@ -206,18 +275,37 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifySubject" Content="Modifier" Background="Goldenrod" Command="{Binding ModifySubjectCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectCommand}"></Button>
-                                <Button Grid.Column="3" Content="▲" Background="LightSkyBlue" Command="{Binding UpSubjectCommand}"></Button>
-                                <Button Grid.Column="4" Content="▼" Background="LightSkyBlue" Command="{Binding DownSubjectCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddSubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifySubject" Command="{Binding ModifySubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteSubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="3" Command="{Binding UpSubjectCommand}">
+                                    <Image Source="{StaticResource Up}" Width="30" Height="30"></Image>
+                                </Button>
+                                <Button Grid.Column="4" Command="{Binding DownSubjectCommand}">
+                                    <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Subject_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -232,16 +320,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddSubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSubjectCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSubjectCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveSubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelSubjectCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSubject, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -286,12 +389,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectLevelsCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectLevelCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddSubjectLevelsCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteSubjectLevelCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Levels}" SelectedItem="{Binding ModificationSubject.SelectedLevel}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -309,12 +422,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddSubjectTeachersCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteSubjectTeacherCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddSubjectTeachersCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteSubjectTeacherCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Teachers}" SelectedItem="{Binding ModificationSubject.SelectedTeacher}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -350,14 +473,29 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifyTeacher" Content="Modifier" Background="Goldenrod" Command="{Binding ModifyTeacherCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifyTeacher" Command="{Binding ModifyTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Teachers}" SelectedItem="{Binding SelectedTeacher}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Teacher_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -372,16 +510,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="0" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveTeacherCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelTeacherCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelTeacherCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationTeacher, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -426,12 +579,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherSubjectsCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherSubjectCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddTeacherSubjectsCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteTeacherSubjectCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Subjects}" SelectedItem="{Binding ModificationTeacher.SelectedSubject}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -451,12 +614,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddTeacherClassesCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteTeacherClassCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddTeacherClassesCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteTeacherClassCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Classes}" SelectedItem="{Binding ModificationTeacher.SelectedClass}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -502,18 +675,37 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifyClass" Content="Modifier" Background="Goldenrod" Command="{Binding ModifyClassCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassCommand}"></Button>
-                                <Button Grid.Column="3" Content="▲" Background="LightSkyBlue" Command="{Binding UpClassCommand}"></Button>
-                                <Button Grid.Column="4" Content="▼" Background="LightSkyBlue" Command="{Binding DownClassCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifyClass" Command="{Binding ModifyClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="3" Command="{Binding UpClassCommand}">
+                                    <Image Source="{StaticResource Up}" Width="30" Height="30"></Image>
+                                </Button>
+                                <Button Grid.Column="4" Command="{Binding DownClassCommand}">
+                                    <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Class_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -538,16 +730,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveClassCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelClassCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelClassCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationClass, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -600,12 +807,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassTeachersCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassTeacherCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddClassTeachersCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteClassTeacherCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Teachers}" SelectedItem="{Binding ModificationClass.SelectedTeacher}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -625,12 +842,22 @@
                                         </Grid.RowDefinitions>
                                         <Grid Grid.Row="0" Grid.Column="0">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
-                                                <ColumnDefinition Width="120"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
+                                                <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddClassStudentsCommand}"></Button>
-                                            <Button Grid.Column="1" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteClassStudentCommand}"></Button>
+                                            <Button Grid.Column="0" Command="{Binding AddClassStudentsCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Ajouter"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button Grid.Column="1" Command="{Binding DeleteClassStudentCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                                    <TextBlock Text="Supprimer"></TextBlock>
+                                                </StackPanel>
+                                            </Button>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Students}" SelectedItem="{Binding ModificationClass.SelectedStudent}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -666,14 +893,29 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddStudentCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifyStudent" Content="Modifier" Background="Goldenrod" Command="{Binding ModifyStudentCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeleteStudentCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifyStudent" Command="{Binding ModifyStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Student_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -688,16 +930,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddStudentCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveStudentCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelStudentCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelStudentCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationStudent, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -758,14 +1015,29 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddPeriodCommand}"></Button>
-                                <Button Grid.Column="1" Name="ModifyPeriod" Content="Modifier" Background="Goldenrod" Command="{Binding ModifyPeriodCommand}"></Button>
-                                <Button Grid.Column="2" Content="Supprimer" Background="OrangeRed" Command="{Binding DeletePeriodCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddPeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Name="ModifyPeriod" Command="{Binding ModifyPeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeletePeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Supprimer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Periods}" SelectedItem="{Binding SelectedPeriod}" 
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Period_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -781,16 +1053,31 @@
                                     <ColumnDefinition Width="120"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Ajouter" Background="LimeGreen" Command="{Binding AddPeriodCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding AddPeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Ajouter"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SavePeriodCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelPeriodCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SavePeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelPeriodCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationPeriod, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -843,14 +1130,23 @@
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Name="ModifySemiTrimester" Content="Modifier" Background="Goldenrod" Command="{Binding ModifySemiTrimesterCommand}"></Button>
-                                <Button Grid.Column="1" Content="+" Background="LimeGreen" Command="{Binding AddSemiTrimesterPeriodCommand}" FontWeight="Bold" FontSize="30"></Button>
-                                <Button Grid.Column="2" Content="-" Background="OrangeRed" Command="{Binding DeleteSemiTrimesterPeriodCommand}" FontWeight="Bold" FontSize="30"></Button>
+                                <Button Grid.Column="0" Name="ModifySemiTrimester" Command="{Binding ModifySemiTrimesterCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Modify}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Modifier"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding AddSemiTrimesterPeriodCommand}">
+                                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                                </Button>
+                                <Button Grid.Column="2" Command="{Binding DeleteSemiTrimesterPeriodCommand}">
+                                    <Image Source="{StaticResource Minus}" Width="30" Height="30"></Image>
+                                </Button>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding SemiTrimesters}" SelectedItem="{Binding SelectedSemiTrimester}" 
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="SemiTrimester_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -881,12 +1177,22 @@
                             </DataGrid>
                             <Grid Grid.Row="0" Grid.Column="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveSemiTrimesterCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelSemiTrimesterCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveSemiTrimesterCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelSemiTrimesterCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                             <Grid Grid.Column="1" Grid.Row="1" Visibility="{Binding ModificationSemiTrimester, Converter={StaticResource ObjectToVisibilityConverter}}">
                                 <Grid.RowDefinitions>
@@ -983,7 +1289,7 @@
                                     <GradientStop Offset="2" Color="Black"></GradientStop>
                                 </LinearGradientBrush>
                             </Grid.Background>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="3" VerticalAlignment="Stretch" Background="White"> </TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="6" Grid.RowSpan="3" VerticalAlignment="Stretch" Background="White"></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="0" Text="Période :" TextAlignment="Right"></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="1" Text="Classe :" TextAlignment="Right"></TextBlock>
                             <TextBlock Grid.Column="0" Grid.Row="2" Text="Matière :" TextAlignment="Right"></TextBlock>
@@ -1066,12 +1372,22 @@
                             </GroupBox>
                             <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveYearParametersCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelYearParametersCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveYearParametersCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelYearParametersCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1143,26 +1459,48 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Rouge (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding BaseParameters.ColorR, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <Button Grid.Row="0" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorRCommand}"></Button>
-                                    <Button Grid.Row="0" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorRCommand}"></Button>
+                                    <Button Grid.Row="0" Grid.Column="2" Command="{Binding MinusColorRCommand}">
+                                        <Image Source="{StaticResource Minus}" Width="20" Height="20"></Image>
+                                    </Button>
+                                    <Button Grid.Row="0" Grid.Column="3" Command="{Binding PlusColorRCommand}">
+                                        <Image Source="{StaticResource Add}" Width="20" Height="20"></Image>
+                                    </Button>
                                     <TextBlock Grid.Row="1" Grid.Column="0" Text="Vert (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseParameters.ColorG, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <Button Grid.Row="1" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorGCommand}"></Button>
-                                    <Button Grid.Row="1" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorGCommand}"></Button>
+                                    <Button Grid.Row="1" Grid.Column="2" Command="{Binding MinusColorGCommand}">
+                                        <Image Source="{StaticResource Minus}" Width="20" Height="20"></Image>
+                                    </Button>
+                                    <Button Grid.Row="1" Grid.Column="3" Command="{Binding PlusColorGCommand}">
+                                        <Image Source="{StaticResource Add}" Width="20" Height="20"></Image>
+                                    </Button>
                                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Bleu (0-255) :"></TextBlock>
                                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BaseParameters.ColorB, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                                    <Button Grid.Row="2" Grid.Column="2" Content="-" Background="LimeGreen" Command="{Binding MinusColorBCommand}"></Button>
-                                    <Button Grid.Row="2" Grid.Column="3" Content="+" Background="OrangeRed" Command="{Binding PlusColorBCommand}"></Button>
+                                    <Button Grid.Row="2" Grid.Column="2" Command="{Binding MinusColorBCommand}">
+                                        <Image Source="{StaticResource Minus}" Width="20" Height="20"></Image>
+                                    </Button>
+                                    <Button Grid.Row="2" Grid.Column="3" Command="{Binding PlusColorBCommand}">
+                                        <Image Source="{StaticResource Add}" Width="20" Height="20"></Image>
+                                    </Button>
                                 </Grid>
                             </GroupBox>
                             <Grid Grid.Row="4">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
-                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
+                                    <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Content="Enregistrer" Background="LightSkyBlue" Command="{Binding SaveBaseParametersCommand}"></Button>
-                                <Button Grid.Column="1" Content="Annuler" Background="Gray" Command="{Binding CancelBaseParametersCommand}"></Button>
+                                <Button Grid.Column="0" Command="{Binding SaveBaseParametersCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Enregistrer"></TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="1" Command="{Binding CancelBaseParametersCommand}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                                        <TextBlock Text="Annuler"></TextBlock>
+                                    </StackPanel>
+                                </Button>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1209,7 +1547,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenPeriodModelsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenPeriodModelsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="PeriodModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding PeriodModels}" SelectedItem="{Binding SelectedPeriodModel}" MouseDoubleClick="PeriodModel_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1247,7 +1587,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenSemiTrimesterModelsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenSemiTrimesterModelsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="SemiTrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterModels}" SelectedItem="{Binding SelectedSemiTrimesterModel}" MouseDoubleClick="SemiTrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1285,7 +1627,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenTrimesterModelsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenTrimesterModelsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="TrimesterModelsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding TrimesterModels}" SelectedItem="{Binding SelectedTrimesterModel}" MouseDoubleClick="TrimesterModel_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1398,7 +1742,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenPeriodReportsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenPeriodReportsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="PeriodReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding PeriodReports}" SelectedItem="{Binding SelectedPeriodReport}" MouseDoubleClick="PeriodReport_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1436,7 +1782,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenSemiTrimesterReportsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenSemiTrimesterReportsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="SemiTrimesterReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterReports}" SelectedItem="{Binding SelectedSemiTrimesterReport}" MouseDoubleClick="SemiTrimesterReport_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1474,7 +1822,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenTrimesterReportsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenTrimesterReportsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="TrimesterReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding TrimesterReports}" SelectedItem="{Binding SelectedTrimesterReport}" MouseDoubleClick="TrimesterReport_MouseDoubleClick"></ListView>
                             </Grid>
@@ -1512,7 +1862,9 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Grid.Row="0" Content="ﬦ" Width="50" FontWeight="Bold" HorizontalAlignment="Left" Background="Yellow" Command="{Binding OpenYearReportsPathCommand}"></Button>
+                                <Button Grid.Row="0" Width="50" HorizontalAlignment="Left" Command="{Binding OpenYearReportsPathCommand}">
+                                    <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
+                                </Button>
                                 <ProgressBar Grid.Row="1" Name="YearReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
                                 <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding YearReports}" SelectedItem="{Binding SelectedYearReport}" MouseDoubleClick="YearReport_MouseDoubleClick"></ListView>
                             </Grid>

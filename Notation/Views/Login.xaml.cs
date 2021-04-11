@@ -12,12 +12,15 @@ namespace Notation.Views
         {
             DataContext = login;
             CommandBindings.AddRange(login.Bindings);
+
             InitializeComponent();
 
             login.ValidateEvent += Login_ValidateEvent;
             login.CancelEvent += () => Close();
 
             Password.Password = login.Password;
+
+            Color.Color = MainViewModel.Instance.Parameters.BaseParameters.Color;
         }
 
         private void Login_ValidateEvent()

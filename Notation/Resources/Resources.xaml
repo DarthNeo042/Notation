@@ -2,7 +2,19 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Notation.Resources">
     <BitmapImage x:Key="Icon" UriSource="Icon.png" />
-    
+    <BitmapImage x:Key="Add" UriSource="Add.png" />
+    <BitmapImage x:Key="Modify" UriSource="Modify.png" />
+    <BitmapImage x:Key="Delete" UriSource="Delete.png" />
+    <BitmapImage x:Key="Up" UriSource="Up.png" />
+    <BitmapImage x:Key="Down" UriSource="Down.png" />
+    <BitmapImage x:Key="Save" UriSource="Save.png" />
+    <BitmapImage x:Key="Cancel" UriSource="Cancel.png" />
+    <BitmapImage x:Key="User" UriSource="User.png" />
+    <BitmapImage x:Key="Refresh" UriSource="Refresh.png" />
+    <BitmapImage x:Key="Help" UriSource="Help.png" />
+    <BitmapImage x:Key="Minus" UriSource="Minus.png" />
+    <BitmapImage x:Key="Folder" UriSource="Folder.png" />
+
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="FontFamily" Value="Cambria"></Setter>
@@ -37,6 +49,11 @@
         <Setter Property="FontFamily" Value="Cambria"></Setter>
         <Setter Property="FontSize" Value="20"></Setter>
         <Setter Property="Margin" Value="2"></Setter>
+        <Style.Resources>
+            <Style TargetType="Border">
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+        </Style.Resources>
     </Style>
     <Style TargetType="GridSplitter">
         <Setter Property="Width" Value="5"></Setter>

@@ -304,6 +304,18 @@
     <Resource Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Add.png" />
+    <Resource Include="Resources\Modify.png" />
+    <Resource Include="Resources\Delete.png" />
+    <Resource Include="Resources\Down.png" />
+    <Resource Include="Resources\Up.png" />
+    <Resource Include="Resources\Cancel.png" />
+    <Resource Include="Resources\Save.png" />
+    <Resource Include="Resources\User.png" />
+    <Resource Include="Resources\Refresh.png" />
+    <Resource Include="Resources\Help.png" />
+    <Resource Include="Resources\Folder.png" />
+    <Resource Include="Resources\Minus.png" />
     <Content Include="SQL\CreateBase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
