@@ -141,7 +141,7 @@ namespace Notation.Utils
                 Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
             };
 
-            PeriodCommentViewModel periodComment = PeriodCommentModel.Read(period, student);
+            PeriodCommentModel periodComment = PeriodCommentModel.Read(period, student);
             if (periodComment != null)
             {
                 bulletinPeriodeHeader.StudiesReport = (int)periodComment.StudiesReport;
@@ -413,7 +413,7 @@ namespace Notation.Utils
                 Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",                
             };
 
-            SemiTrimesterCommentViewModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
+            SemiTrimesterCommentModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
             if (semiTrimesterComment != null)
             {
                 bulletinDemiTrimestreHeader.MainTeacherReport = semiTrimesterComment.MainTeacherComment;
@@ -625,7 +625,7 @@ namespace Notation.Utils
                 Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
             };
 
-            TrimesterCommentViewModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
+            TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
             if (trimesterComment != null)
             {
                 bulletinTrimestreHeader.MainTeacherReport = trimesterComment.MainTeacherComment;
@@ -695,7 +695,7 @@ namespace Notation.Utils
                 {
                     bulletinTrimestreLine.Average = average.ToString("0.0");
                 }
-                TrimesterSubjectCommentViewModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
+                TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
                 if (trimesterSubjectComment != null)
                 {
                     bulletinTrimestreLine.SubjectComment = trimesterSubjectComment.Comment;

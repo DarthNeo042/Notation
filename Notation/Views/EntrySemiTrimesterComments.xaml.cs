@@ -40,7 +40,7 @@ namespace Notation.Views
         {
             EntrySemiTrimesterCommentsViewModel entrySemiTrimesterComments = (EntrySemiTrimesterCommentsViewModel)DataContext;
 
-            SemiTrimesterCommentViewModel semiTrimesterComment = SemiTrimesterCommentModel.Read(entrySemiTrimesterComments.SelectedSemiTrimester, entrySemiTrimesterComments.SelectedClass.SelectedStudent.Student);
+            SemiTrimesterCommentModel semiTrimesterComment = SemiTrimesterCommentModel.Read(entrySemiTrimesterComments.SelectedSemiTrimester, entrySemiTrimesterComments.SelectedClass.SelectedStudent.Student);
             if (semiTrimesterComment != null)
             {
                 MainTeacherCommentTextBox.Text = semiTrimesterComment.MainTeacherComment;
@@ -126,12 +126,12 @@ namespace Notation.Views
 
         private void SaveSemiTrimesterComments(EntrySemiTrimesterCommentsViewModel entrySemiTrimesterComments)
         {
-            SemiTrimesterCommentModel.Save(new SemiTrimesterCommentViewModel()
+            SemiTrimesterCommentModel.Save(new SemiTrimesterCommentModel()
             {
                 DivisionPrefectComment = DivisionPrefectCommentTextBox.Text,
                 MainTeacherComment = MainTeacherCommentTextBox.Text,
-                SemiTrimester = entrySemiTrimesterComments.SelectedSemiTrimester,
-                Student = entrySemiTrimesterComments.SelectedClass.SelectedStudent.Student,
+                IdSemiTrimester = entrySemiTrimesterComments.SelectedSemiTrimester.Id,
+                IdStudent = entrySemiTrimesterComments.SelectedClass.SelectedStudent.Student.Id,
                 Year = entrySemiTrimesterComments.SelectedSemiTrimester.Year,
             });
         }

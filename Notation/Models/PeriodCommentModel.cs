@@ -7,25 +7,32 @@ using System.Linq;
 
 namespace Notation.Models
 {
-    public static class PeriodCommentModel
+    public class PeriodCommentModel
     {
-        public static void Save(IEnumerable<PeriodCommentViewModel> periodComments, int year)
+        public int Id { get; set; }
+        public int Year { get; set; }
+        public int StudiesReport { get; set; }
+        public int DisciplineReport { get; set; }
+        public int IdPeriod { get; set; }
+        public int IdStudent { get; set; }
+
+        public static void Save(IEnumerable<PeriodCommentModel> periodComments, int year)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                foreach (IGrouping<Tuple<int, int>, PeriodCommentViewModel> periodCommentGroup in periodComments.GroupBy(c => new Tuple<int, int>(c.Student.Id, c.Period.Id)))
+                foreach (IGrouping<Tuple<int, int>, PeriodCommentModel> periodCommentGroup in periodComments.GroupBy(c => new Tuple<int, int>(c.IdStudent, c.IdPeriod)))
                 {
                     using (SqlCommand command = new SqlCommand($"DELETE FROM PeriodComment WHERE [Year] = {year} AND IdStudent = {periodCommentGroup.Key.Item1} AND IdPeriod = {periodCommentGroup.Key.Item2}", connection))
                     {
                         command.ExecuteNonQuery();
                     }
 
-                    foreach (PeriodCommentViewModel periodComment in periodCommentGroup)
+                    foreach (PeriodCommentModel periodComment in periodCommentGroup)
                     {
                         using (SqlCommand command = new SqlCommand($"INSERT INTO PeriodComment([Year], StudiesReport, DisciplineReport, IdStudent, IdPeriod)"
-                            + $" VALUES({year}, {(int)periodComment.StudiesReport}, {(int)periodComment.DisciplineReport}, {periodComment.Student.Id}, {periodComment.Period.Id})", connection))
+                            + $" VALUES({year}, {(int)periodComment.StudiesReport}, {(int)periodComment.DisciplineReport}, {periodComment.IdStudent}, {periodComment.IdPeriod})", connection))
                         {
                             command.ExecuteNonQuery();
                         }
@@ -34,7 +41,7 @@ namespace Notation.Models
             }
         }
 
-        public static PeriodCommentViewModel Read(PeriodViewModel period, StudentViewModel student)
+        public static PeriodCommentModel Read(PeriodViewModel period, StudentViewModel student)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -46,13 +53,13 @@ namespace Notation.Models
                     {
                         if (reader.Read())
                         {
-                            return new PeriodCommentViewModel()
+                            return new PeriodCommentModel()
                             {
                                 Id = (int)reader["Id"],
-                                DisciplineReport = (PeriodCommentViewModel.ReportEnum)(int)reader["DisciplineReport"],
-                                StudiesReport = (PeriodCommentViewModel.ReportEnum)(int)reader["StudiesReport"],
-                                Period = period,
-                                Student = student,
+                                DisciplineReport = (int)reader["DisciplineReport"],
+                                StudiesReport = (int)reader["StudiesReport"],
+                                IdPeriod = period.Id,
+                                IdStudent = student.Id,
                                 Year = period.Year,
                             };
                         }

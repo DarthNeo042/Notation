@@ -4,11 +4,18 @@ using System.Data.SqlClient;
 
 namespace Notation.Models
 {
-    public static class TrimesterCommentModel
+    public class TrimesterCommentModel
     {
-        public static TrimesterCommentViewModel Read(int trimester, StudentViewModel student)
+        public int Id { get; set; }
+        public int Year { get; set; }
+        public string MainTeacherComment { get; set; }
+        public string DivisionPrefectComment { get; set; }
+        public int Trimester { get; set; }
+        public int IdStudent { get; set; }
+
+        public static TrimesterCommentModel Read(int trimester, StudentViewModel student)
         {
-            TrimesterCommentViewModel TrimesterComment = null;
+            TrimesterCommentModel TrimesterComment = null;
 
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -20,12 +27,12 @@ namespace Notation.Models
                     {
                         while (reader.Read())
                         {
-                            TrimesterComment = new TrimesterCommentViewModel()
+                            TrimesterComment = new TrimesterCommentModel()
                             {
                                 Id = (int)reader["Id"],
                                 DivisionPrefectComment = (string)reader["DivisionPrefectComment"],
                                 MainTeacherComment = (string)reader["MainTeacherComment"],
-                                Student = student,
+                                IdStudent = student.Id,
                                 Trimester = trimester,
                                 Year = student.Year,
                             };
@@ -37,7 +44,7 @@ namespace Notation.Models
             return TrimesterComment;
         }
 
-        public static void Save(TrimesterCommentViewModel trimesterComment)
+        public static void Save(TrimesterCommentModel trimesterComment)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -48,12 +55,12 @@ namespace Notation.Models
                 {
                     query = "INSERT INTO [TrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, Trimester, IdStudent)"
                         + $" VALUES({trimesterComment.Year}, '{trimesterComment.MainTeacherComment.Replace("'", "''")}', '{trimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
-                        + $" {trimesterComment.Trimester}, {trimesterComment.Student.Id})";
+                        + $" {trimesterComment.Trimester}, {trimesterComment.IdStudent})";
                 }
                 else
                 {
                     query = $"UPDATE [TrimesterComment] SET MainTeacherComment = '{trimesterComment.MainTeacherComment.Replace("'", "''")}', DivisionPrefectComment = '{trimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
-                        + $" Trimester = {trimesterComment.Trimester}, IdStudent = {trimesterComment.Student.Id} WHERE Id = {trimesterComment.Id} AND [Year] = {trimesterComment.Year}";
+                        + $" Trimester = {trimesterComment.Trimester}, IdStudent = {trimesterComment.IdStudent} WHERE Id = {trimesterComment.Id} AND [Year] = {trimesterComment.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

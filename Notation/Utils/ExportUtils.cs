@@ -724,7 +724,7 @@ namespace Notation.Utils
                 return false;
             }
 
-            List<PeriodCommentViewModel> periodComments = new List<PeriodCommentViewModel>();
+            List<PeriodCommentModel> periodComments = new List<PeriodCommentModel>();
 
             int i = 5;
             while (workSheet.Cells[i, 1].Value != null)
@@ -733,10 +733,10 @@ namespace Notation.Utils
                 {
                     StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                    PeriodCommentViewModel periodComment = new PeriodCommentViewModel()
+                    PeriodCommentModel periodComment = new PeriodCommentModel()
                     {
-                        Period = period,
-                        Student = student,
+                        IdPeriod = period.Id,
+                        IdStudent = student.Id,
                         Year = year,
                     };
 
@@ -745,16 +745,16 @@ namespace Notation.Utils
                         switch (workSheet.Cells[i, 2].Text)
                         {
                             case "1":
-                                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Good;
+                                periodComment.StudiesReport = 1;
                                 break;
                             case "2":
-                                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.MustProgress;
+                                periodComment.StudiesReport = 2;
                                 break;
                             case "3":
-                                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Insufficient;
+                                periodComment.StudiesReport = 3;
                                 break;
                             case "A":
-                                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Warning;
+                                periodComment.StudiesReport = 4;
                                 break;
                             default:
                                 break;
@@ -765,16 +765,16 @@ namespace Notation.Utils
                         switch (workSheet.Cells[i, 3].Text)
                         {
                             case "1":
-                                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Good;
+                                periodComment.DisciplineReport = 1;
                                 break;
                             case "2":
-                                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.MustProgress;
+                                periodComment.DisciplineReport = 2;
                                 break;
                             case "3":
-                                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Insufficient;
+                                periodComment.DisciplineReport = 3;
                                 break;
                             case "A":
-                                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Warning;
+                                periodComment.DisciplineReport = 4;
                                 break;
                             default:
                                 break;
@@ -807,10 +807,10 @@ namespace Notation.Utils
                 {
                     StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                    SemiTrimesterCommentViewModel semiTrimesterComment = new SemiTrimesterCommentViewModel()
+                    SemiTrimesterCommentModel semiTrimesterComment = new SemiTrimesterCommentModel()
                     {
-                        SemiTrimester = semiTrimester,
-                        Student = student,
+                        IdSemiTrimester = semiTrimester.Id,
+                        IdStudent = student.Id,
                         Year = year,
                     };
 
@@ -873,11 +873,11 @@ namespace Notation.Utils
                     {
                         StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                        TrimesterSubjectCommentViewModel trimesterSubjectComment = new TrimesterSubjectCommentViewModel()
+                        TrimesterSubjectCommentModel trimesterSubjectComment = new TrimesterSubjectCommentModel()
                         {
                             Trimester = trimester,
-                            Student = student,
-                            Subject = subject,
+                            IdStudent = student.Id,
+                            IdSubject = subject.Id,
                             Comment = workSheet.Cells[i, j].Text,
                             Year = year,
                         };
@@ -909,10 +909,10 @@ namespace Notation.Utils
                 {
                     StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                    TrimesterCommentViewModel trimesterComment = new TrimesterCommentViewModel()
+                    TrimesterCommentModel trimesterComment = new TrimesterCommentModel()
                     {
                         Trimester = trimester,
-                        Student = student,
+                        IdStudent = student.Id,
                         Year = year,
                     };
 
@@ -1194,10 +1194,10 @@ namespace Notation.Utils
                 {
                     StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                    TrimesterCommentViewModel trimesterComment = new TrimesterCommentViewModel()
+                    TrimesterCommentModel trimesterComment = new TrimesterCommentModel()
                     {
                         Trimester = trimester,
-                        Student = student,
+                        IdStudent = student.Id,
                         Year = year,
                     };
 

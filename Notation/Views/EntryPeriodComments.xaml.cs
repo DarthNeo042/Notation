@@ -41,36 +41,36 @@ namespace Notation.Views
         {
             EntryPeriodCommentsViewModel entryPeriodComments = (EntryPeriodCommentsViewModel)DataContext;
 
-            PeriodCommentViewModel periodComment = PeriodCommentModel.Read(entryPeriodComments.SelectedPeriod, entryPeriodComments.SelectedClass.SelectedStudent.Student);
+            PeriodCommentModel periodComment = PeriodCommentModel.Read(entryPeriodComments.SelectedPeriod, entryPeriodComments.SelectedClass.SelectedStudent.Student);
             if (periodComment != null)
             {
                 switch (periodComment.DisciplineReport)
                 {
-                    case PeriodCommentViewModel.ReportEnum.Good:
+                    case 1:
                         Discipline1Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.MustProgress:
+                    case 2:
                         Discipline2Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.Insufficient:
+                    case 3:
                         Discipline3Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.Warning:
+                    case 4:
                         DisciplineARadio.IsChecked = true;
                         break;
                 }
                 switch (periodComment.StudiesReport)
                 {
-                    case PeriodCommentViewModel.ReportEnum.Good:
+                    case 1:
                         Studies1Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.MustProgress:
+                    case 2:
                         Studies2Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.Insufficient:
+                    case 3:
                         Studies3Radio.IsChecked = true;
                         break;
-                    case PeriodCommentViewModel.ReportEnum.Warning:
+                    case 4:
                         StudiesARadio.IsChecked = true;
                         break;
                 }
@@ -197,47 +197,47 @@ namespace Notation.Views
 
         private void SavePeriodComments(EntryPeriodCommentsViewModel entryPeriodComments)
         {
-            PeriodCommentViewModel periodComment = new PeriodCommentViewModel()
+            PeriodCommentModel periodComment = new PeriodCommentModel()
             {
-                Period = entryPeriodComments.SelectedPeriod,
-                Student = entryPeriodComments.SelectedClass.SelectedStudent.Student,
+                IdPeriod = entryPeriodComments.SelectedPeriod.Id,
+                IdStudent = entryPeriodComments.SelectedClass.SelectedStudent.Student.Id,
                 Year = entryPeriodComments.SelectedPeriod.Year,
             };
 
             if (Studies1Radio.IsChecked ?? false)
             {
-                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Good;
+                periodComment.StudiesReport = 1;
             }
             else if (Studies2Radio.IsChecked ?? false)
             {
-                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.MustProgress;
+                periodComment.StudiesReport = 2;
             }
             else if (Studies3Radio.IsChecked ?? false)
             {
-                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Insufficient;
+                periodComment.StudiesReport = 3;
             }
             else if (StudiesARadio.IsChecked ?? false)
             {
-                periodComment.StudiesReport = PeriodCommentViewModel.ReportEnum.Warning;
+                periodComment.StudiesReport = 4;
             }
             if (Discipline1Radio.IsChecked ?? false)
             {
-                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Good;
+                periodComment.DisciplineReport = 1;
             }
             else if (Discipline2Radio.IsChecked ?? false)
             {
-                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.MustProgress;
+                periodComment.DisciplineReport = 2;
             }
             else if (Discipline3Radio.IsChecked ?? false)
             {
-                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Insufficient;
+                periodComment.DisciplineReport = 3;
             }
             else if (DisciplineARadio.IsChecked ?? false)
             {
-                periodComment.DisciplineReport = PeriodCommentViewModel.ReportEnum.Warning;
+                periodComment.DisciplineReport = 4;
             }
 
-            PeriodCommentModel.Save(new List<PeriodCommentViewModel>() { periodComment }, entryPeriodComments.SelectedPeriod.Year);
+            PeriodCommentModel.Save(new List<PeriodCommentModel>() { periodComment }, entryPeriodComments.SelectedPeriod.Year);
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

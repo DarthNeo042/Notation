@@ -40,7 +40,7 @@ namespace Notation.Views
         {
             EntryTrimesterCommentsViewModel entryTrimesterComments = (EntryTrimesterCommentsViewModel)DataContext;
 
-            TrimesterCommentViewModel TrimesterComment = TrimesterCommentModel.Read(entryTrimesterComments.SelectedTrimester, entryTrimesterComments.SelectedClass.SelectedStudent.Student);
+            TrimesterCommentModel TrimesterComment = TrimesterCommentModel.Read(entryTrimesterComments.SelectedTrimester, entryTrimesterComments.SelectedClass.SelectedStudent.Student);
             if (TrimesterComment != null)
             {
                 MainTeacherCommentTextBox.Text = TrimesterComment.MainTeacherComment;
@@ -126,12 +126,12 @@ namespace Notation.Views
 
         private void SaveTrimesterComments(EntryTrimesterCommentsViewModel entryTrimesterComments)
         {
-            TrimesterCommentModel.Save(new TrimesterCommentViewModel()
+            TrimesterCommentModel.Save(new TrimesterCommentModel()
             {
                 DivisionPrefectComment = DivisionPrefectCommentTextBox.Text,
                 MainTeacherComment = MainTeacherCommentTextBox.Text,
                 Trimester = entryTrimesterComments.SelectedTrimester,
-                Student = entryTrimesterComments.SelectedClass.SelectedStudent.Student,
+                IdStudent = entryTrimesterComments.SelectedClass.SelectedStudent.Student.Id,
                 Year = entryTrimesterComments.SelectedClass.Class.Year,
             });
         }

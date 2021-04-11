@@ -140,16 +140,12 @@
     <Compile Include="ViewModels\MarkViewModel.cs" />
     <Compile Include="ViewModels\ModelsViewModel.cs" />
     <Compile Include="ViewModels\ParametersViewModel.cs" />
-    <Compile Include="ViewModels\PeriodCommentViewModel.cs" />
     <Compile Include="ViewModels\PeriodViewModel.cs" />
     <Compile Include="ViewModels\ReportsViewModel.cs" />
-    <Compile Include="ViewModels\SemiTrimesterCommentViewModel.cs" />
     <Compile Include="ViewModels\SemiTrimesterViewModel.cs" />
     <Compile Include="ViewModels\StudentViewModel.cs" />
     <Compile Include="ViewModels\SubjectViewModel.cs" />
     <Compile Include="ViewModels\TeacherViewModel.cs" />
-    <Compile Include="ViewModels\TrimesterCommentViewModel.cs" />
-    <Compile Include="ViewModels\TrimesterSubjectCommentViewModel.cs" />
     <Compile Include="ViewModels\UserViewModel.cs" />
     <Compile Include="ViewModels\UtilsViewModel.cs" />
     <Compile Include="ViewModels\YearParametersViewModel.cs" />

@@ -4,11 +4,18 @@ using System.Data.SqlClient;
 
 namespace Notation.Models
 {
-    public static class SemiTrimesterCommentModel
+    public class SemiTrimesterCommentModel
     {
-        public static SemiTrimesterCommentViewModel Read(SemiTrimesterViewModel semiTrimester, StudentViewModel student)
+        public int Id { get; set; }
+        public int Year { get; set; }
+        public string MainTeacherComment { get; set; }
+        public string DivisionPrefectComment { get; set; }
+        public int IdSemiTrimester { get; set; }
+        public int IdStudent { get; set; }
+
+        public static SemiTrimesterCommentModel Read(SemiTrimesterViewModel semiTrimester, StudentViewModel student)
         {
-            SemiTrimesterCommentViewModel semiTrimesterComment = null;
+            SemiTrimesterCommentModel semiTrimesterComment = null;
 
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -21,13 +28,13 @@ namespace Notation.Models
                     {
                         while (reader.Read())
                         {
-                            semiTrimesterComment = new SemiTrimesterCommentViewModel()
+                            semiTrimesterComment = new SemiTrimesterCommentModel()
                             {
                                 Id = (int)reader["Id"],
                                 DivisionPrefectComment = (string)reader["DivisionPrefectComment"],
                                 MainTeacherComment = (string)reader["MainTeacherComment"],
-                                Student = student,
-                                SemiTrimester = semiTrimester,
+                                IdStudent = student.Id,
+                                IdSemiTrimester = semiTrimester.Id,
                                 Year = semiTrimester.Year,
                             };
                         }
@@ -38,7 +45,7 @@ namespace Notation.Models
             return semiTrimesterComment;
         }
 
-        public static void Save(SemiTrimesterCommentViewModel semiTrimesterComment)
+        public static void Save(SemiTrimesterCommentModel semiTrimesterComment)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -49,12 +56,12 @@ namespace Notation.Models
                 {
                     query = "INSERT INTO [SemiTrimesterComment]([Year], MainTeacherComment, DivisionPrefectComment, IdSemiTrimester, IdStudent)"
                         + $" VALUES({semiTrimesterComment.Year}, '{semiTrimesterComment.MainTeacherComment.Replace("'", "''")}', '{semiTrimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
-                        + $" {semiTrimesterComment.SemiTrimester.Id}, {semiTrimesterComment.Student.Id})";
+                        + $" {semiTrimesterComment.IdSemiTrimester}, {semiTrimesterComment.IdStudent})";
                 }
                 else
                 {
                     query = $"UPDATE [SemiTrimesterComment] SET MainTeacherComment = '{semiTrimesterComment.MainTeacherComment.Replace("'", "''")}', DivisionPrefectComment = '{semiTrimesterComment.DivisionPrefectComment.Replace("'", "''")}',"
-                        + $" IdSemiTrimester = {semiTrimesterComment.SemiTrimester.Id}, IdStudent = {semiTrimesterComment.Student.Id} WHERE Id = {semiTrimesterComment.Id} AND [Year] = {semiTrimesterComment.Year}";
+                        + $" IdSemiTrimester = {semiTrimesterComment.IdSemiTrimester}, IdStudent = {semiTrimesterComment.IdStudent} WHERE Id = {semiTrimesterComment.Id} AND [Year] = {semiTrimesterComment.Year}";
                 }
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

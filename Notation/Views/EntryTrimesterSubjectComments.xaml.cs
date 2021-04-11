@@ -55,7 +55,7 @@ namespace Notation.Views
 
             if (entryTrimesterSubjectComments.SelectedClass != null)
             {
-                TrimesterSubjectCommentViewModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(entryTrimesterSubjectComments.SelectedTrimester,
+                TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(entryTrimesterSubjectComments.SelectedTrimester,
                 entryTrimesterSubjectComments.SelectedClass.SelectedStudent.Student, entryTrimesterSubjectComments.SelectedClass.SelectedStudent.SelectedTrimesterSubjectCommentsSubject.Subject);
                 if (trimesterSubjectComment != null)
                 {
@@ -145,12 +145,12 @@ namespace Notation.Views
 
         private void SaveTrimesterSubjectComments(EntryTrimesterSubjectCommentsViewModel entryTrimesterSubjectComments)
         {
-            TrimesterSubjectCommentModel.Save(new TrimesterSubjectCommentViewModel()
+            TrimesterSubjectCommentModel.Save(new TrimesterSubjectCommentModel()
             {
                 Comment = CommentTextBox.Text,
                 Trimester = entryTrimesterSubjectComments.SelectedTrimester,
-                Student = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.Student,
-                Subject = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.SelectedTrimesterSubjectCommentsSubject.Subject,
+                IdStudent = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.Student.Id,
+                IdSubject = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.SelectedTrimesterSubjectCommentsSubject.Subject.Id,
                 Year = entryTrimesterSubjectComments.SelectedTeacher.Year,
             });
         }
