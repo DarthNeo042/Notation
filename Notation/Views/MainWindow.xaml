@@ -101,9 +101,8 @@
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}" Name="ParametersTab" IsVisibleChanged="ParametersTab_IsVisibleChanged">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock></TextBlock>
-                        <TextBlock Text="Paramétrage"></TextBlock>
-                        <TextBlock></TextBlock>
+                        <Image Source="{StaticResource Parameters}" Height="60" Width="60"></Image>
+                        <TextBlock Text="Paramétrage" FontWeight="Bold"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Parameters}">
@@ -1509,9 +1508,8 @@
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock></TextBlock>
-                        <TextBlock Text="Modèles"></TextBlock>
-                        <TextBlock></TextBlock>
+                        <Image Source="{StaticResource Models}" Height="60" Width="60"></Image>
+                        <TextBlock Text="Modèles" FontWeight="Bold"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Models}">
@@ -1671,9 +1669,8 @@
             <TabItem Name="EntryTab" IsSelected="true" DataContext="{Binding Entry}">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock></TextBlock>
-                        <TextBlock Text="Saisie"></TextBlock>
-                        <TextBlock></TextBlock>
+                        <Image Source="{StaticResource Entry}" Height="60" Width="60"></Image>
+                        <TextBlock Text="Saisie" FontWeight="Bold"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <Grid Margin="3">
@@ -1704,9 +1701,8 @@
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock></TextBlock>
-                        <TextBlock Text="Bulletins"></TextBlock>
-                        <TextBlock></TextBlock>
+                        <Image Source="{StaticResource Reports}" Height="60" Width="60"></Image>
+                        <TextBlock Text="Bulletins" FontWeight="Bold"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
                 <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Reports}">

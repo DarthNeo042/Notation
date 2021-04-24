@@ -147,8 +147,8 @@ namespace Notation.ViewModels
                 + $"de {ActualTeacher.Title} {ActualTeacher.FirstName} {ActualTeacher.LastName}\r\n"
                 + $"en {SelectedTeacher.Title} {SelectedTeacher.FirstName} {SelectedTeacher.LastName} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                IEnumerable<MarkViewModel> marks = MarkModel.Read(MainViewModel.Instance.SelectedYear, SelectedPeriod.Id).Where(m => m.IdClass == SelectedClass.Id && m.IdSubject == SelectedSubject.Id);
-                foreach (MarkViewModel mark in marks)
+                IEnumerable<MarkModel> marks = MarkModel.Read(MainViewModel.Instance.SelectedYear, SelectedPeriod.Id).Where(m => m.IdClass == SelectedClass.Id && m.IdSubject == SelectedSubject.Id);
+                foreach (MarkModel mark in marks)
                 {
                     mark.IdTeacher = SelectedTeacher.Id;
                 }

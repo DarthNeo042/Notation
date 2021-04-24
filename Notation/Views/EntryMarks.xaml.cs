@@ -62,7 +62,7 @@ namespace Notation.Views
                 TextBox textBox = null;
                 if (entryMarks.SelectedTeacher != null && entryMarks.SelectedClass.SelectedStudent != null && entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject != null)
                 {
-                    foreach (MarkViewModel mark in MarkModel.Read(new List<int>() { entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id },
+                    foreach (MarkModel mark in MarkModel.Read(new List<int>() { entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id },
                         entryMarks.SelectedClass.SelectedStudent.Student.Id, entryMarks.SelectedTeacher.Id, entryMarks.SelectedClass.Class.Id, entryMarks.SelectedPeriod.Id, entryMarks.SelectedPeriod.Year))
                     {
                         textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = mark.Mark.ToString() };
@@ -285,12 +285,12 @@ namespace Notation.Views
 
         private void SaveMarks(EntryMarksViewModel entryMarks)
         {
-            List<MarkViewModel> marks = new List<MarkViewModel>();
+            List<MarkModel> marks = new List<MarkModel>();
             foreach (TextBox textBox in Marks1.Children)
             {
                 if (!string.IsNullOrEmpty(textBox.Text))
                 {
-                    marks.Add(new MarkViewModel()
+                    marks.Add(new MarkModel()
                     {
                         Coefficient = 1,
                         IdClass = entryMarks.SelectedClass.Class.Id,
@@ -307,7 +307,7 @@ namespace Notation.Views
             {
                 if (!string.IsNullOrEmpty(textBox.Text))
                 {
-                    marks.Add(new MarkViewModel()
+                    marks.Add(new MarkModel()
                     {
                         Coefficient = 2,
                         IdClass = entryMarks.SelectedClass.Class.Id,
@@ -324,7 +324,7 @@ namespace Notation.Views
             {
                 if (!string.IsNullOrEmpty(textBox.Text))
                 {
-                    marks.Add(new MarkViewModel()
+                    marks.Add(new MarkModel()
                     {
                         Coefficient = 4,
                         IdClass = entryMarks.SelectedClass.Class.Id,

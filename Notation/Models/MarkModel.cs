@@ -6,8 +6,19 @@ using System.Linq;
 
 namespace Notation.Models
 {
-    public static class MarkModel
+    public class MarkModel
     {
+        public int Id { get; set; }
+        public int Year { get; set; }
+        public decimal Mark { get; set; }
+        public decimal Coefficient { get; set; }
+        public int Order { get; set; }
+        public int IdClass { get; set; }
+        public int IdPeriod { get; set; }
+        public int IdSubject { get; set; }
+        public int IdStudent { get; set; }
+        public int IdTeacher { get; set; }
+
         private struct Group
         {
             public int IdClass;
@@ -17,9 +28,9 @@ namespace Notation.Models
             public int IdTeacher;
         }
 
-        public static IEnumerable<MarkViewModel> Read(int year, int idPeriod)
+        public static IEnumerable<MarkModel> Read(int year, int idPeriod)
         {
-            List<MarkViewModel> marks = new List<MarkViewModel>();
+            List<MarkModel> marks = new List<MarkModel>();
 
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
@@ -31,7 +42,7 @@ namespace Notation.Models
                     {
                         while (reader.Read())
                         {
-                            marks.Add(new MarkViewModel()
+                            marks.Add(new MarkModel()
                             {
                                 Id = (int)reader["Id"],
                                 Coefficient = (int)(decimal)reader["Coefficient"],
@@ -52,9 +63,9 @@ namespace Notation.Models
             return marks;
         }
 
-        public static IEnumerable<MarkViewModel> Read(IEnumerable<int> idSubjects, int idStudent, int idTeacher, int idClass, int idPeriod, int year)
+        public static IEnumerable<MarkModel> Read(IEnumerable<int> idSubjects, int idStudent, int idTeacher, int idClass, int idPeriod, int year)
         {
-            List<MarkViewModel> marks = new List<MarkViewModel>();
+            List<MarkModel> marks = new List<MarkModel>();
 
             if (idSubjects.Any())
             {
@@ -69,7 +80,7 @@ namespace Notation.Models
                         {
                             while (reader.Read())
                             {
-                                marks.Add(new MarkViewModel()
+                                marks.Add(new MarkModel()
                                 {
                                     Id = (int)reader["Id"],
                                     Coefficient = (int)(decimal)reader["Coefficient"],
@@ -91,9 +102,9 @@ namespace Notation.Models
             return marks;
         }
 
-        public static Dictionary<int, List<MarkViewModel>> Read(IEnumerable<int> idSubjects, IEnumerable<int> idStudents, int idTeacher, int idClass, int idPeriod, int year)
+        public static Dictionary<int, List<MarkModel>> Read(IEnumerable<int> idSubjects, IEnumerable<int> idStudents, int idTeacher, int idClass, int idPeriod, int year)
         {
-            Dictionary<int, List<MarkViewModel>> marks = new Dictionary<int, List<MarkViewModel>>();
+            Dictionary<int, List<MarkModel>> marks = new Dictionary<int, List<MarkModel>>();
 
             if (idSubjects.Any() && idStudents.Any())
             {
@@ -110,9 +121,9 @@ namespace Notation.Models
                             {
                                 if (!marks.ContainsKey((int)reader["idStudent"]))
                                 {
-                                    marks[(int)reader["idStudent"]] = new List<MarkViewModel>();
+                                    marks[(int)reader["idStudent"]] = new List<MarkModel>();
                                 }
-                                marks[(int)reader["idStudent"]].Add(new MarkViewModel()
+                                marks[(int)reader["idStudent"]].Add(new MarkModel()
                                 {
                                     Id = (int)reader["Id"],
                                     Coefficient = (int)(decimal)reader["Coefficient"],
@@ -133,7 +144,7 @@ namespace Notation.Models
 
             foreach (int idStudent in idStudents.Where(s => !marks.ContainsKey(s)))
             {
-                marks[idStudent] = new List<MarkViewModel>();
+                marks[idStudent] = new List<MarkModel>();
             }
 
             return marks;
@@ -160,13 +171,13 @@ namespace Notation.Models
             return null;
         }
 
-        public static void Save(IEnumerable<MarkViewModel> marks, int year, bool replaceTeacher = false)
+        public static void Save(IEnumerable<MarkModel> marks, int year, bool replaceTeacher = false)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                foreach (IGrouping<Group, MarkViewModel> markGroup in marks.GroupBy(m => new Group() { IdClass = m.IdClass, IdPeriod = m.IdPeriod, IdStudent = m.IdStudent, IdSubject = m.IdSubject, IdTeacher = m.IdTeacher }))
+                foreach (IGrouping<Group, MarkModel> markGroup in marks.GroupBy(m => new Group() { IdClass = m.IdClass, IdPeriod = m.IdPeriod, IdStudent = m.IdStudent, IdSubject = m.IdSubject, IdTeacher = m.IdTeacher }))
                 {
                     using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE [Year] = {year} AND IdClass = {markGroup.Key.IdClass} AND IdPeriod = {markGroup.Key.IdPeriod}"
                         + $" AND IdStudent = {markGroup.Key.IdStudent} AND IdSubject = {markGroup.Key.IdSubject}{(!replaceTeacher ? $" AND IdTeacher = {markGroup.Key.IdTeacher}" : "")}", connection))
@@ -174,7 +185,7 @@ namespace Notation.Models
                         command.ExecuteNonQuery();
                     }
 
-                    foreach (MarkViewModel mark in markGroup)
+                    foreach (MarkModel mark in markGroup)
                     {
                         using (SqlCommand command = new SqlCommand("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
                             + $" VALUES({year}, {mark.Mark}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))

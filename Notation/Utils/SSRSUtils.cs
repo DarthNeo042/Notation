@@ -93,8 +93,8 @@ namespace Notation.Utils
                         students[student.Id] = $"{student.LastName}{student.FirstName}";
                     }
 
-                    IEnumerable<IGrouping<int, MarkViewModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
-                    foreach (IGrouping<int, MarkViewModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key)).OrderBy(s => students[s.Key]))
+                    IEnumerable<IGrouping<int, MarkModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
+                    foreach (IGrouping<int, MarkModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key)).OrderBy(s => students[s.Key]))
                     {
                         StudentViewModel student = MainViewModel.Instance.Parameters.Students.FirstOrDefault(s => s.Id == studentGroup.Key);
                         if (student != null)
@@ -124,7 +124,7 @@ namespace Notation.Utils
             }
         }
 
-        static private void GeneratePeriodReport(IEnumerable<MarkViewModel> marks, string directory, StudentViewModel student, PeriodViewModel period, ClassViewModel _class)
+        static private void GeneratePeriodReport(IEnumerable<MarkModel> marks, string directory, StudentViewModel student, PeriodViewModel period, ClassViewModel _class)
         {
             string filename = Path.Combine(directory, $"Bulletin de période {period.Number} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
@@ -167,7 +167,7 @@ namespace Notation.Utils
 
             List<BulletinPeriodeLineDataSource> bulletinPeriodeLines = new List<BulletinPeriodeLineDataSource>();
 
-            IEnumerable<int> coefficients = marks.Select(m => m.Coefficient).Distinct().OrderBy(c => c);
+            IEnumerable<int> coefficients = marks.Select(m => (int)m.Coefficient).Distinct().OrderBy(c => c);
             Dictionary<int, string> coefficientLibelles = new Dictionary<int, string>() { { 1, "Leçons" }, { 2, "Devoirs" }, { 4, "Examens" } };
 
             int i = 1;
@@ -212,7 +212,7 @@ namespace Notation.Utils
                 foreach (int coefficient in coefficients)
                 {
                     string marksStr = "";
-                    foreach (MarkViewModel mark in marks.Where(m => m.IdSubject == subject.Id && m.Coefficient == coefficient))
+                    foreach (MarkModel mark in marks.Where(m => m.IdSubject == subject.Id && m.Coefficient == coefficient))
                     {
                         if (!string.IsNullOrEmpty(marksStr))
                         {
@@ -255,7 +255,7 @@ namespace Notation.Utils
                     foreach (int coefficient in coefficients)
                     {
                         string marksStr = "";
-                        foreach (MarkViewModel mark in marks.Where(m => m.IdSubject == subject2.Id && m.Coefficient == coefficient))
+                        foreach (MarkModel mark in marks.Where(m => m.IdSubject == subject2.Id && m.Coefficient == coefficient))
                         {
                             if (!string.IsNullOrEmpty(marksStr))
                             {

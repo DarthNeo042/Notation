@@ -111,12 +111,12 @@ namespace Notation.Utils
                                 int maxCoeff2 = int.MinValue;
                                 int maxCoeff4 = int.MinValue;
 
-                                Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                                Dictionary<int, List<MarkModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
                                     _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
 
                                 foreach (StudentViewModel student in _class.Students)
                                 {
-                                    IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                    IEnumerable<MarkModel> marks = marksMap[student.Id];
                                     int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
                                     int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
                                     int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
@@ -151,21 +151,21 @@ namespace Notation.Utils
                                 foreach (StudentViewModel student in _class.Students)
                                 {
                                     workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
-                                    IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                    IEnumerable<MarkModel> marks = marksMap[student.Id];
                                     int i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
+                                    foreach (MarkModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
                                     {
                                         workSheet.Cells[row, 2 + i + column].Value = mark.Mark;
                                         i++;
                                     }
                                     i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
+                                    foreach (MarkModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
                                     {
                                         workSheet.Cells[row, 2 + maxCoeff1 + i + column].Value = mark.Mark;
                                         i++;
                                     }
                                     i = 0;
-                                    foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
+                                    foreach (MarkModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
                                     {
                                         workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = mark.Mark;
                                         i++;
@@ -210,12 +210,12 @@ namespace Notation.Utils
                             int maxCoeff2 = int.MinValue;
                             int maxCoeff4 = int.MinValue;
 
-                            Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                            Dictionary<int, List<MarkModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
                                 _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
 
                             foreach (StudentViewModel student in _class.Students)
                             {
-                                IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                IEnumerable<MarkModel> marks = marksMap[student.Id];
                                 int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id);
                                 int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id);
                                 int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id);
@@ -263,21 +263,21 @@ namespace Notation.Utils
                             foreach (StudentViewModel student in _class.Students)
                             {
                                 workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
-                                IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                                IEnumerable<MarkModel> marks = marksMap[student.Id];
                                 int i = 0;
-                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id))
+                                foreach (MarkModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == mainSubject.Id))
                                 {
                                     workSheet.Cells[row, 2 + i].Value = mark.Mark;
                                     i++;
                                 }
                                 i = 0;
-                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id))
+                                foreach (MarkModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == mainSubject.Id))
                                 {
                                     workSheet.Cells[row, 2 + maxCoeff1 + i].Value = mark.Mark;
                                     i++;
                                 }
                                 i = 0;
-                                foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id))
+                                foreach (MarkModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == mainSubject.Id))
                                 {
                                     workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i].Value = mark.Mark;
                                     i++;
@@ -343,12 +343,12 @@ namespace Notation.Utils
                         int maxCoeff2 = int.MinValue;
                         int maxCoeff4 = int.MinValue;
 
-                        Dictionary<int, List<MarkViewModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
+                        Dictionary<int, List<MarkModel>> marksMap = MarkModel.Read(MainViewModel.Instance.Parameters.Subjects.Select(s => s.Id),
                             _class.Students.Select(s => s.Id), teacher.Id, _class.Id, period.Id, period.Year);
 
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                            IEnumerable<MarkModel> marks = marksMap[student.Id];
                             int coeff1 = marks.Count(m => m.Coefficient == 1 && m.IdSubject == subject.Id);
                             int coeff2 = marks.Count(m => m.Coefficient == 2 && m.IdSubject == subject.Id);
                             int coeff4 = marks.Count(m => m.Coefficient == 4 && m.IdSubject == subject.Id);
@@ -383,21 +383,21 @@ namespace Notation.Utils
                         foreach (StudentViewModel student in _class.Students)
                         {
                             workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
-                            IEnumerable<MarkViewModel> marks = marksMap[student.Id];
+                            IEnumerable<MarkModel> marks = marksMap[student.Id];
                             int i = 0;
-                            foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
+                            foreach (MarkModel mark in marks.Where(m => m.Coefficient == 1 && m.IdSubject == subject.Id))
                             {
                                 workSheet.Cells[row, 2 + i + column].Value = mark.Mark;
                                 i++;
                             }
                             i = 0;
-                            foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
+                            foreach (MarkModel mark in marks.Where(m => m.Coefficient == 2 && m.IdSubject == subject.Id))
                             {
                                 workSheet.Cells[row, 2 + maxCoeff1 + i + column].Value = mark.Mark;
                                 i++;
                             }
                             i = 0;
-                            foreach (MarkViewModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
+                            foreach (MarkModel mark in marks.Where(m => m.Coefficient == 4 && m.IdSubject == subject.Id))
                             {
                                 workSheet.Cells[row, 2 + maxCoeff1 + maxCoeff2 + i + column].Value = mark.Mark;
                                 i++;
@@ -962,7 +962,7 @@ namespace Notation.Utils
             {
                 StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
 
-                List<MarkViewModel> marks = new List<MarkViewModel>();
+                List<MarkModel> marks = new List<MarkModel>();
 
                 int j = 2;
                 while (j < coefficients.Length + 2)
@@ -972,7 +972,7 @@ namespace Notation.Utils
                         if (marks.Any())
                         {
                             MarkModel.Save(marks, year);
-                            marks = new List<MarkViewModel>();
+                            marks = new List<MarkModel>();
                         }
 
                         if (MainViewModel.Instance.Parameters.Subjects.Count(s => s.Name == workSheet.Cells[5, j].Text) > 1)
@@ -1005,7 +1005,7 @@ namespace Notation.Utils
                     {
                         try
                         {
-                            MarkViewModel mark = new MarkViewModel()
+                            MarkModel mark = new MarkModel()
                             {
                                 Coefficient = j < coefficients.Length + 2 ? coefficients[j - 2] : 1,
                                 Order = j - 2,

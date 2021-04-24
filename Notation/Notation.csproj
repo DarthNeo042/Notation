@@ -137,7 +137,6 @@
     <Compile Include="ViewModels\LevelViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\MarkViewModel.cs" />
     <Compile Include="ViewModels\ModelsViewModel.cs" />
     <Compile Include="ViewModels\ParametersViewModel.cs" />
     <Compile Include="ViewModels\PeriodViewModel.cs" />
@@ -312,6 +311,10 @@
     <Resource Include="Resources\Help.png" />
     <Resource Include="Resources\Folder.png" />
     <Resource Include="Resources\Minus.png" />
+    <Resource Include="Resources\Entry.png" />
+    <Resource Include="Resources\Models.png" />
+    <Resource Include="Resources\Parameters.png" />
+    <Resource Include="Resources\Reports.png" />
     <Content Include="SQL\CreateBase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

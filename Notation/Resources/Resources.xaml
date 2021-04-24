@@ -14,6 +14,10 @@
     <BitmapImage x:Key="Help" UriSource="Help.png" />
     <BitmapImage x:Key="Minus" UriSource="Minus.png" />
     <BitmapImage x:Key="Folder" UriSource="Folder.png" />
+    <BitmapImage x:Key="Entry" UriSource="Entry.png" />
+    <BitmapImage x:Key="Models" UriSource="Models.png" />
+    <BitmapImage x:Key="Parameters" UriSource="Parameters.png" />
+    <BitmapImage x:Key="Reports" UriSource="Reports.png" />
 
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"></Setter>
