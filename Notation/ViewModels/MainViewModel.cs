@@ -178,19 +178,42 @@ namespace Notation.ViewModels
             }
         }
 
+        public ICommand BackupCommand { get; set; }
+
+        private void BackupCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = User?.IsAdmin ?? false;
+        }
+
+        private void BackupExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                string filename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Backups", $"{Parameters.BaseParameters.Name}_{DateTime.Now.ToString("ddMMyy_HHmmss")}.bak");
+
+                BaseModel.Save(filename);
+
+                Process.Start("explorer", $"/root,{Path.GetDirectoryName(filename)}");
+            }
+            catch
+            {
+            }
+        }
+
         public ICommand AddYearCommand { get; set; }
 
         private void AddYearCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = (User?.IsAdmin ?? false) && !Years.Contains(SelectedYear + 1);
+            e.CanExecute = User?.IsAdmin ?? false;
         }
 
         private void AddYearExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            int year = SelectedYear == 0 ? DateTime.Now.Year - 1 : SelectedYear + 1;
-            if (MessageBox.Show($"Voulez-vous créer l'année {year + 1}/{year + 2} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            CreateYear createYear = new CreateYear();
+            if (createYear.ShowDialog() ?? false)
             {
-                YearUtils.CreateYear(year + 1);
+                SelectedYear = createYear.SelectedCopyYear;
+                YearUtils.CreateYear(createYear.Year);
             }
         }
 
@@ -204,7 +227,7 @@ namespace Notation.ViewModels
         private void DeleteYearExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             if (MessageBox.Show($"Voulez-vous supprimer l'année {SelectedYear}/{SelectedYear + 1} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes
-                && MessageBox.Show($"Êtes vous vraiment sûr de vouloir supprimer l'année {SelectedYear}/{SelectedYear + 1} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                && MessageBox.Show($"Êtes vous vraiment sûr de vouloir supprimer l'année {SelectedYear}/{SelectedYear + 1} ?", "Confirmation (2)", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 YearUtils.DeleteYear(SelectedYear);
             }
@@ -223,6 +246,7 @@ namespace Notation.ViewModels
             Years = new ObservableCollection<int>();
 
             AddYearCommand = new RoutedUICommand("AddYear", "AddYear", typeof(MainViewModel));
+            BackupCommand = new RoutedUICommand("Backup", "Backup", typeof(MainViewModel));
             DeleteYearCommand = new RoutedUICommand("DeleteYear", "DeleteYear", typeof(MainViewModel));
             LoginCommand = new RoutedUICommand("Login", "Login", typeof(MainViewModel));
             RefreshCommand = new RoutedUICommand("Refresh", "Refresh", typeof(MainViewModel));
@@ -231,6 +255,7 @@ namespace Notation.ViewModels
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(AddYearCommand, AddYearExecuted, AddYearCanExecute),
+                new CommandBinding(BackupCommand, BackupExecuted, BackupCanExecute),
                 new CommandBinding(DeleteYearCommand, DeleteYearExecuted, DeleteYearCanExecute),
                 new CommandBinding(LoginCommand, LoginExecuted),
                 new CommandBinding(RefreshCommand, RefreshExecuted),
@@ -251,7 +276,7 @@ namespace Notation.ViewModels
             {
                 Years.Add(0);
             }
-            foreach (int year in YearModel.Read())
+            foreach (int year in YearModel.List())
             {
                 Years.Add(year);
             }

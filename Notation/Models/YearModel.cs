@@ -6,7 +6,7 @@ namespace Notation.Models
 {
     public static class YearModel
     {
-        public static IEnumerable<int> Read()
+        public static IEnumerable<int> List()
         {
             List<int> years = new List<int>();
 

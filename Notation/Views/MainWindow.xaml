@@ -19,85 +19,119 @@
     <Window.Resources>
         <converters:AdminToVisibilityConverter x:Key="AdminToVisibilityConverter"></converters:AdminToVisibilityConverter>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></converters:BooleanToVisibilityConverter>
+        <converters:CountToLibelleConverter x:Key="CountToLibelleConverter"></converters:CountToLibelleConverter>
         <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
         <converters:ObjectToNotVisibilityConverter x:Key="ObjectToNotVisibilityConverter"></converters:ObjectToNotVisibilityConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
-        <converters:YearLibelleConverter x:Key="YearLibelleConverter"></converters:YearLibelleConverter>
+        <converters:YearToLibelleConverter x:Key="YearToLibelleConverter"></converters:YearToLibelleConverter>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image Source="{StaticResource Icon}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.RowSpan="2" Height="315" Width="315"></Image>
+        <Image Source="{StaticResource Icon}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.RowSpan="3" Height="315" Width="315"></Image>
+        <TextBlock Grid.Row="0" Grid.RowSpan="2" Height="70">
+            <TextBlock.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0" Color="White"></GradientStop>
+                    <GradientStop Offset="0.5" Color="#AFFFFFFF"></GradientStop>
+                    <GradientStop Offset="1" Color="White"></GradientStop>
+                </LinearGradientBrush>
+            </TextBlock.Background>
+        </TextBlock>
+        <TextBlock Grid.Row="0" Grid.RowSpan="2" Height="2" Background="#50000000" VerticalAlignment="Stretch"></TextBlock>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="350"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="140"></ColumnDefinition>
-                <ColumnDefinition Width="140"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="250"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="140"></ColumnDefinition>
                 <ColumnDefinition Width="140"></ColumnDefinition>
+                <ColumnDefinition Width="280"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Grid.ColumnSpan="12" Height="35">
-                <TextBlock.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Offset="0" Color="White"></GradientStop>
-                        <GradientStop Offset="0.5" Color="#AFFFFFFF"></GradientStop>
-                        <GradientStop Offset="1" Color="White"></GradientStop>
-                    </LinearGradientBrush>
-                </TextBlock.Background>
-            </TextBlock>
-            <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
-            <TextBlock Grid.Column="1" Text="{Binding User.Name}"></TextBlock>
-            <Button Grid.Column="2" Command="{Binding LoginCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource User}" Width="30" Height="30"></Image>
-                    <TextBlock Text="Changer d'utilisateur"></TextBlock>
-                </StackPanel>
-            </Button>
-            <TextBlock Grid.Column="3" Text="Année :"></TextBlock>
-            <ComboBox Grid.Column="4" Grid.Row="2" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource YearLibelleConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <Button Grid.Column="5" Command="{Binding AddYearCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
-                    <TextBlock Text="Ajouter"></TextBlock>
-                </StackPanel>
-            </Button>
-            <Button Grid.Column="6" Command="{Binding DeleteYearCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
-                    <TextBlock Text="Supprimer"></TextBlock>
-                </StackPanel>
-            </Button>
-            <TextBlock Grid.Column="7" Text="Base :"></TextBlock>
-            <TextBlock Grid.Column="8" Text="{Binding Parameters.BaseParameters.Name}"></TextBlock>
-            <Button Grid.Column="10" Command="{Binding RefreshCommand}">
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Base :"></TextBlock>
+                <TextBlock Grid.Column="1" Text="{Binding Parameters.BaseParameters.Name}"></TextBlock>
+            </Grid>
+            <Button Grid.Column="1" Command="{Binding RefreshCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Refresh}" Width="30" Height="30"></Image>
                     <TextBlock Text="Rafraîchir"></TextBlock>
                 </StackPanel>
             </Button>
-            <Button Grid.Column="11" Command="{Binding HelpCommand}">
+            <Button Grid.Column="2" Command="{Binding HelpCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="{StaticResource Help}" Width="30" Height="30"></Image>
                     <TextBlock Text="Aide"></TextBlock>
                 </StackPanel>
             </Button>
+            <Button Grid.Column="3" Command="{Binding BackupCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Base}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Exporter la base de données"></TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
-        <TabControl Grid.Row="1" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="140"></ColumnDefinition>
+                    <ColumnDefinition Width="140"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Année :"></TextBlock>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedYear}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource YearToLibelleConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Grid.Column="2" Command="{Binding AddYearCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Add}" Width="30" Height="30"></Image>
+                        <TextBlock Text="Ajouter"></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Grid.Column="3" Command="{Binding DeleteYearCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource Delete}" Width="30" Height="30"></Image>
+                        <TextBlock Text="Supprimer"></TextBlock>
+                    </StackPanel>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Command="{Binding LoginCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{StaticResource User}" Width="30" Height="30"></Image>
+                        <TextBlock Text="Changer d'utilisateur"></TextBlock>
+                    </StackPanel>
+                </Button>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
+                    <TextBlock Grid.Column="1" Text="{Binding User.Name}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <TabControl Grid.Row="2" TabStripPlacement="Left" Visibility="{Binding User, Converter={StaticResource ObjectToVisibilityConverter}}">
             <TabItem Visibility="{Binding User, Converter={StaticResource AdminToVisibilityConverter}}" Name="ParametersTab" IsVisibleChanged="ParametersTab_IsVisibleChanged">
                 <TabItem.Header>
                     <StackPanel Orientation="Vertical">
@@ -132,6 +166,7 @@
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddLevelCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -157,6 +192,8 @@
                                 <Button Grid.Column="4" Command="{Binding DownLevelCommand}">
                                     <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
                                 </Button>
+                                <TextBlock Grid.Column="6" Text="{Binding Levels.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Level}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Levels}" SelectedItem="{Binding SelectedLevel}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Level_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -226,6 +263,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddLevelSubjectsCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -239,6 +277,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationLevel.Subjects.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Subject}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" ItemsSource="{Binding ModificationLevel.Subjects}" SelectedItem="{Binding ModificationLevel.SelectedSubject}" MaxHeight="300"
                                             AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False">
@@ -280,6 +320,7 @@
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="60"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddSubjectCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -305,6 +346,8 @@
                                 <Button Grid.Column="4" Command="{Binding DownSubjectCommand}">
                                     <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
                                 </Button>
+                                <TextBlock Grid.Column="6" Text="{Binding Subjects.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Subject}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Subjects}" SelectedItem="{Binding SelectedSubject}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Subject_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -391,6 +434,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddSubjectLevelsCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -404,6 +448,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationSubject.Levels.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Level}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Levels}" SelectedItem="{Binding ModificationSubject.SelectedLevel}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -424,6 +470,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddSubjectTeachersCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -437,6 +484,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationSubject.Teachers.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Teacher}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationSubject.Teachers}" SelectedItem="{Binding ModificationSubject.SelectedTeacher}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -476,6 +525,7 @@
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddTeacherCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -495,6 +545,8 @@
                                         <TextBlock Text="Supprimer"></TextBlock>
                                     </StackPanel>
                                 </Button>
+                                <TextBlock Grid.Column="6" Text="{Binding Teachers.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Teacher}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Teachers}" SelectedItem="{Binding SelectedTeacher}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Teacher_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -581,6 +633,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddTeacherSubjectsCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -594,6 +647,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationTeacher.Subjects.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Subject}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Subjects}" SelectedItem="{Binding ModificationTeacher.SelectedSubject}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -616,6 +671,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddTeacherClassesCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -629,6 +685,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationTeacher.Classes.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Class}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationTeacher.Classes}" SelectedItem="{Binding ModificationTeacher.SelectedClass}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -680,6 +738,7 @@
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddClassCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -705,6 +764,8 @@
                                 <Button Grid.Column="4" Command="{Binding DownClassCommand}">
                                     <Image Source="{StaticResource Down}" Width="30" Height="30"></Image>
                                 </Button>
+                                <TextBlock Grid.Column="6" Text="{Binding Classes.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Class}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Class_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -809,6 +870,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddClassTeachersCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -822,6 +884,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationClass.Teachers.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Teacher}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Teachers}" SelectedItem="{Binding ModificationClass.SelectedTeacher}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -844,6 +908,7 @@
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="140"></ColumnDefinition>
                                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             </Grid.ColumnDefinitions>
                                             <Button Grid.Column="0" Command="{Binding AddClassStudentsCommand}">
                                                 <StackPanel Orientation="Horizontal">
@@ -857,6 +922,8 @@
                                                     <TextBlock Text="Supprimer"></TextBlock>
                                                 </StackPanel>
                                             </Button>
+                                            <TextBlock Grid.Column="3" Text="{Binding ModificationClass.Students.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Student}"
+                                                FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                                         </Grid>
                                         <DataGrid Grid.Row="1" Grid.Column="0" ItemsSource="{Binding ModificationClass.Students}" SelectedItem="{Binding ModificationClass.SelectedStudent}"
                                           AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" FontSize="18" CanUserSortColumns="False" MaxHeight="300">
@@ -888,6 +955,7 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
                             <Grid Grid.Row="0">
@@ -896,6 +964,7 @@
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddStudentCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -915,6 +984,8 @@
                                         <TextBlock Text="Supprimer"></TextBlock>
                                     </StackPanel>
                                 </Button>
+                                <TextBlock Grid.Column="4" Text="{Binding Students.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Student}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}"
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Student_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -1012,12 +1083,13 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
-                            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Command="{Binding AddPeriodCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -1037,6 +1109,8 @@
                                         <TextBlock Text="Supprimer"></TextBlock>
                                     </StackPanel>
                                 </Button>
+                                <TextBlock Grid.Column="4" Text="{Binding Periods.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=Period}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding Periods}" SelectedItem="{Binding SelectedPeriod}" 
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="Period_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">
@@ -1127,12 +1201,13 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Image Source="{StaticResource Icon}" Grid.ColumnSpan="2" Grid.RowSpan="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="158" Width="158"></Image>
-                            <Grid Grid.Row="0" Grid.ColumnSpan="2">
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="140"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="50"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Button Grid.Column="0" Name="ModifySemiTrimester" Command="{Binding ModifySemiTrimesterCommand}">
                                     <StackPanel Orientation="Horizontal">
@@ -1146,6 +1221,8 @@
                                 <Button Grid.Column="2" Command="{Binding DeleteSemiTrimesterPeriodCommand}">
                                     <Image Source="{StaticResource Minus}" Width="30" Height="30"></Image>
                                 </Button>
+                                <TextBlock Grid.Column="4" Text="{Binding SemiTrimesters.Count, Converter={StaticResource CountToLibelleConverter}, ConverterParameter=SemiTrimester}"
+                                           FontStyle="Italic" VerticalAlignment="Bottom" FontSize="18" Foreground="Gray"></TextBlock>
                             </Grid>
                             <DataGrid Grid.Row="1" ItemsSource="{Binding SemiTrimesters}" SelectedItem="{Binding SelectedSemiTrimester}" 
                                       AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="SemiTrimester_MouseDoubleClick" SelectionMode="Single" CanUserSortColumns="False">

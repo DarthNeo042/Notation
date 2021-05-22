@@ -1,0 +1,76 @@
+﻿<Window x:Class="Notation.Views.CreateYear"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Notation.Views"
+        xmlns:converters="clr-namespace:Notation.Converters"
+        mc:Ignorable="d"
+        Title="Création d'année" Height="160" Width="480" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <converters:YearToLibelleConverter x:Key="YearToLibelleConverter"></converters:YearToLibelleConverter>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="AliceBlue"></GradientStop>
+            <GradientStop Offset="0.75" Color="AliceBlue"></GradientStop>
+            <GradientStop Offset="2" Color="Black"></GradientStop>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Créer l'année :" HorizontalAlignment="Right"></TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding Year, Converter={StaticResource YearToLibelleConverter}}"></TextBlock>
+            <Button Grid.Column="2" Click="Minus_Click">
+                <Image Source="{StaticResource Minus}" Width="20" Height="20"></Image>
+            </Button>
+            <Button Grid.Column="3" Click="Plus_Click">
+                <Image Source="{StaticResource Add}" Width="20" Height="20"></Image>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Copier l'année :" HorizontalAlignment="Right"></TextBlock>
+            <ComboBox Grid.Column="1" SelectedItem="{Binding SelectedCopyYear}" ItemsSource="{Binding CopyYears}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource YearToLibelleConverter}}"></TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Name="Validate" Click="Validate_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Valider"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="1" Click="Validate_Click">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{StaticResource Cancel}" Width="30" Height="30"></Image>
+                    <TextBlock Text="Annuler"></TextBlock>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</Window>

@@ -80,10 +80,12 @@
     </Compile>
     <Compile Include="Converters\AdminToVisibilityConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\CountToLibelleConverter.cs" />
     <Compile Include="Converters\ObjectToNotVisibilityConverter.cs" />
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\SubjectToNameConverter.cs" />
     <Compile Include="Converters\YearLibelleConverter.cs" />
+    <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BaseParametersModel.cs" />
     <Compile Include="Models\ClassModel.cs" />
     <Compile Include="Models\LevelModel.cs" />
@@ -162,6 +164,9 @@
     </Compile>
     <Compile Include="Views\AddTeachers.xaml.cs">
       <DependentUpon>AddTeachers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CreateYear.xaml.cs">
+      <DependentUpon>CreateYear.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EntryMarks.xaml.cs">
       <DependentUpon>EntryMarks.xaml</DependentUpon>
@@ -263,6 +268,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CreateYear.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EntryMarks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -315,6 +324,7 @@
     <Resource Include="Resources\Models.png" />
     <Resource Include="Resources\Parameters.png" />
     <Resource Include="Resources\Reports.png" />
+    <Resource Include="Resources\Base.png" />
     <Content Include="SQL\CreateBase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -53,7 +53,7 @@ namespace Notation.Models
             {
                 connection.Open();
 
-                using (SqlCommand command = new SqlCommand($"UPDATE YearParameters SET DivisionPrefect = '{yearParameters.DivisionPrefect}' WHERE Id = {yearParameters.Id} AND Year = {yearParameters.Year}", connection))
+                using (SqlCommand command = new SqlCommand($"UPDATE YearParameters SET DivisionPrefect = '{yearParameters.DivisionPrefect.Replace("'", "''")}' WHERE Id = {yearParameters.Id} AND Year = {yearParameters.Year}", connection))
                 {
                     command.ExecuteNonQuery();
                 }

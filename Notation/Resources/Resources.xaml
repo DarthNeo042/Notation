@@ -18,6 +18,7 @@
     <BitmapImage x:Key="Models" UriSource="Models.png" />
     <BitmapImage x:Key="Parameters" UriSource="Parameters.png" />
     <BitmapImage x:Key="Reports" UriSource="Reports.png" />
+    <BitmapImage x:Key="Base" UriSource="Base.png" />
 
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"></Setter>
