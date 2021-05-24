@@ -5,6 +5,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
 using OfficeOpenXml.DataValidation.Contracts;
 using OfficeOpenXml.Style;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,15 +20,22 @@ namespace Notation.Utils
 
         public static void ExportPeriodModels(PeriodViewModel period, UpdatePeriodModelsDelegate _updatePeriodModels)
         {
-            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
-            if (!string.IsNullOrEmpty(directory))
+            try
             {
-                MainViewModel.Instance.Models.PeriodModels.Clear();
+                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    MainViewModel.Instance.Models.PeriodModels.Clear();
 
-                ExportPeriodCommentsModels(period, directory, _updatePeriodModels);
-                ExportPeriodMarksModels(period, directory, _updatePeriodModels);
+                    ExportPeriodCommentsModels(period, directory, _updatePeriodModels);
+                    ExportPeriodMarksModels(period, directory, _updatePeriodModels);
 
-                MainViewModel.Instance.Models.PeriodModelsPath = directory;
+                    MainViewModel.Instance.Models.PeriodModelsPath = directory;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -424,7 +432,7 @@ namespace Notation.Utils
             }
         }
 
-        public static void ExportTrimesterGeneralCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
+        private static void ExportTrimesterGeneralCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
             int classCount = 0;
             foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
@@ -466,7 +474,7 @@ namespace Notation.Utils
             }
         }
 
-        public static void ExportTrimesterSubjectCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
+        private static void ExportTrimesterSubjectCommentsModels(int trimester, string directory, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
             PeriodViewModel period = MainViewModel.Instance.Models.Periods.OrderBy(p => p.Number).FirstOrDefault(p => p.Trimester == trimester);
 
@@ -582,75 +590,89 @@ namespace Notation.Utils
 
         public static void ExportTrimesterModels(int trimester, UpdateTrimesterModelsDelegate _updateTrimesterModelsDispatch)
         {
-            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryTrimesterModels, "LastSelectedDirectoryTrimesterModels");
-
-            if (!string.IsNullOrEmpty(directory))
+            try
             {
-                MainViewModel.Instance.Models.TrimesterModels.Clear();
+                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryTrimesterModels, "LastSelectedDirectoryTrimesterModels");
 
-                ExportTrimesterSubjectCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
-                ExportTrimesterGeneralCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    MainViewModel.Instance.Models.TrimesterModels.Clear();
 
-                MainViewModel.Instance.Models.TrimesterModelsPath = directory;
+                    ExportTrimesterSubjectCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
+                    ExportTrimesterGeneralCommentsModels(trimester, directory, _updateTrimesterModelsDispatch);
+
+                    MainViewModel.Instance.Models.TrimesterModelsPath = directory;
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
         public static void ExportSemiTrimesterModels(SemiTrimesterViewModel semiTrimester, UpdateSemiTrimesterModelsDelegate _updateSemiTrimesterModelsDispatch)
         {
-            string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectorySemiTrimesterModels, "LastSelectedDirectorySemiTrimesterModels");
-
-            if (!string.IsNullOrEmpty(directory))
+            try
             {
-                MainViewModel.Instance.Models.SemiTrimesterModels.Clear();
+                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectorySemiTrimesterModels, "LastSelectedDirectorySemiTrimesterModels");
 
-                int classCount = 0;
-                foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+                if (!string.IsNullOrEmpty(directory))
                 {
-                    string filename = Path.Combine(directory, $"Appréciations demi-trimestre {semiTrimester.Name} - {_class.Name}.xlsx");
-                    File.Delete(filename);
+                    MainViewModel.Instance.Models.SemiTrimesterModels.Clear();
 
-                    ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
-
-                    ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
-                    workSheet.Cells[1, 1].Value = "type";
-                    workSheet.Cells[1, 2].Value = "APP_GEN_DTM";
-                    workSheet.Cells[2, 1].Value = "année";
-                    workSheet.Cells[2, 2].Value = _class.Year;
-                    workSheet.Cells[3, 1].Value = "demi-trimestre";
-                    workSheet.Cells[3, 2].Value = semiTrimester.Name;
-                    workSheet.Cells[4, 1].Value = "élève";
-                    workSheet.Cells[4, 2].Value = "professeur principal";
-                    workSheet.Cells[4, 3].Value = "chef d'établissement";
-
-                    int row = 5;
-                    foreach (StudentViewModel student in _class.Students)
+                    int classCount = 0;
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                        string filename = Path.Combine(directory, $"Appréciations demi-trimestre {semiTrimester.Name} - {_class.Name}.xlsx");
+                        File.Delete(filename);
+
+                        ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
+
+                        ExcelWorksheet workSheet = excel.Workbook.Worksheets.Add("Feuil1");
+                        workSheet.Cells[1, 1].Value = "type";
+                        workSheet.Cells[1, 2].Value = "APP_GEN_DTM";
+                        workSheet.Cells[2, 1].Value = "année";
+                        workSheet.Cells[2, 2].Value = _class.Year;
+                        workSheet.Cells[3, 1].Value = "demi-trimestre";
+                        workSheet.Cells[3, 2].Value = semiTrimester.Name;
+                        workSheet.Cells[4, 1].Value = "élève";
+                        workSheet.Cells[4, 2].Value = "professeur principal";
+                        workSheet.Cells[4, 3].Value = "chef d'établissement";
+
+                        int row = 5;
+                        foreach (StudentViewModel student in _class.Students)
+                        {
+                            workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                        }
+
+                        workSheet.Column(1).AutoFit();
+                        workSheet.Column(2).Width = 50;
+                        workSheet.Column(2).Style.WrapText = true;
+                        workSheet.Column(3).Width = 50;
+                        workSheet.Column(3).Style.WrapText = true;
+
+                        IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
+                        _textValidation.ShowErrorMessage = true;
+                        _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
+                        _textValidation.ErrorTitle = "Commentaire trop long";
+                        _textValidation.Error = "Le commentaire ne doit pas dépasser 180 caractères.";
+                        _textValidation.Formula.Value = 0;
+                        _textValidation.Formula2.Value = 180;
+
+                        excel.Save();
+
+                        MainViewModel.Instance.Models.SemiTrimesterModels.Add(Path.GetFileName(filename));
+
+                        classCount++;
+                        _updateSemiTrimesterModelsDispatch(classCount * 1000 / MainViewModel.Instance.Parameters.Classes.Count);
                     }
 
-                    workSheet.Column(1).AutoFit();
-                    workSheet.Column(2).Width = 50;
-                    workSheet.Column(2).Style.WrapText = true;
-                    workSheet.Column(3).Width = 50;
-                    workSheet.Column(3).Style.WrapText = true;
-
-                    IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
-                    _textValidation.ShowErrorMessage = true;
-                    _textValidation.ErrorStyle = ExcelDataValidationWarningStyle.warning;
-                    _textValidation.ErrorTitle = "Commentaire trop long";
-                    _textValidation.Error = "Le commentaire ne doit pas dépasser 180 caractères.";
-                    _textValidation.Formula.Value = 0;
-                    _textValidation.Formula2.Value = 180;
-
-                    excel.Save();
-
-                    MainViewModel.Instance.Models.SemiTrimesterModels.Add(Path.GetFileName(filename));
-
-                    classCount++;
-                    _updateSemiTrimesterModelsDispatch(classCount * 1000 / MainViewModel.Instance.Parameters.Classes.Count);
+                    MainViewModel.Instance.Models.SemiTrimesterModelsPath = directory;
                 }
-
-                MainViewModel.Instance.Models.SemiTrimesterModelsPath = directory;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
 
