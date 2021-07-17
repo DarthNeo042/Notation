@@ -249,6 +249,8 @@ namespace Notation.Views
 
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
+                MainViewModel.Instance.Models.ImportText = "Import réussi :";
+
                 ImportProgressBar.Visibility = Visibility.Visible;
                 ImportProgressBar.Value = 0;
                 int fileCount = 0;
@@ -257,6 +259,7 @@ namespace Notation.Views
                     ExportUtils.Import(file);
                     fileCount++;
                     Dispatcher.Invoke(_updateImport, System.Windows.Threading.DispatcherPriority.Background, fileCount * 1000 / files.Length);
+                    MainViewModel.Instance.Models.ImportText += $"\r\n{Path.GetFileNameWithoutExtension(file)}";
                 }
                 ImportProgressBar.Visibility = Visibility.Collapsed;
 

@@ -111,7 +111,7 @@ namespace Notation.Utils
                             workSheet.Cells[6, 1].Value = "élève / coefficient";
 
                             int column = 0;
-                            foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject != null && s.ParentSubject.Id == mainSubject.Id))
+                            foreach (SubjectViewModel subject in MainViewModel.Instance.Parameters.Subjects.Where(s => s.ParentSubject != null && s.ParentSubject.Id == mainSubject.Id).OrderBy(s => s.Order))
                             {
                                 workSheet.Cells[5, 2 + column].Value = subject.Name;
 
@@ -331,11 +331,11 @@ namespace Notation.Utils
 
                     int column = 0;
                     List<SubjectViewModel> subjects = new List<SubjectViewModel>();
-                    foreach (SubjectViewModel subject in teacher.Subjects)
+                    foreach (SubjectViewModel subject in teacher.Subjects.OrderBy(s => s.Order))
                     {
                         if (subject.ChildrenSubjects.Any())
                         {
-                            subjects.AddRange(subject.ChildrenSubjects);
+                            subjects.AddRange(subject.ChildrenSubjects.OrderBy(s => s.Order));
                         }
                         else
                         {
@@ -553,7 +553,7 @@ namespace Notation.Utils
                     workSheet.Cells[5, 1].Value = "élève / matière";
 
                     int j = 2;
-                    foreach (SubjectViewModel subject in teacher.Subjects)
+                    foreach (SubjectViewModel subject in teacher.Subjects.OrderBy(s => s.Order))
                     {
                         if (!subject.ChildrenSubjects.Any())
                         {
@@ -642,7 +642,14 @@ namespace Notation.Utils
                         int row = 5;
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                            workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
+                            SemiTrimesterCommentModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
+                            if (semiTrimesterComment != null)
+                            {
+                                workSheet.Cells[row, 2].Value = semiTrimesterComment.MainTeacherComment;
+                                workSheet.Cells[row, 3].Value = semiTrimesterComment.DivisionPrefectComment;
+                            }
+                            row++;
                         }
 
                         workSheet.Column(1).AutoFit();

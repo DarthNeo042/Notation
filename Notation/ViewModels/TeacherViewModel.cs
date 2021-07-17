@@ -31,6 +31,7 @@ namespace Notation.ViewModels
         {
             TeacherViewModel teacher = (TeacherViewModel)d;
             teacher.LastName = teacher.LastName.ToUpper();
+            GenerateLoginPassword(teacher);
         }
 
         public string FirstName

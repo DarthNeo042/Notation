@@ -78,6 +78,16 @@ namespace Notation.ViewModels
         public static readonly DependencyProperty SuccessfulImportProperty =
             DependencyProperty.Register("SuccessfulImport", typeof(bool), typeof(ModelsViewModel), new PropertyMetadata(false));
 
+        public string ImportText
+        {
+            get { return (string)GetValue(ImportTextProperty); }
+            set { SetValue(ImportTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ImportText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ImportTextProperty =
+            DependencyProperty.Register("ImportText", typeof(string), typeof(ModelsViewModel), new PropertyMetadata(""));
+
         public ICommand OpenSemiTrimesterModelsPathCommand { get; set; }
 
         private void OpenSemiTrimesterModelsPathCanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -85,6 +85,7 @@
     <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Converters\SubjectToNameConverter.cs" />
     <Compile Include="Converters\YearLibelleConverter.cs" />
+    <Compile Include="Converters\YearToVisibilityConverter.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\BaseParametersModel.cs" />
     <Compile Include="Models\ClassModel.cs" />

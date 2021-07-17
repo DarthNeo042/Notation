@@ -24,6 +24,7 @@
         <converters:ObjectToNotVisibilityConverter x:Key="ObjectToNotVisibilityConverter"></converters:ObjectToNotVisibilityConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
         <converters:YearToLibelleConverter x:Key="YearToLibelleConverter"></converters:YearToLibelleConverter>
+        <converters:YearToVisibilityConverter x:Key="YearToVisibilityConverter"></converters:YearToVisibilityConverter>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -1736,7 +1737,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Visibility="{Binding SuccessfulImport, Converter={StaticResource BooleanToVisibilityConverter}}" Text="Import réussi"></TextBlock>
+                                <TextBlock Grid.Row="0" Visibility="{Binding SuccessfulImport, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{Binding ImportText}"></TextBlock>
                                 <ProgressBar Grid.Row="1" Name="ImportProgressBar" Visibility="Collapsed" Maximum="1000" Height="20" VerticalAlignment="Top"></ProgressBar>
                             </Grid>
                         </Grid>
@@ -1922,7 +1923,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Button Click="ReportYear_Click">
+                                <Button Click="ReportYear_Click" Visibility="{Binding Year, Converter={StaticResource YearToVisibilityConverter}}">
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="Année"></TextBlock>
                                         <TextBlock Text="{Binding Year}"></TextBlock>

@@ -408,8 +408,8 @@ namespace Notation.Utils
                 BirthDate = $"né le {student.BirthDate.ToShortDateString()}",
                 FirstName = student.FirstName,
                 LastName = student.LastName,
-                Header1 = $"Année {student.Year} - {student.Year + 1}",
-                Header2 = $"Période du {semiTrimester.FromDate.ToShortDateString()} au {semiTrimester.ToDate.ToShortDateString()}",
+                Header1 = $"DE {semiTrimester.Name.ToUpper()}",
+                Header2 = $"Année {student.Year} - {student.Year + 1}",
                 Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",                
             };
 
