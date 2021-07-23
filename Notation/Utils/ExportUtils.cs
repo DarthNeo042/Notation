@@ -457,6 +457,13 @@ namespace Notation.Utils
                 foreach (StudentViewModel student in _class.Students)
                 {
                     workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                    TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
+                    if (trimesterComment != null)
+                    {
+                        workSheet.Cells[row, 2].Value = trimesterComment.MainTeacherComment;
+                        workSheet.Cells[row, 3].Value = trimesterComment.DivisionPrefectComment;
+                    }
+                    row++;
                 }
 
                 workSheet.Column(1).AutoFit();
@@ -507,6 +514,12 @@ namespace Notation.Utils
                         foreach (StudentViewModel student in _class.Students)
                         {
                             workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                            TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
+                            if (trimesterSubjectComment != null)
+                            {
+                                workSheet.Cells[row, 2].Value = trimesterSubjectComment.Comment;
+                            }
+                            row++;
                         }
 
                         IExcelDataValidationInt _textValidation = workSheet.Cells.DataValidation.AddTextLengthDataValidation();
@@ -987,23 +1000,18 @@ namespace Notation.Utils
             }
 
             i = 7;
+            List<MarkModel> clearMarks = new List<MarkModel>();
+            List<MarkModel> marks = new List<MarkModel>();
+
             while (workSheet.Cells[i, 1].Value != null)
             {
                 StudentViewModel student = GetStudentFromName(workSheet.Cells[i, 1].Text);
-
-                List<MarkModel> marks = new List<MarkModel>();
 
                 int j = 2;
                 while (j < coefficients.Length + 2)
                 {
                     if (workSheet.Cells[5, j].Value != null)
                     {
-                        if (marks.Any())
-                        {
-                            MarkModel.Save(marks, year);
-                            marks = new List<MarkModel>();
-                        }
-
                         if (MainViewModel.Instance.Parameters.Subjects.Count(s => s.Name == workSheet.Cells[5, j].Text) > 1)
                         {
                             subject = MainViewModel.Instance.Parameters.Subjects.FirstOrDefault(s => s.Name == workSheet.Cells[5, j].Text && teacher.Subjects.Contains(s));
@@ -1028,6 +1036,14 @@ namespace Notation.Utils
                             MessageBox.Show($"{filename} : matière invalide '{workSheet.Cells[5, j].Text}'");
                             return false;
                         }
+                        clearMarks.Add(new MarkModel()
+                        {
+                            IdClass = student.Class.Id,
+                            IdPeriod = period.Id,
+                            IdStudent = student.Id,
+                            IdSubject = subject.Id,
+                            IdTeacher = teacher.Id,
+                        });
                     }
 
                     if (workSheet.Cells[i, j].Value != null)
@@ -1055,12 +1071,11 @@ namespace Notation.Utils
                     j++;
                 }
 
-                if (marks.Any())
-                {
-                    MarkModel.Save(marks, year);
-                }
                 i++;
             }
+
+            MarkModel.Clear(clearMarks, year);
+            MarkModel.Save(marks, year);
 
             return true;
         }

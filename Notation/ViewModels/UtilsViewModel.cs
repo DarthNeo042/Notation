@@ -147,12 +147,25 @@ namespace Notation.ViewModels
                 + $"de {ActualTeacher.Title} {ActualTeacher.FirstName} {ActualTeacher.LastName}\r\n"
                 + $"en {SelectedTeacher.Title} {SelectedTeacher.FirstName} {SelectedTeacher.LastName} ?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
+                List<MarkModel> clearMarks = new List<MarkModel>();
+                foreach (StudentViewModel student in MainViewModel.Instance.Parameters.Classes.FirstOrDefault(c => c.Id == SelectedClass.Id).Students)
+                {
+                    clearMarks.Add(new MarkModel()
+                    {
+                        IdClass = SelectedClass.Id,
+                        IdPeriod = SelectedPeriod.Id,
+                        IdStudent = student.Id,
+                        IdSubject = SelectedSubject.Id,
+                        IdTeacher = ActualTeacher.Id,
+                    });
+                }
+                MarkModel.Clear(clearMarks, MainViewModel.Instance.SelectedYear);
                 IEnumerable<MarkModel> marks = MarkModel.Read(MainViewModel.Instance.SelectedYear, SelectedPeriod.Id).Where(m => m.IdClass == SelectedClass.Id && m.IdSubject == SelectedSubject.Id);
                 foreach (MarkModel mark in marks)
                 {
                     mark.IdTeacher = SelectedTeacher.Id;
                 }
-                MarkModel.Save(marks, MainViewModel.Instance.SelectedYear, true);
+                MarkModel.Save(marks, MainViewModel.Instance.SelectedYear);
                 MessageBox.Show("Changement de professeur réussi.", "Succés", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

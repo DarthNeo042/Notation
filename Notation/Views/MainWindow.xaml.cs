@@ -1,8 +1,10 @@
-﻿using Notation.Utils;
+﻿using Microsoft.Win32;
+using Notation.Utils;
 using Notation.ViewModels;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -241,32 +243,6 @@ namespace Notation.Views
             }
         }
 
-        private void ImportModel_Drop(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                MainViewModel.Instance.Models.SuccessfulImport = false;
-
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-
-                MainViewModel.Instance.Models.ImportText = "Import réussi :";
-
-                ImportProgressBar.Visibility = Visibility.Visible;
-                ImportProgressBar.Value = 0;
-                int fileCount = 0;
-                foreach (string file in files)
-                {
-                    ExportUtils.Import(file);
-                    fileCount++;
-                    Dispatcher.Invoke(_updateImport, System.Windows.Threading.DispatcherPriority.Background, fileCount * 1000 / files.Length);
-                    MainViewModel.Instance.Models.ImportText += $"\r\n{Path.GetFileNameWithoutExtension(file)}";
-                }
-                ImportProgressBar.Visibility = Visibility.Collapsed;
-
-                MainViewModel.Instance.Models.SuccessfulImport = true;
-            }
-        }
-
         private void PeriodModel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.PeriodModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedPeriodModel))
@@ -381,6 +357,36 @@ namespace Notation.Views
             if (MainViewModel.Instance.Parameters.BaseParameters != null)
             {
                 MainViewModel.Instance.Parameters.BaseParameters.AdminPassword = AdminPassword.Password;
+            }
+        }
+
+        private void Import_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                CheckFileExists = true,
+                DefaultExt = ".xlsx",
+                Multiselect = true,
+            };
+            if ((dialog.ShowDialog() ?? false) && dialog.FileNames.Any())
+            {
+                MainViewModel.Instance.Models.SuccessfulImport = false;
+
+                MainViewModel.Instance.Models.ImportText = "Import réussi :";
+
+                ImportProgressBar.Visibility = Visibility.Visible;
+                ImportProgressBar.Value = 0;
+                int fileCount = 0;
+                foreach (string file in dialog.FileNames)
+                {
+                    ExportUtils.Import(file);
+                    fileCount++;
+                    Dispatcher.Invoke(_updateImport, System.Windows.Threading.DispatcherPriority.Background, fileCount * 1000 / dialog.FileNames.Length);
+                    MainViewModel.Instance.Models.ImportText += $"\r\n{Path.GetFileNameWithoutExtension(file)}";
+                }
+                ImportProgressBar.Visibility = Visibility.Collapsed;
+
+                MainViewModel.Instance.Models.SuccessfulImport = true;
             }
         }
     }

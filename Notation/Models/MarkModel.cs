@@ -19,15 +19,6 @@ namespace Notation.Models
         public int IdStudent { get; set; }
         public int IdTeacher { get; set; }
 
-        private struct Group
-        {
-            public int IdClass;
-            public int IdPeriod;
-            public int IdStudent;
-            public int IdSubject;
-            public int IdTeacher;
-        }
-
         public static IEnumerable<MarkModel> Read(int year, int idPeriod)
         {
             List<MarkModel> marks = new List<MarkModel>();
@@ -171,27 +162,35 @@ namespace Notation.Models
             return null;
         }
 
-        public static void Save(IEnumerable<MarkModel> marks, int year, bool replaceTeacher = false)
+        public static void Save(IEnumerable<MarkModel> marks, int year)
         {
             using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
             {
                 connection.Open();
 
-                foreach (IGrouping<Group, MarkModel> markGroup in marks.GroupBy(m => new Group() { IdClass = m.IdClass, IdPeriod = m.IdPeriod, IdStudent = m.IdStudent, IdSubject = m.IdSubject, IdTeacher = m.IdTeacher }))
+                foreach (MarkModel mark in marks)
                 {
-                    using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE [Year] = {year} AND IdClass = {markGroup.Key.IdClass} AND IdPeriod = {markGroup.Key.IdPeriod}"
-                        + $" AND IdStudent = {markGroup.Key.IdStudent} AND IdSubject = {markGroup.Key.IdSubject}{(!replaceTeacher ? $" AND IdTeacher = {markGroup.Key.IdTeacher}" : "")}", connection))
+                    using (SqlCommand command = new SqlCommand("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
+                        + $" VALUES({year}, {mark.Mark}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))
                     {
                         command.ExecuteNonQuery();
                     }
+                }
+            }
+        }
 
-                    foreach (MarkModel mark in markGroup)
+        public static void Clear(IEnumerable<MarkModel> marks, int year)
+        {
+            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            {
+                connection.Open();
+
+                foreach (MarkModel mark in marks)
+                {
+                    using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE [Year] = {year} AND IdClass = {mark.IdClass} AND IdPeriod = {mark.IdPeriod}"
+                        + $" AND IdStudent = {mark.IdStudent} AND IdSubject = {mark.IdSubject} AND IdTeacher = {mark.IdTeacher}", connection))
                     {
-                        using (SqlCommand command = new SqlCommand("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
-                            + $" VALUES({year}, {mark.Mark}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))
-                        {
-                            command.ExecuteNonQuery();
-                        }
+                        command.ExecuteNonQuery();
                     }
                 }
             }

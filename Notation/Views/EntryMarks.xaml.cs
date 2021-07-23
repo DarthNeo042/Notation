@@ -285,6 +285,15 @@ namespace Notation.Views
 
         private void SaveMarks(EntryMarksViewModel entryMarks)
         {
+            MarkModel.Clear(new List<MarkModel>() { new MarkModel()
+                {
+                    IdClass = entryMarks.SelectedClass.Class.Id,
+                    IdPeriod = entryMarks.SelectedPeriod.Id,
+                    IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
+                    IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
+                    IdTeacher = entryMarks.SelectedTeacher.Id,
+                }
+            }, entryMarks.SelectedPeriod.Year);
             List<MarkModel> marks = new List<MarkModel>();
             foreach (TextBox textBox in Marks1.Children)
             {
