@@ -1725,7 +1725,7 @@
                         <TextBlock Text="Saisie" FontWeight="Bold"></TextBlock>
                     </StackPanel>
                 </TabItem.Header>
-                <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}" DataContext="{Binding Models}">
+                <TabControl Visibility="{Binding DataContext.User, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type TabControl}}, Converter={StaticResource AdminToVisibilityConverter}}">
                     <TabItem Header="Import">
                         <Grid>
                             <Grid.Background>
