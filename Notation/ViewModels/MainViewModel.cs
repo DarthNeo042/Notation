@@ -189,7 +189,9 @@ namespace Notation.ViewModels
         {
             try
             {
-                string filename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Backups", $"{Parameters.BaseParameters.Name}_{DateTime.Now.ToString("ddMMyy_HHmmss")}.bak");
+                string directoryName = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Backups");
+                Directory.CreateDirectory(directoryName);
+                string filename = Path.Combine(directoryName, $"{Parameters.BaseParameters.Name}_{DateTime.Now.ToString("ddMMyy_HHmmss")}.bak");
 
                 BaseModel.Save(filename);
 

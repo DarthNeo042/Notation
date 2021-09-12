@@ -138,7 +138,7 @@ namespace Notation.Utils
                 LastName = student.LastName,
                 Header1 = $"Année {student.Year} - {student.Year + 1}",
                 Header2 = $"Période du {period.FromDate.ToShortDateString()} au {period.ToDate.ToShortDateString()}",
-                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
+                Header3 = $"Classe de {_class.Name} - Effectif {_class.Students.Count}",
             };
 
             PeriodCommentModel periodComment = PeriodCommentModel.Read(period, student);
@@ -410,7 +410,7 @@ namespace Notation.Utils
                 LastName = student.LastName,
                 Header1 = $"DE {semiTrimester.Name.ToUpper()}",
                 Header2 = $"Année {student.Year} - {student.Year + 1}",
-                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",                
+                Header3 = $"Classe de {_class.Name} - Effectif {_class.Students.Count}",                
             };
 
             SemiTrimesterCommentModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
@@ -420,8 +420,7 @@ namespace Notation.Utils
                 bulletinDemiTrimestreHeader.DivisionPrefectReport = semiTrimesterComment.DivisionPrefectComment;
             }
 
-            bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
-                (_class.MainTeacher != null ? string.Format(" {0} {1} {2}", _class.MainTeacher.Title, !string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "", _class.MainTeacher.LastName) : "");
+            bulletinDemiTrimestreHeader.MainTeacherReportHeader = "Compte rendu des études";
             bulletinDemiTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
                 (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
@@ -622,7 +621,7 @@ namespace Notation.Utils
                 LastName = student.LastName,
                 Header1 = $"DU {NumberUtils.GetRankString(trimester)} TRIMESTRE",
                 Header2 = $"Année {student.Year} - {student.Year + 1}",
-                Header3 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
+                Header3 = $"Classe de {_class.Name} - Effectif {_class.Students.Count}",
             };
 
             TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
@@ -632,8 +631,7 @@ namespace Notation.Utils
                 bulletinTrimestreHeader.DivisionPrefectReport = trimesterComment.DivisionPrefectComment;
             }
 
-            bulletinTrimestreHeader.MainTeacherReportHeader = "Appréciation du professeur principal" +
-                (_class.MainTeacher != null ? $" {_class.MainTeacher.Title} {(!string.IsNullOrEmpty(_class.MainTeacher.FirstName) ? _class.MainTeacher.FirstName : "")} {_class.MainTeacher.LastName}" : "");
+            bulletinTrimestreHeader.MainTeacherReportHeader = "Compte rendu des études";
             bulletinTrimestreHeader.DivisionPrefectReportHeader = "Appréciation du préfet de division" +
                 (!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "");
 
@@ -842,7 +840,7 @@ namespace Notation.Utils
                 FirstName = student.FirstName,
                 LastName = student.LastName,
                 Header1 = $"Année {student.Year} - {student.Year + 1}",
-                Header2 = $"Classe de {_class.Name}\tEffectif {_class.Students.Count}",
+                Header2 = $"Classe de {_class.Name} - Effectif {_class.Students.Count}",
             };
 
             double average = MarkModel.ReadYearAverage(year, student);
