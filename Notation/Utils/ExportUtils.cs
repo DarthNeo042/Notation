@@ -456,7 +456,7 @@ namespace Notation.Utils
                 int row = 5;
                 foreach (StudentViewModel student in _class.Students)
                 {
-                    workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                    workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
                     TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
                     if (trimesterComment != null)
                     {
@@ -513,7 +513,7 @@ namespace Notation.Utils
                         int row = 6;
                         foreach (StudentViewModel student in _class.Students)
                         {
-                            workSheet.Cells[row++, 1].Value = $"{student.LastName} {student.FirstName}";
+                            workSheet.Cells[row, 1].Value = $"{student.LastName} {student.FirstName}";
                             TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
                             if (trimesterSubjectComment != null)
                             {
@@ -1247,11 +1247,11 @@ namespace Notation.Utils
 
                     if (workSheet.Cells[i, 2].Value != null)
                     {
-                        trimesterComment.DivisionPrefectComment = workSheet.Cells[i, 2].Text;
+                        trimesterComment.MainTeacherComment = workSheet.Cells[i, 2].Text;
                     }
                     if (workSheet.Cells[i, 3].Value != null)
                     {
-                        trimesterComment.MainTeacherComment = workSheet.Cells[i, 3].Text;
+                        trimesterComment.DivisionPrefectComment = workSheet.Cells[i, 3].Text;
                     }
 
                     TrimesterCommentModel.Save(trimesterComment);
