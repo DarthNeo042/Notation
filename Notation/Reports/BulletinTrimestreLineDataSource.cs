@@ -11,5 +11,6 @@
         public string ClassMinAverage { get; set; }
         public string ClassMaxAverage { get; set; }
         public string SubjectComment { get; set; }
+        public int Rows { get; set; }
     }
 }

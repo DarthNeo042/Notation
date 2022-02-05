@@ -666,6 +666,7 @@ namespace Notation.Utils
                     ClassAverage = SSRSUtils_Trimester.ClassSubjectAverages[subject] != double.MinValue ? SSRSUtils_Trimester.ClassSubjectAverages[subject].ToString("0.0") : "",
                     ClassMinAverage = SSRSUtils_Trimester.ClassSubjectMinAverages[subject] != double.MaxValue ? SSRSUtils_Trimester.ClassSubjectMinAverages[subject].ToString("0.0") : "",
                     ClassMaxAverage = SSRSUtils_Trimester.ClassSubjectMaxAverages[subject] != double.MinValue ? SSRSUtils_Trimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "",
+                    Rows = 1 + subject.ChildrenSubjects.Count,
                 };
                 if (subject.Option)
                 {
