@@ -1809,7 +1809,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>10cm</Height>
+              <Height>7.6cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -1938,91 +1938,7 @@
                             </TablixCells>
                           </TablixRow>
                           <TablixRow>
-                            <Height>1.9cm</Height>
-                            <TablixCells>
-                              <TablixCell>
-                                <CellContents>
-                                  <Textbox Name="SubjectComment">
-                                    <CanGrow>true</CanGrow>
-                                    <KeepTogether>true</KeepTogether>
-                                    <Paragraphs>
-                                      <Paragraph>
-                                        <TextRuns>
-                                          <TextRun>
-                                            <Value>=Fields!SubjectComment.Value</Value>
-                                            <Style>
-                                              <FontFamily>Cambria</FontFamily>
-                                              <FontSize>11pt</FontSize>
-                                            </Style>
-                                          </TextRun>
-                                        </TextRuns>
-                                        <Style />
-                                      </Paragraph>
-                                    </Paragraphs>
-                                    <rd:DefaultName>SubjectComment</rd:DefaultName>
-                                    <Visibility>
-                                      <Hidden>=IIF(Fields!Rows.Value=2,False,True)</Hidden>
-                                    </Visibility>
-                                    <Style>
-                                      <Border>
-                                        <Style>Solid</Style>
-                                        <Width>0.25pt</Width>
-                                      </Border>
-                                      <VerticalAlign>Middle</VerticalAlign>
-                                      <PaddingLeft>2pt</PaddingLeft>
-                                      <PaddingRight>2pt</PaddingRight>
-                                      <PaddingTop>2pt</PaddingTop>
-                                      <PaddingBottom>2pt</PaddingBottom>
-                                    </Style>
-                                  </Textbox>
-                                </CellContents>
-                              </TablixCell>
-                            </TablixCells>
-                          </TablixRow>
-                          <TablixRow>
-                            <Height>2.7cm</Height>
-                            <TablixCells>
-                              <TablixCell>
-                                <CellContents>
-                                  <Textbox Name="SubjectComment2">
-                                    <CanGrow>true</CanGrow>
-                                    <KeepTogether>true</KeepTogether>
-                                    <Paragraphs>
-                                      <Paragraph>
-                                        <TextRuns>
-                                          <TextRun>
-                                            <Value>=Fields!SubjectComment.Value</Value>
-                                            <Style>
-                                              <FontFamily>Cambria</FontFamily>
-                                              <FontSize>11pt</FontSize>
-                                            </Style>
-                                          </TextRun>
-                                        </TextRuns>
-                                        <Style />
-                                      </Paragraph>
-                                    </Paragraphs>
-                                    <rd:DefaultName>SubjectComment2</rd:DefaultName>
-                                    <Visibility>
-                                      <Hidden>=IIF(Fields!Rows.Value=3,False,True)</Hidden>
-                                    </Visibility>
-                                    <Style>
-                                      <Border>
-                                        <Style>Solid</Style>
-                                        <Width>0.25pt</Width>
-                                      </Border>
-                                      <VerticalAlign>Middle</VerticalAlign>
-                                      <PaddingLeft>2pt</PaddingLeft>
-                                      <PaddingRight>2pt</PaddingRight>
-                                      <PaddingTop>2pt</PaddingTop>
-                                      <PaddingBottom>2pt</PaddingBottom>
-                                    </Style>
-                                  </Textbox>
-                                </CellContents>
-                              </TablixCell>
-                            </TablixCells>
-                          </TablixRow>
-                          <TablixRow>
-                            <Height>3.5cm</Height>
+                            <Height>5.7cm</Height>
                             <TablixCells>
                               <TablixCell>
                                 <CellContents>
@@ -2045,7 +1961,7 @@
                                     </Paragraphs>
                                     <rd:DefaultName>SubjectComment3</rd:DefaultName>
                                     <Visibility>
-                                      <Hidden>=IIF(Fields!Rows.Value=4,False,True)</Hidden>
+                                      <Hidden>=IIF(Fields!Rows.Value=7,False,True)</Hidden>
                                     </Visibility>
                                     <Style>
                                       <Border>
@@ -2059,6 +1975,7 @@
                                       <PaddingBottom>2pt</PaddingBottom>
                                     </Style>
                                   </Textbox>
+                                  <rd:Selected>true</rd:Selected>
                                 </CellContents>
                               </TablixCell>
                             </TablixCells>
@@ -2083,8 +2000,6 @@
                                   <Hidden>=IIF(Fields!IsChildSubject.Value = True, True, False)</Hidden>
                                 </Visibility>
                               </TablixMember>
-                              <TablixMember />
-                              <TablixMember />
                               <TablixMember />
                             </TablixMembers>
                           </TablixMember>
@@ -2264,7 +2179,7 @@
         <DataSetName>LineDataSet</DataSetName>
         <Top>4.1275cm</Top>
         <Left>7.97062cm</Left>
-        <Height>10.15876cm</Height>
+        <Height>7.75876cm</Height>
         <Width>11.65876cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
