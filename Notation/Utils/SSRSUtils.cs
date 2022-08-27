@@ -1,4 +1,4 @@
-﻿using Microsoft.Reporting.WebForms;
+﻿using Microsoft.Reporting.WinForms;
 using Notation.Models;
 using Notation.Properties;
 using Notation.Reports;
@@ -287,7 +287,7 @@ namespace Notation.Utils
             dataSource = new ReportDataSource("LineDataSet", bulletinPeriodeLines);
             report.LocalReport.DataSources.Add(dataSource);
 
-            byte[] bytes = report.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string extension, out string[] streamIds, out Warning[] warnings);
+            byte[] bytes = report.LocalReport.Render("PDF", null);
 
             using (FileStream fileStream = new FileStream(filename, FileMode.Create))
             {
@@ -518,7 +518,7 @@ namespace Notation.Utils
             dataSource = new ReportDataSource("LineDataSet", bulletinDemiTrimestreLines);
             report.LocalReport.DataSources.Add(dataSource);
 
-            byte[] bytes = report.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string extension, out string[] streamIds, out Warning[] warnings);
+            byte[] bytes = report.LocalReport.Render("PDF", null);
 
             using (FileStream fileStream = new FileStream(filename, FileMode.Create))
             {
@@ -740,7 +740,7 @@ namespace Notation.Utils
             dataSource = new ReportDataSource("LineDataSet", bulletinTrimestreLines);
             report.LocalReport.DataSources.Add(dataSource);
 
-            byte[] bytes = report.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string extension, out string[] streamIds, out Warning[] warnings);
+            byte[] bytes = report.LocalReport.Render("PDF", null);
 
             using (FileStream fileStream = new FileStream(filename, FileMode.Create))
             {
@@ -1005,7 +1005,7 @@ namespace Notation.Utils
             dataSource = new ReportDataSource("LineDataSet", bulletinAnnuelLines);
             report.LocalReport.DataSources.Add(dataSource);
 
-            byte[] bytes = report.LocalReport.Render("PDF", null, out string mimeType, out string encoding, out string extension, out string[] streamIds, out Warning[] warnings);
+            byte[] bytes = report.LocalReport.Render("PDF", null);
 
             using (FileStream fileStream = new FileStream(filename, FileMode.Create))
             {

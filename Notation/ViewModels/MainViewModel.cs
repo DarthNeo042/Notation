@@ -1,6 +1,7 @@
 ﻿using Notation.Models;
 using Notation.Utils;
 using Notation.Views;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -240,6 +241,8 @@ namespace Notation.ViewModels
 
         public MainViewModel()
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
             Login = new LoginViewModel();
             Models = new ModelsViewModel();
             Parameters = new ParametersViewModel();
