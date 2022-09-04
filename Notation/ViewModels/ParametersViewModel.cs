@@ -1,5 +1,6 @@
 ﻿using Notation.Models;
 using Notation.Views;
+using Notation.Settings;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -1691,7 +1692,7 @@ namespace Notation.ViewModels
 
         private string GetBaseName()
         {
-            string cut = Properties.Settings.Default.SQLConnection.Split(';').FirstOrDefault(s => s.StartsWith("Initial Catalog="));
+            string cut = Settings.Settings.Instance.SQLConnection.Split(';').FirstOrDefault(s => s.StartsWith("Initial Catalog="));
             if (cut != null)
             {
                 return cut.Substring("Initial Catalog=".Length);

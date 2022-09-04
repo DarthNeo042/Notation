@@ -1,8 +1,4 @@
-﻿using Notation.Properties;
-using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Xml;
+﻿using System.Windows.Forms;
 
 namespace Notation.Utils
 {
@@ -19,20 +15,32 @@ namespace Notation.Utils
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 directory = dialog.SelectedPath;
-                string configFilename = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Notation.exe.config");
 
-                XmlDocument document = new XmlDocument();
-                document.Load(configFilename);
-                foreach (XmlNode node in document.GetElementsByTagName("setting"))
+                switch (directory)
                 {
-                    if (node.Attributes["name"].Value == parameter)
-                    {
-                        node.FirstChild.FirstChild.Value = directory;
-                    }
+                    case "LastSelectedDirectoryPeriodModels":
+                        Settings.Settings.Instance.LastSelectedDirectoryPeriodModels = directory;
+                        break;
+                    case "LastSelectedDirectoryPeriodReports":
+                        Settings.Settings.Instance.LastSelectedDirectoryPeriodReports = directory;
+                        break;
+                    case "LastSelectedDirectorySemiTrimesterModels":
+                        Settings.Settings.Instance.LastSelectedDirectorySemiTrimesterModels = directory;
+                        break;
+                    case "LastSelectedDirectorySemiTrimesterReports":
+                        Settings.Settings.Instance.LastSelectedDirectorySemiTrimesterReports = directory;
+                        break;
+                    case "LastSelectedDirectoryTrimesterModels":
+                        Settings.Settings.Instance.LastSelectedDirectoryTrimesterModels = directory;
+                        break;
+                    case "LastSelectedDirectoryTrimesterReports":
+                        Settings.Settings.Instance.LastSelectedDirectoryTrimesterReports = directory;
+                        break;
+                    case "LastSelectedDirectoryYearReports":
+                        Settings.Settings.Instance.LastSelectedDirectoryYearReports = directory;
+                        break;
                 }
-                document.Save(configFilename);
-
-                Settings.Default.Reload();
+                Settings.Settings.Save();
             }
             else
             {

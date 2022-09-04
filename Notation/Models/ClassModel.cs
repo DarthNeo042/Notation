@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using Notation.ViewModels;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,7 +12,7 @@ namespace Notation.Models
         {
             List<ClassViewModel> classes = new List<ClassViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -48,7 +48,7 @@ namespace Notation.Models
 
         public static void Save(ClassViewModel _class)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -73,7 +73,7 @@ namespace Notation.Models
 
         public static bool CanDelete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -93,7 +93,7 @@ namespace Notation.Models
 
         public static void Delete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -106,7 +106,7 @@ namespace Notation.Models
 
         public static void DeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM Class WHERE Year = {year}", connection))

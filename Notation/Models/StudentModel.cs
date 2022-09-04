@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using Notation.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace Notation.Models
         {
             List<StudentViewModel> Students = new List<StudentViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -52,7 +52,7 @@ namespace Notation.Models
 
         public static void Save(StudentViewModel student)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -77,7 +77,7 @@ namespace Notation.Models
 
         public static void SaveClass(ClassViewModel _class)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -105,7 +105,7 @@ namespace Notation.Models
 
         public static bool CanDelete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -129,7 +129,7 @@ namespace Notation.Models
 
         public static void Delete(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -142,7 +142,7 @@ namespace Notation.Models
 
         public static void DeleteMarksAndComments(int year, int id)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -171,7 +171,7 @@ namespace Notation.Models
 
         public static void DeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM Student WHERE Year = {year}", connection))

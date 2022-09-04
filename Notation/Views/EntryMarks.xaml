@@ -134,7 +134,7 @@
                 <ScrollViewer Grid.Row="3" Height="50" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                     <StackPanel Name="Marks1" Orientation="Horizontal"></StackPanel>
                 </ScrollViewer>
-                    <TextBlock Grid.Row="4" Text="Devoirs (coefficient 2)"></TextBlock>
+                <TextBlock Grid.Row="4" Text="Devoirs (coefficient 2)"></TextBlock>
                 <ScrollViewer Grid.Row="5" Height="50" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden">
                     <StackPanel Name="Marks2" Orientation="Horizontal"></StackPanel>
                 </ScrollViewer>

@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
@@ -10,7 +10,7 @@ namespace Notation.Models
         {
             List<int> years = new List<int>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -31,7 +31,7 @@ namespace Notation.Models
 
         public static void Create(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -46,7 +46,7 @@ namespace Notation.Models
         {
             int year = 0;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -68,7 +68,7 @@ namespace Notation.Models
 
         public static void Delete(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM Year WHERE Year = {year}", connection))

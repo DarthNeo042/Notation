@@ -273,7 +273,7 @@ namespace Notation.Views
             {
                 PeriodReportsProgressBar.Visibility = Visibility.Visible;
                 PeriodReportsProgressBar.Value = 0;
-                SSRSUtils.CreatePeriodReport(period, _updatePeriodReportsDispatch);
+                HTMLUtils.CreatePeriodReport(period, _updatePeriodReportsDispatch);
                 PeriodReportsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -306,38 +306,6 @@ namespace Notation.Views
             YearReportsProgressBar.Value = 0;
             SSRSUtils.CreateYearReport(MainViewModel.Instance.Reports.Year, _updateYearReportsDispatch);
             YearReportsProgressBar.Visibility = Visibility.Collapsed;
-        }
-
-        private void PeriodReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.PeriodReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedPeriodReport))
-            {
-                Process.Start(Path.Combine(MainViewModel.Instance.Reports.PeriodReportsPath, MainViewModel.Instance.Reports.SelectedPeriodReport));
-            }
-        }
-
-        private void SemiTrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.SemiTrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedSemiTrimesterReport))
-            {
-                Process.Start(Path.Combine(MainViewModel.Instance.Reports.SemiTrimesterReportsPath, MainViewModel.Instance.Reports.SelectedSemiTrimesterReport));
-            }
-        }
-
-        private void TrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.TrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedTrimesterReport))
-            {
-                Process.Start(Path.Combine(MainViewModel.Instance.Reports.TrimesterReportsPath, MainViewModel.Instance.Reports.SelectedTrimesterReport));
-            }
-        }
-
-        private void YearReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.YearReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedYearReport))
-            {
-                Process.Start(Path.Combine(MainViewModel.Instance.Reports.YearReportsPath, MainViewModel.Instance.Reports.SelectedYearReport));
-            }
         }
 
         private void ParametersTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

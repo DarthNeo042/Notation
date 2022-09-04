@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using Notation.Settings;
+using System.Data.SqlClient;
 using System.IO;
 
 namespace Notation.Models
@@ -7,7 +8,7 @@ namespace Notation.Models
     {
         public static void Save(string filename)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 

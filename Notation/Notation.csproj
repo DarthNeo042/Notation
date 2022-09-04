@@ -1,394 +1,108 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8CA67BA5-1911-4283-8BD8-DACC491C4E50}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Notation</RootNamespace>
-    <AssemblyName>Notation</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus, Version=6.0.6.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.6.0.6\lib\net462\EPPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus.Interfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.Interfaces.6.0.0\lib\net452\EPPlus.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="EPPlus.System.Drawing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.System.Drawing.6.0.0\lib\net452\EPPlus.System.Drawing.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net46\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1484.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1484.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1484.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1484.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1484.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Threading.Tasks" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <None Remove="Resources\Add.png" />
+    <None Remove="Resources\Aide.pdf" />
+    <None Remove="Resources\Base.png" />
+    <None Remove="Resources\Cancel.png" />
+    <None Remove="Resources\Delete.png" />
+    <None Remove="Resources\Down.png" />
+    <None Remove="Resources\Entry.png" />
+    <None Remove="Resources\Folder.png" />
+    <None Remove="Resources\Help.png" />
+    <None Remove="Resources\Icon.png" />
+    <None Remove="Resources\Minus.png" />
+    <None Remove="Resources\Models.png" />
+    <None Remove="Resources\Modify.png" />
+    <None Remove="Resources\Parameters.png" />
+    <None Remove="Resources\Refresh.png" />
+    <None Remove="Resources\Reports.png" />
+    <None Remove="Resources\Save.png" />
+    <None Remove="Resources\Up.png" />
+    <None Remove="Resources\User.png" />
   </ItemGroup>
+
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Converters\AdminToVisibilityConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="Converters\CountToLibelleConverter.cs" />
-    <Compile Include="Converters\ObjectToNotVisibilityConverter.cs" />
-    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
-    <Compile Include="Converters\SubjectToNameConverter.cs" />
-    <Compile Include="Converters\YearLibelleConverter.cs" />
-    <Compile Include="Converters\YearToVisibilityConverter.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\BaseParametersModel.cs" />
-    <Compile Include="Models\ClassModel.cs" />
-    <Compile Include="Models\LevelModel.cs" />
-    <Compile Include="Models\LevelSubjectModel.cs" />
-    <Compile Include="Models\MarkModel.cs" />
-    <Compile Include="Models\PeriodCommentModel.cs" />
-    <Compile Include="Models\PeriodModel.cs" />
-    <Compile Include="Models\SemiTrimesterCommentModel.cs" />
-    <Compile Include="Models\SemiTrimesterModel.cs" />
-    <Compile Include="Models\StudentModel.cs" />
-    <Compile Include="Models\SubjectModel.cs" />
-    <Compile Include="Models\SubjectTeacherModel.cs" />
-    <Compile Include="Models\TeacherClassModel.cs" />
-    <Compile Include="Models\TeacherModel.cs" />
-    <Compile Include="Models\TrimesterCommentModel.cs" />
-    <Compile Include="Models\TrimesterSubjectCommentModel.cs" />
-    <Compile Include="Models\YearModel.cs" />
-    <Compile Include="Models\YearParametersModel.cs" />
-    <Compile Include="Reports\BulletinAnnuelHeaderDataSource.cs" />
-    <Compile Include="Reports\BulletinAnnuelLineDataSource.cs" />
-    <Compile Include="Reports\BulletinDemiTrimestreHeaderDataSource.cs" />
-    <Compile Include="Reports\BulletinDemiTrimestreLineDataSource.cs" />
-    <Compile Include="Reports\BulletinPeriodeHeaderDataSource.cs" />
-    <Compile Include="Reports\BulletinPeriodeLineDataSource.cs" />
-    <Compile Include="Reports\BulletinTrimestreHeaderDataSource.cs" />
-    <Compile Include="Reports\BulletinTrimestreLineDataSource.cs" />
-    <Compile Include="SqlServerTypes\Loader.cs" />
-    <Compile Include="Utils\ExportUtils.cs" />
-    <Compile Include="Utils\FileUtils.cs" />
-    <Compile Include="Utils\ModelUtils.cs" />
-    <Compile Include="Utils\MonthUtils.cs" />
-    <Compile Include="Utils\NameUtils.cs" />
-    <Compile Include="Utils\NumberUtils.cs" />
-    <Compile Include="Utils\SSRSUtils.cs" />
-    <Compile Include="Utils\YearUtils.cs" />
-    <Compile Include="ViewModels\BaseParametersViewModel.cs" />
-    <Compile Include="ViewModels\BaseViewModel.cs" />
-    <Compile Include="ViewModels\CalendarViewModel.cs" />
-    <Compile Include="ViewModels\ClassViewModel.cs" />
-    <Compile Include="ViewModels\EntryClassViewModel.cs" />
-    <Compile Include="ViewModels\EntryMarksCoefficientViewModel.cs" />
-    <Compile Include="ViewModels\EntryMarksMarkViewModel.cs" />
-    <Compile Include="ViewModels\EntryMarksSubjectViewModel.cs" />
-    <Compile Include="ViewModels\EntryMarksViewModel.cs" />
-    <Compile Include="ViewModels\EntryPeriodCommentsViewModel.cs" />
-    <Compile Include="ViewModels\EntrySemiTrimesterCommentsViewModel.cs" />
-    <Compile Include="ViewModels\EntryStudentViewModel.cs" />
-    <Compile Include="ViewModels\EntryTrimesterCommentsViewModel.cs" />
-    <Compile Include="ViewModels\EntryTrimesterSubjectCommentsSubjectViewModel.cs" />
-    <Compile Include="ViewModels\EntryTrimesterSubjectCommentsViewModel.cs" />
-    <Compile Include="ViewModels\EntryViewModel.cs" />
-    <Compile Include="ViewModels\LevelViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\ModelsViewModel.cs" />
-    <Compile Include="ViewModels\ParametersViewModel.cs" />
-    <Compile Include="ViewModels\PeriodViewModel.cs" />
-    <Compile Include="ViewModels\ReportsViewModel.cs" />
-    <Compile Include="ViewModels\SemiTrimesterViewModel.cs" />
-    <Compile Include="ViewModels\StudentViewModel.cs" />
-    <Compile Include="ViewModels\SubjectViewModel.cs" />
-    <Compile Include="ViewModels\TeacherViewModel.cs" />
-    <Compile Include="ViewModels\UserViewModel.cs" />
-    <Compile Include="ViewModels\UtilsViewModel.cs" />
-    <Compile Include="ViewModels\YearParametersViewModel.cs" />
-    <Compile Include="Views\AddClasses.xaml.cs">
-      <DependentUpon>AddClasses.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddLevels.xaml.cs">
-      <DependentUpon>AddLevels.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddStudents.xaml.cs">
-      <DependentUpon>AddStudents.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddSubjects.xaml.cs">
-      <DependentUpon>AddSubjects.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\AddTeachers.xaml.cs">
-      <DependentUpon>AddTeachers.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CreateYear.xaml.cs">
-      <DependentUpon>CreateYear.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EntryMarks.xaml.cs">
-      <DependentUpon>EntryMarks.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EntryPeriodComments.xaml.cs">
-      <DependentUpon>EntryPeriodComments.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EntrySemiTrimesterComments.xaml.cs">
-      <DependentUpon>EntrySemiTrimesterComments.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EntryTrimesterComments.xaml.cs">
-      <DependentUpon>EntryTrimesterComments.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EntryTrimesterSubjectComments.xaml.cs">
-      <DependentUpon>EntryTrimesterSubjectComments.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
+    <Content Include="Icon.ico" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Documentation\Aide notation.odg" />
-    <None Include="Reports\BulletinAnnuel.rdlc">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Properties\DataSources\Notation.Reports.BulletinAnnuelHeaderDataSource.datasource" />
-    <None Include="Reports\BulletinTrimestre.rdlc">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreLineDataSource.datasource" />
-    <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreHeaderDataSource.datasource" />
-    <None Include="Properties\DataSources\Notation.Reports.BulletinTrimestreLineDataSource.datasource" />
-    <None Include="Reports\BulletinDemiTrimestre.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\DataSources\Notation.Reports.BulletinDemiTrimestreHeaderDataSource.datasource" />
-    <None Include="Properties\DataSources\Notation.Reports.BulletinPeriodeLineDataSource.datasource" />
-    <None Include="Reports\BulletinPeriode.rdlc">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Properties\DataSources\Notation.Reports.BulletinPeriodeHeaderDataSource.datasource" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <EmbeddedResource Include="Resources\Aide.pdf" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Folder Include="Documentation\" />
+    <Folder Include="Converters\" />
+    <Folder Include="Models\" />
+    <Folder Include="Reports\" />
+    <Folder Include="SQL\" />
   </ItemGroup>
+
   <ItemGroup>
-    <Page Include="Resources\Resources.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddClasses.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddLevels.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddStudents.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddSubjects.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\AddTeachers.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CreateYear.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EntryMarks.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EntryPeriodComments.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EntrySemiTrimesterComments.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EntryTrimesterComments.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\EntryTrimesterSubjectComments.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Login.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
+
   <ItemGroup>
-    <Resource Include="Resources\Icon.png" />
+    <PackageReference Include="EPPlus" Version="6.0.6" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Icon.ico" />
-  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources\Add.png" />
-    <Resource Include="Resources\Modify.png" />
+    <Resource Include="Resources\Base.png" />
+    <Resource Include="Resources\Cancel.png" />
     <Resource Include="Resources\Delete.png" />
     <Resource Include="Resources\Down.png" />
-    <Resource Include="Resources\Up.png" />
-    <Resource Include="Resources\Cancel.png" />
-    <Resource Include="Resources\Save.png" />
-    <Resource Include="Resources\User.png" />
-    <Resource Include="Resources\Refresh.png" />
-    <Resource Include="Resources\Help.png" />
-    <Resource Include="Resources\Folder.png" />
-    <Resource Include="Resources\Minus.png" />
     <Resource Include="Resources\Entry.png" />
+    <Resource Include="Resources\Folder.png" />
+    <Resource Include="Resources\Help.png" />
+    <Resource Include="Resources\Icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Minus.png" />
     <Resource Include="Resources\Models.png" />
+    <Resource Include="Resources\Modify.png" />
     <Resource Include="Resources\Parameters.png" />
+    <Resource Include="Resources\Refresh.png" />
     <Resource Include="Resources\Reports.png" />
-    <Resource Include="Resources\Base.png" />
-    <Content Include="SqlServerTypes\readme.htm" />
-    <Content Include="SqlServerTypes\x64\msvcr120.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SqlServerTypes\x86\msvcr120.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\CreateBase.sql" />
+    <Resource Include="Resources\Save.png" />
+    <Resource Include="Resources\Up.png" />
+    <Resource Include="Resources\User.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
+  <ItemGroup>
+    <None Update="HTML\Icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Reports\BulletinAnnuel.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Reports\BulletinDemiTrimestre.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Reports\BulletinPeriode.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Reports\BulletinTrimestre.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

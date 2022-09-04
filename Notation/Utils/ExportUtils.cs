@@ -1,5 +1,5 @@
 ﻿using Notation.Models;
-using Notation.Properties;
+using Notation.Settings;
 using Notation.ViewModels;
 using OfficeOpenXml;
 using OfficeOpenXml.DataValidation;
@@ -22,7 +22,7 @@ namespace Notation.Utils
         {
             try
             {
-                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
+                string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectoryPeriodModels, "LastSelectedDirectoryPeriodModels");
                 if (!string.IsNullOrEmpty(directory))
                 {
                     MainViewModel.Instance.Models.PeriodModels.Clear();
@@ -605,7 +605,7 @@ namespace Notation.Utils
         {
             try
             {
-                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectoryTrimesterModels, "LastSelectedDirectoryTrimesterModels");
+                string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectoryTrimesterModels, "LastSelectedDirectoryTrimesterModels");
 
                 if (!string.IsNullOrEmpty(directory))
                 {
@@ -627,7 +627,7 @@ namespace Notation.Utils
         {
             try
             {
-                string directory = FileUtils.SelectDirectory(Settings.Default.LastSelectedDirectorySemiTrimesterModels, "LastSelectedDirectorySemiTrimesterModels");
+                string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectorySemiTrimesterModels, "LastSelectedDirectorySemiTrimesterModels");
 
                 if (!string.IsNullOrEmpty(directory))
                 {

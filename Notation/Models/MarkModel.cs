@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using Notation.ViewModels;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -23,7 +23,7 @@ namespace Notation.Models
         {
             List<MarkModel> marks = new List<MarkModel>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -37,7 +37,7 @@ namespace Notation.Models
                             {
                                 Id = (int)reader["Id"],
                                 Coefficient = (int)(decimal)reader["Coefficient"],
-                                Mark = (int)(decimal)reader["Mark"],
+                                Mark = (decimal)reader["Mark"],
                                 Order = (int)reader["Order"],
                                 IdClass = (int)reader["IdClass"],
                                 IdPeriod = (int)reader["IdPeriod"],
@@ -60,7 +60,7 @@ namespace Notation.Models
 
             if (idSubjects.Any())
             {
-                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+                using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
                 {
                     connection.Open();
 
@@ -75,7 +75,7 @@ namespace Notation.Models
                                 {
                                     Id = (int)reader["Id"],
                                     Coefficient = (int)(decimal)reader["Coefficient"],
-                                    Mark = (int)(decimal)reader["Mark"],
+                                    Mark = (decimal)reader["Mark"],
                                     Order = (int)reader["Order"],
                                     IdClass = idClass,
                                     IdPeriod = idPeriod,
@@ -99,7 +99,7 @@ namespace Notation.Models
 
             if (idSubjects.Any() && idStudents.Any())
             {
-                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+                using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
                 {
                     connection.Open();
 
@@ -118,7 +118,7 @@ namespace Notation.Models
                                 {
                                     Id = (int)reader["Id"],
                                     Coefficient = (int)(decimal)reader["Coefficient"],
-                                    Mark = (int)(decimal)reader["Mark"],
+                                    Mark = (decimal)reader["Mark"],
                                     Order = (int)reader["Order"],
                                     IdClass = idClass,
                                     IdPeriod = idPeriod,
@@ -143,7 +143,7 @@ namespace Notation.Models
 
         public static TeacherViewModel ReadTeacherFromClassAndSubject(int year, int idClass, int idSubject, int idPeriod)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -164,14 +164,14 @@ namespace Notation.Models
 
         public static void Save(IEnumerable<MarkModel> marks, int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
                 foreach (MarkModel mark in marks)
                 {
                     using (SqlCommand command = new SqlCommand("INSERT INTO Mark([Year], Mark, Coefficient, [Order], IdClass, IdPeriod, IdStudent, IdSubject, IdTeacher)"
-                        + $" VALUES({year}, {mark.Mark}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))
+                        + $" VALUES({year}, {mark.Mark.ToString().Replace(",", ".")}, {mark.Coefficient}, {mark.Order}, {mark.IdClass}, {mark.IdPeriod}, {mark.IdStudent}, {mark.IdSubject}, {mark.IdTeacher})", connection))
                     {
                         command.ExecuteNonQuery();
                     }
@@ -181,7 +181,7 @@ namespace Notation.Models
 
         public static void Clear(IEnumerable<MarkModel> marks, int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -198,7 +198,7 @@ namespace Notation.Models
 
         public static void DeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM Mark WHERE Year = {year}", connection))
@@ -212,7 +212,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -236,7 +236,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -262,7 +262,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -288,7 +288,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -318,7 +318,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -343,7 +343,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -372,7 +372,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -397,7 +397,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -426,7 +426,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -453,7 +453,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -549,7 +549,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -574,7 +574,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -603,7 +603,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -628,7 +628,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -657,7 +657,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -684,7 +684,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -780,7 +780,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -804,7 +804,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -832,7 +832,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -856,7 +856,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -884,7 +884,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -910,7 +910,7 @@ namespace Notation.Models
         {
             double average = double.MinValue;
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 

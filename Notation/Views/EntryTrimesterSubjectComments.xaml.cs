@@ -93,7 +93,7 @@ namespace Notation.Views
                             {
                                 entryTrimesterSubjectComments.SelectedClass.SelectedStudent
                                     = entryTrimesterSubjectComments.SelectedClass.Students[entryTrimesterSubjectComments.SelectedClass.Students.IndexOf(entryTrimesterSubjectComments.SelectedClass.SelectedStudent) + 1];
-                                entryTrimesterSubjectComments.SelectedClass.SelectedStudent.SelectedTrimesterSubjectCommentsSubject = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.TrimesterSubjectCommentsSubjects .FirstOrDefault();
+                                entryTrimesterSubjectComments.SelectedClass.SelectedStudent.SelectedTrimesterSubjectCommentsSubject = entryTrimesterSubjectComments.SelectedClass.SelectedStudent.TrimesterSubjectCommentsSubjects.FirstOrDefault();
                             }
                             else
                             {

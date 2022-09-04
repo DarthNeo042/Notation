@@ -9,7 +9,7 @@ namespace Notation.Models
         {
             BaseParametersViewModel baseParameters = null;
 
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -38,7 +38,7 @@ namespace Notation.Models
 
         public static void Create(BaseParametersViewModel baseParameters)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -52,7 +52,7 @@ namespace Notation.Models
 
         public static void Save(BaseParametersViewModel baseParameters)
         {
-            using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 

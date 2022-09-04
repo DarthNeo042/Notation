@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using Notation.ViewModels;
 using System.Collections.ObjectModel;
 using System.Data.SqlClient;
@@ -10,7 +10,7 @@ namespace Notation.Models
     {
         public static void ReadLevelSubjects(ObservableCollection<LevelViewModel> levels, ObservableCollection<SubjectViewModel> subjects, int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -40,7 +40,7 @@ namespace Notation.Models
 
         public static void SaveLevelSubjects(LevelViewModel level)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -60,7 +60,7 @@ namespace Notation.Models
 
         public static void SaveSubjectLevels(SubjectViewModel subject)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -80,7 +80,7 @@ namespace Notation.Models
 
         public static void DeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM LevelSubject WHERE Year = {year}", connection))

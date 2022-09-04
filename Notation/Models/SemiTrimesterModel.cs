@@ -1,4 +1,4 @@
-﻿using Notation.Properties;
+﻿using Notation.Settings;
 using Notation.ViewModels;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,7 +12,7 @@ namespace Notation.Models
         {
             List<SemiTrimesterViewModel> semiTrimesters = new List<SemiTrimesterViewModel>();
 
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -46,7 +46,7 @@ namespace Notation.Models
 
         public static void Save(SemiTrimesterViewModel semiTrimester)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -62,7 +62,7 @@ namespace Notation.Models
         {
             if (semiTrimesters.Any())
             {
-                using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+                using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
                 {
                     connection.Open();
 
@@ -84,7 +84,7 @@ namespace Notation.Models
 
         public static bool CanDeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
 
@@ -104,7 +104,7 @@ namespace Notation.Models
 
         public static void DeleteAll(int year)
         {
-            using (SqlConnection connection = new SqlConnection(Settings.Default.SQLConnection))
+            using (SqlConnection connection = new SqlConnection(Settings.Settings.Instance.SQLConnection))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand($"DELETE FROM SemiTrimester WHERE Year = {year}", connection))

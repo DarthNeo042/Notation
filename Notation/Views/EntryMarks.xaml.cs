@@ -65,7 +65,7 @@ namespace Notation.Views
                     foreach (MarkModel mark in MarkModel.Read(new List<int>() { entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id },
                         entryMarks.SelectedClass.SelectedStudent.Student.Id, entryMarks.SelectedTeacher.Id, entryMarks.SelectedClass.Class.Id, entryMarks.SelectedPeriod.Id, entryMarks.SelectedPeriod.Year))
                     {
-                        textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = mark.Mark.ToString() };
+                        textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 50, Text = ((double)mark.Mark).ToString() };
                         textBox.PreviewKeyDown += Mark_KeyDown;
                         textBox.TextChanged += Mark_TextChanged;
                         textBox.LostFocus += Mark_LostFocus;
@@ -83,17 +83,17 @@ namespace Notation.Views
                         }
                     }
                 }
-                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 50, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
                 textBox.LostFocus += Mark_LostFocus;
                 Marks1.Children.Add(textBox);
-                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 50, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
                 textBox.LostFocus += Mark_LostFocus;
                 Marks2.Children.Add(textBox);
-                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 40, Text = "" };
+                textBox = new TextBox() { FontSize = 25, Margin = new Thickness(30, 0, 0, 0), Width = 50, Text = "" };
                 textBox.PreviewKeyDown += Mark_KeyDown;
                 textBox.TextChanged += Mark_TextChanged;
                 textBox.LostFocus += Mark_LostFocus;
@@ -110,7 +110,7 @@ namespace Notation.Views
         private void Mark_TextChanged(object sender, TextChangedEventArgs e)
         {
             TextBox textBox = (TextBox)sender;
-            if (int.TryParse(textBox.Text, out int mark))
+            if (double.TryParse(textBox.Text, out double mark))
             {
                 if (mark > 20)
                 {
@@ -120,7 +120,6 @@ namespace Notation.Views
                 {
                     textBox.Text = "0";
                 }
-
             }
             else
             {
@@ -307,7 +306,7 @@ namespace Notation.Views
                         IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
                         IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
                         IdTeacher = entryMarks.SelectedTeacher.Id,
-                        Mark = int.Parse(textBox.Text),
+                        Mark = (decimal)double.Parse(textBox.Text),
                         Year = entryMarks.SelectedPeriod.Year,
                     });
                 }
@@ -324,7 +323,7 @@ namespace Notation.Views
                         IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
                         IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
                         IdTeacher = entryMarks.SelectedTeacher.Id,
-                        Mark = int.Parse(textBox.Text),
+                        Mark = (decimal)double.Parse(textBox.Text),
                         Year = entryMarks.SelectedPeriod.Year,
                     });
                 }
@@ -341,7 +340,7 @@ namespace Notation.Views
                         IdStudent = entryMarks.SelectedClass.SelectedStudent.Student.Id,
                         IdSubject = entryMarks.SelectedClass.SelectedStudent.SelectedMarksSubject.Subject.Id,
                         IdTeacher = entryMarks.SelectedTeacher.Id,
-                        Mark = int.Parse(textBox.Text),
+                        Mark = (decimal)double.Parse(textBox.Text),
                         Year = entryMarks.SelectedPeriod.Year,
                     });
                 }
