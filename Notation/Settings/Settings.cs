@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using System.Xml.Serialization;
+using System.Text.Json;
 
 namespace Notation.Settings
 {
     public class Settings
     {
-        private const string SETTINGS_FILENAME = "Notation.config";
+        private const string SETTINGS_FILENAME = "Notation.config.json";
 
         public string LastSelectedDirectoryPeriodModels { get; set; }
         public string LastSelectedDirectorySemiTrimesterModels { get; set; }
@@ -31,18 +31,13 @@ namespace Notation.Settings
 
         private static Settings LoadSettings()
         {
-            using (FileStream fileStream = new FileStream(SETTINGS_FILENAME, FileMode.Open))
-            {
-                return (Settings)new XmlSerializer(typeof(Settings)).Deserialize(fileStream);
-            }
+            return JsonSerializer.Deserialize<Settings>(File.ReadAllText(SETTINGS_FILENAME));
         }
 
         public static void Save()
         {
-            using (FileStream fileStream = new FileStream(SETTINGS_FILENAME, FileMode.Create))
-            {
-                new XmlSerializer(typeof(Settings)).Serialize(fileStream, _instance);
-            }
+            File.WriteAllText(SETTINGS_FILENAME, JsonSerializer.Serialize<Settings>(_instance)
+                .Replace("{", "{\r\n\t").Replace("}", "\r\n}").Replace(",", ",\r\n\t"));
         }
     }
 }

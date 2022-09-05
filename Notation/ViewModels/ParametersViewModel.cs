@@ -1692,7 +1692,7 @@ namespace Notation.ViewModels
 
         private string GetBaseName()
         {
-            string cut = Settings.Settings.Instance.SQLConnection.Split(';').FirstOrDefault(s => s.StartsWith("Initial Catalog="));
+            string cut = Settings.Settings.Instance.SQLConnection?.Split(';')?.FirstOrDefault(s => s.StartsWith("Initial Catalog="));
             if (cut != null)
             {
                 return cut.Substring("Initial Catalog=".Length);

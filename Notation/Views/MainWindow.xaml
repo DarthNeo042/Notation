@@ -1833,7 +1833,8 @@
                                     <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
                                 </Button>
                                 <ProgressBar Grid.Row="1" Name="PeriodReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
-                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding PeriodReports}" SelectedItem="{Binding SelectedPeriodReport}"></ListView>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" MouseDoubleClick="PeriodReport_MouseDoubleClick"
+                                    ItemsSource="{Binding PeriodReports}" SelectedItem="{Binding SelectedPeriodReport}"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1873,7 +1874,8 @@
                                     <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
                                 </Button>
                                 <ProgressBar Grid.Row="1" Name="SemiTrimesterReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
-                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding SemiTrimesterReports}" SelectedItem="{Binding SelectedSemiTrimesterReport}"></ListView>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" MouseDoubleClick="SemiTrimesterReport_MouseDoubleClick"
+                                    ItemsSource="{Binding SemiTrimesterReports}" SelectedItem="{Binding SelectedSemiTrimesterReport}"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1913,7 +1915,8 @@
                                     <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
                                 </Button>
                                 <ProgressBar Grid.Row="1" Name="TrimesterReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
-                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding TrimesterReports}" SelectedItem="{Binding SelectedTrimesterReport}"></ListView>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" MouseDoubleClick="TrimesterReport_MouseDoubleClick"
+                                    ItemsSource="{Binding TrimesterReports}" SelectedItem="{Binding SelectedTrimesterReport}"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>
@@ -1953,7 +1956,8 @@
                                     <Image Source="{StaticResource Folder}" Width="30" Height="30"></Image>
                                 </Button>
                                 <ProgressBar Grid.Row="1" Name="YearReportsProgressBar" Visibility="Collapsed" Maximum="1000" Height="20"></ProgressBar>
-                                <ListView Grid.Row="2" VerticalAlignment="Top" ItemsSource="{Binding YearReports}" SelectedItem="{Binding SelectedYearReport}"></ListView>
+                                <ListView Grid.Row="2" VerticalAlignment="Top" MouseDoubleClick="YearReport_MouseDoubleClick"
+                                    ItemsSource="{Binding YearReports}" SelectedItem="{Binding SelectedYearReport}"></ListView>
                             </Grid>
                         </Grid>
                     </TabItem>

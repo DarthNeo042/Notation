@@ -308,6 +308,54 @@ namespace Notation.Views
             YearReportsProgressBar.Visibility = Visibility.Collapsed;
         }
 
+        private void PeriodReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.PeriodReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedPeriodReport))
+            {
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Reports.PeriodReportsPath, MainViewModel.Instance.Reports.SelectedPeriodReport))
+                    {
+                        UseShellExecute = true,
+                    });
+            }
+        }
+
+        private void SemiTrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.SemiTrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedSemiTrimesterReport))
+            {
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Reports.SemiTrimesterReportsPath, MainViewModel.Instance.Reports.SelectedSemiTrimesterReport))
+                    {
+                        UseShellExecute = true,
+                    });
+            }
+        }
+
+        private void TrimesterReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.TrimesterReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedTrimesterReport))
+            {
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Reports.TrimesterReportsPath, MainViewModel.Instance.Reports.SelectedTrimesterReport))
+                    {
+                        UseShellExecute = true,
+                    });
+            }
+        }
+
+        private void YearReport_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(MainViewModel.Instance.Reports.YearReportsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Reports.SelectedYearReport))
+            {
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Reports.YearReportsPath, MainViewModel.Instance.Reports.SelectedYearReport))
+                    {
+                        UseShellExecute = true,
+                    });
+            }
+        }
+
         private void ParametersTab_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if (MainViewModel.Instance.User != null && MainViewModel.Instance.User.IsAdmin)

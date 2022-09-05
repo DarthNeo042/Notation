@@ -16,7 +16,7 @@ namespace Notation.Utils
             {
                 directory = dialog.SelectedPath;
 
-                switch (directory)
+                switch (parameter)
                 {
                     case "LastSelectedDirectoryPeriodModels":
                         Settings.Settings.Instance.LastSelectedDirectoryPeriodModels = directory;
