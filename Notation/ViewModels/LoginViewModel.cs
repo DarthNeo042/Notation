@@ -1,4 +1,5 @@
 ﻿using Notation.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -30,7 +31,6 @@ namespace Notation.ViewModels
         public delegate void CloseEventHandler();
 
         public event CloseEventHandler ValidateEvent;
-        public event CloseEventHandler CancelEvent;
 
         public ICommand ValidateCommand { get; set; }
 
@@ -39,7 +39,29 @@ namespace Notation.ViewModels
             if ((MainViewModel.Instance.Parameters.BaseParameters.AdminLogin == Login && MainViewModel.Instance.Parameters.BaseParameters.AdminPassword == Password)
                 || TeacherModel.Login(Login, Password).Any())
             {
-                ValidateEvent?.Invoke();
+                if (Login == MainViewModel.Instance.Parameters.BaseParameters.AdminLogin
+                    && Password == MainViewModel.Instance.Parameters.BaseParameters.AdminPassword)
+                {
+                    MainViewModel.Instance.User = new UserViewModel()
+                    {
+                        Name = "Administrateur",
+                        IsAdmin = true,
+                    };
+                }
+                else
+                {
+                    IEnumerable<int> years = TeacherModel.Login(Login, Password);
+                    MainViewModel.Instance.LoadYears(years);
+                    TeacherViewModel teacher = TeacherModel.Login(Login, Password, MainViewModel.Instance.SelectedYear);
+                    MainViewModel.Instance.User = new UserViewModel()
+                    {
+                        Name = $"{teacher.Title} {teacher.FirstName} {teacher.LastName}",
+                        Teacher = teacher,
+                    };
+                }
+                MainViewModel.Instance.Parameters.LoadData();
+                MainViewModel.Instance.Models.LoadData();
+                MainViewModel.Instance.Reports.LoadData();
             }
             else
             {
@@ -47,24 +69,15 @@ namespace Notation.ViewModels
             }
         }
 
-        public ICommand CancelCommand { get; set; }
-
-        private void CancelCommandExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            CancelEvent?.Invoke();
-        }
-
         public CommandBindingCollection Bindings { get; set; }
 
         public LoginViewModel()
         {
             ValidateCommand = new RoutedUICommand("Validate", "Validate", typeof(LoginViewModel));
-            CancelCommand = new RoutedUICommand("Cancel", "Cancel", typeof(LoginViewModel));
 
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(ValidateCommand, ValidateCommandExecuted),
-                new CommandBinding(CancelCommand, CancelCommandExecuted),
             };
         }
     }

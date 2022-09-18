@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -48,12 +50,34 @@ namespace Notation.ViewModels
 
         private void OpenPeriodReportsPathCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !string.IsNullOrEmpty(PeriodReportsPath);
+            e.CanExecute = !PeriodReports.Any();
         }
 
         private void OpenPeriodReportsPathExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Process.Start("explorer", $"/root,{PeriodReportsPath}");
+        }
+
+        public ICommand PrintPDFPeriodReportsCommand { get; set; }
+
+        private void PrintPDFPeriodReportsCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = !string.IsNullOrEmpty(PeriodReportsPath);
+        }
+
+        private void PrintPDFPeriodReportsExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            List<string> filenames = PeriodReports.Where(r => r.EndsWith(".html")).ToList();
+            PeriodReports.Clear();
+            foreach (string filename in filenames.Select(f => Path.Combine(MainViewModel.Instance.Reports.PeriodReportsPath, f)))
+            {
+                string PDFFilename = $"{Path.GetFileNameWithoutExtension(filename)}.pdf";
+
+                PdfSharpCore.Pdf.PdfDocument pdf = TheArtOfDev.HtmlRenderer.PdfSharp.PdfGenerator.GeneratePdf(File.ReadAllText(filename), PdfSharpCore.PageSize.A4, 0);
+                pdf.Save(Path.Combine(MainViewModel.Instance.Reports.PeriodReportsPath, PDFFilename));
+
+                PeriodReports.Add(PDFFilename);
+            }
         }
 
         public ObservableCollection<string> SemiTrimesterReports { get; set; }
@@ -172,12 +196,14 @@ namespace Notation.ViewModels
             YearReports = new ObservableCollection<string>();
 
             OpenPeriodReportsPathCommand = new RoutedUICommand("OpenPeriodReportsPath", "OpenPeriodReportsPath", typeof(ReportsViewModel));
+            PrintPDFPeriodReportsCommand = new RoutedUICommand("PrintPDFPeriodReports", "PrintPDFPeriodReports", typeof(ReportsViewModel));
             OpenSemiTrimesterReportsPathCommand = new RoutedUICommand("OpenSemiTrimesterReportsPath", "OpenSemiTrimesterReportsPath", typeof(ReportsViewModel));
             OpenTrimesterReportsPathCommand = new RoutedUICommand("OpenTrimesterReportsPath", "OpenTrimesterReportsPath", typeof(ReportsViewModel));
             OpenYearReportsPathCommand = new RoutedUICommand("OpenYearReportsPath", "OpenYearReportsPath", typeof(ReportsViewModel));
             Bindings = new CommandBindingCollection()
             {
                 new CommandBinding(OpenPeriodReportsPathCommand, OpenPeriodReportsPathExecuted, OpenPeriodReportsPathCanExecute),
+                new CommandBinding(PrintPDFPeriodReportsCommand, PrintPDFPeriodReportsExecuted, PrintPDFPeriodReportsCanExecute),
                 new CommandBinding(OpenSemiTrimesterReportsPathCommand, OpenSemiTrimesterReportsPathExecuted, OpenSemiTrimesterReportsPathCanExecute),
                 new CommandBinding(OpenTrimesterReportsPathCommand, OpenTrimesterReportsPathExecuted, OpenTrimesterReportsPathCanExecute),
                 new CommandBinding(OpenYearReportsPathCommand, OpenYearReportsPathExecuted, OpenYearReportsPathCanExecute),

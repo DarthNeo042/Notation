@@ -118,33 +118,8 @@ namespace Notation.ViewModels
         private void LoginExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             User = null;
-            Login = new LoginViewModel();
-            Login form = new Login(Login);
-            if (form.ShowDialog() ?? false)
-            {
-                if (Login.Login == Parameters.BaseParameters.AdminLogin && Login.Password == Parameters.BaseParameters.AdminPassword)
-                {
-                    User = new UserViewModel()
-                    {
-                        Name = "Administrateur",
-                        IsAdmin = true,
-                    };
-                }
-                else
-                {
-                    IEnumerable<int> years = TeacherModel.Login(Login.Login, Login.Password);
-                    LoadYears(years);
-                    TeacherViewModel teacher = TeacherModel.Login(Login.Login, Login.Password, SelectedYear);
-                    User = new UserViewModel()
-                    {
-                        Name = $"{teacher.Title} {teacher.FirstName} {teacher.LastName}",
-                        Teacher = teacher,
-                    };
-                }
-                Parameters.LoadData();
-                Models.LoadData();
-                Reports.LoadData();
-            }
+            Login.Login = "";
+            Login.Password = "";
         }
 
         public ICommand RefreshCommand { get; set; }
@@ -175,7 +150,11 @@ namespace Notation.ViewModels
             }
             if (File.Exists("Aide.pdf"))
             {
-                Process.Start("Aide.pdf");
+                Process.Start(new ProcessStartInfo("Aide.pdf")
+                    {
+                        UseShellExecute = true,
+                    }
+                );
             }
         }
 

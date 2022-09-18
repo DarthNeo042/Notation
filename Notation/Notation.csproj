@@ -61,6 +61,7 @@
 
   <ItemGroup>
     <PackageReference Include="EPPlus" Version="6.0.6" />
+    <PackageReference Include="Polybioz.HtmlRenderer.PdfSharp.Core" Version="1.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 

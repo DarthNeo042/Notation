@@ -8,7 +8,8 @@
         mc:Ignorable="d"
         WindowState="Maximized"
         Loaded="Window_Loaded"
-        Title="Notation 2.0" Height="1080" Width="1920">
+        Title="Notation 2.0" Height="1080" Width="1920"
+        FocusManager.FocusedElement="{Binding ElementName=LoginText}">
     <Window.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
             <GradientStop Offset="0" Color="{Binding Parameters.BaseParameters.Color}"></GradientStop>
@@ -116,7 +117,7 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Command="{Binding LoginCommand}">
+                <Button Grid.Column="0" Command="{Binding LoginCommand}" Click="Login_Click">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{StaticResource User}" Width="30" Height="30"></Image>
                         <TextBlock Text="Changer d'utilisateur"></TextBlock>
@@ -129,6 +130,43 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="Utilisateur :"></TextBlock>
                     <TextBlock Grid.Column="1" Text="{Binding User.Name}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="2" Width="400" Height="160" Visibility="{Binding User, Converter={StaticResource ObjectToNotVisibilityConverter}}" Background="#AFFFFFFF">
+            <Border BorderThickness="2" BorderBrush="Black"></Border>
+            <Grid Margin="5" DataContext="{Binding Login}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Authentification"></TextBlock>
+                <Grid Grid.Column="0" Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Login :"></TextBlock>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Mot de passe :"></TextBlock>
+                    <TextBox Name="LoginText" Grid.Column="1" Grid.Row="0" Text="{Binding Login}" KeyDown="LoginText_KeyDown"></TextBox>
+                    <PasswordBox Name="Password" Grid.Column="1" Grid.Row="1" PasswordChanged="PasswordBox_PasswordChanged" KeyDown="Password_KeyDown"></PasswordBox>
+                </Grid>
+                <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="Validate" Grid.Column="1" Command="{Binding ValidateCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{StaticResource Save}" Width="30" Height="30"></Image>
+                            <TextBlock Text="Valider"></TextBlock>
+                        </StackPanel>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
@@ -1857,7 +1895,7 @@
                                     <DataTemplate>
                                         <Button Click="ReportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Demi-trimestres de"></TextBlock>
+                                                <TextBlock Text="Demi-trimestre de"></TextBlock>
                                                 <TextBlock Text="{Binding Name}"></TextBlock>
                                             </StackPanel>
                                         </Button>

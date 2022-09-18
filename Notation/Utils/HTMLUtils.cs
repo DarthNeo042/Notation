@@ -82,6 +82,45 @@ namespace Notation.Utils
         private const string T9 = "\t\t\t\t\t\t\t\t\t";
         private const string T10 = "\t\t\t\t\t\t\t\t\t\t";
         private const string T11 = "\t\t\t\t\t\t\t\t\t\t\t";
+        private const string T12 = "\t\t\t\t\t\t\t\t\t\t\t\t";
+
+        static public void MergeHTML(string directory, IEnumerable<string> filenames, string mergeFilename)
+        {
+            WriteHeader(mergeFilename);
+
+            bool first = true;
+            foreach (string filename in filenames)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    File.AppendAllText(mergeFilename,
+                        T2 + "<div class=\"pagebreak\">\r\n"
+                        + T2 + "</div>\r\n");
+                }
+                bool header = true;
+                foreach (string line in File.ReadAllLines(Path.Combine(directory, filename)))
+                {
+                    if (header)
+                    {
+                        header = !line.EndsWith("<body>");
+                    }
+                    else if (line.EndsWith("</body>"))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        File.AppendAllText(mergeFilename, $"{line}\r\n");
+                    }
+                }
+            }
+
+            WriteFooter(mergeFilename);
+        }
 
         static private void WriteHeader(string filename)
         {
@@ -90,7 +129,7 @@ namespace Notation.Utils
                 + T1 + "<head>\r\n"
                 + T2 + "<style>\r\n"
                 + T3 + "page { width:19.4cm; height:28.3cm; margin:7mm 8mm 7mm 8mm; }\r\n"
-                + T3 + "@media print { body { width:19.4cm; height:28.3cm; margin:7mm 8mm 7mm 8mm; } }\r\n"
+                + T3 + "@media print { body { width:19.4cm; height:28.3cm; margin:0mm 8mm 7mm 8mm; } .pagebreak { clear: both; page-break-after: always; } }\r\n"
                 + T3 + "span { padding-left:0.5mm; padding-right:0.5mm; }\r\n"
                 + T3 + "td { font-family:Cambria; }\r\n"
                 + T3 + "td.Calibri17B_C { font-family:Calibri; font-size:17; text-align:center; font-weight:bold; }\r\n"
@@ -99,14 +138,20 @@ namespace Notation.Utils
                 + T3 + "td.Cambria27_C { font-size:27; text-align:center; }\r\n"
                 + T3 + "td.Cambria21_R { font-size:21; text-align:right; }\r\n"
                 + T3 + "td.Cambria19_C { font-size:19; text-align:center; }\r\n"
+                + T3 + "td.Cambria17B_C { font-size:17; text-align:center; font-weight:bold; }\r\n"
                 + T3 + "td.Cambria16B_C { font-size:16; text-align:center; font-weight:bold; }\r\n"
                 + T3 + "td.Cambria16_C { font-size:16; text-align:center; }\r\n"
                 + T3 + "td.Cambria15_C { font-size:15; text-align:center; }\r\n"
+                + T3 + "td.Cambria15I_C { font-size:15; text-align:center; font-style:italic; }\r\n"
+                + T3 + "td.Cambria15B_C { font-size:15; text-align:center; font-weight:bold; }\r\n"
+                + T3 + "td.Cambria15B_R { font-size:15; text-align:right; font-weight:bold; }\r\n"
                 + T3 + "td.Cambria13_R { font-size:13; text-align:right; }\r\n"
                 + T3 + "td.Cambria12BI_R { font-size:12; text-align:right; font-weight:bold; font-style:italic; }\r\n"
                 + T3 + "td.Cambria12I_L { font-size:12; font-style:italic; }\r\n"
+                + T3 + "td.Cambria12_C { font-size:12; text-align:center; }\r\n"
                 + T3 + "td.Cambria12I_C { font-size:12; text-align:center; font-style:italic; }\r\n"
                 + T3 + "td.Cambria12I_R { font-size:12; text-align:right; font-style:italic; }\r\n"
+                + T3 + "td.Cambria11_C { font-size:11; text-align:center; }\r\n"
                 + T3 + "td.Cambria10B_L { font-size:10; font-weight:bold; }\r\n"
                 + T3 + "td.Cambria10B_C { font-size:10; text-align:center; font-weight:bold; }\r\n"
                 + T3 + "span.Cambria12I_R { font-size:12; text-align:right; font-style:italic; }\r\n"
@@ -118,7 +163,7 @@ namespace Notation.Utils
                 + T1 + "<body>\r\n");
         }
 
-        static private void WriteFooter(string filename)
+        static private void WriteAdressFooter(string filename)
         {
             File.AppendAllText(filename,
                 T2 + "<table style=\"height:6mm;width:194mm;margin-top:2mm;border-collapse:collapse\">\r\n"
@@ -127,8 +172,13 @@ namespace Notation.Utils
                 + T5 + "Collège privé Saint-Martin - La Placelière - 44 690 CHÂTEAU-THÉBAUD - tél. 02 40 56 85 26 - mail : 44e.laplaceliere@fsspx.fr\r\n"
                 + T4 + "</td>\r\n"
                 + T3 + "</tr>\r\n"
-                + T2 + "</table>\r\n"
-                + T1 + "</body>\r\n"
+                + T2 + "</table>\r\n");
+        }
+
+        static private void WriteFooter(string filename)
+        {
+            File.AppendAllText(filename,
+                T1 + "</body>\r\n"
                 + "</html>");
         }
 
@@ -158,6 +208,9 @@ namespace Notation.Utils
                         students[student.Id] = $"{student.LastName}{student.FirstName}";
                     }
 
+                    string filename = Path.Combine(directory, $"Bulletin de période {period.Number} (regroupement).html");
+                    File.Delete(filename);
+
                     IEnumerable<IGrouping<int, MarkModel>> studentGroups = MarkModel.Read(MainViewModel.Instance.SelectedYear, period.Id).GroupBy(m => m.IdStudent);
                     foreach (IGrouping<int, MarkModel> studentGroup in studentGroups.Where(s => MainViewModel.Instance.Parameters.Students.Any(s2 => s2.Id == s.Key)).OrderBy(s => students[s.Key]))
                     {
@@ -174,11 +227,15 @@ namespace Notation.Utils
                             }
                         }
                         studentCount++;
-                        _updatePeriodReportsDispatch(studentCount * 950 / studentGroups.Count());
+                        _updatePeriodReportsDispatch(studentCount * 400 / studentGroups.Count());
                     }
 
-                    CreatePeriodReportSummary(directory, period);
-                    _updatePeriodReportsDispatch(1000);
+                    MergeHTML(directory, MainViewModel.Instance.Reports.PeriodReports, filename);
+
+                    MainViewModel.Instance.Reports.PeriodReports.Insert(0, Path.GetFileName(filename));
+                    _updatePeriodReportsDispatch(800);
+
+                    CreatePeriodReportSummary(directory, period, _updatePeriodReportsDispatch);
 
                     MainViewModel.Instance.Reports.PeriodReportsPath = directory;
                 }
@@ -197,7 +254,13 @@ namespace Notation.Utils
             WriteHeader(filename);
 
             File.AppendAllText(filename,
-                T2 + "<table style=\"width:194mm;border-collapse:collapse\">\r\n"
+                T2 + "<table style=\"height:7mm;border-collapse:collapse\">\r\n"
+                + T3 + "<tr>\r\n"
+                + T4 + "<td>\r\n"
+                + T4 + "</td>\r\n"
+                + T3 + "<tr>\r\n"
+                + T2 + "</table>\r\n"
+                + T2 + "<table style=\"width:194mm;border-collapse:collapse\">\r\n"
                 + T3 + "<tr>\r\n"
                 + T4 + "<td>\r\n"
                 + T5 + "<img src=\"icon.png\" style=\"width:35mm;height:35mm\">\r\n"
@@ -291,7 +354,7 @@ namespace Notation.Utils
                     + T8 + "</span><br/>\r\n"
                     + T8 + "<span class=\"Cambria9I_L\">\r\n"
                     + T9 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
-                    + T8 + "</span><br/>\r\n"
+                    + T8 + "</span>\r\n"
                     + T7 + "</td>\r\n");
                 foreach (int coefficient in coefficients)
                 {
@@ -304,7 +367,7 @@ namespace Notation.Utils
                         }
                         marksStr += ((double)mark.Mark).ToString();
                     }
-                    File.AppendAllText(filename, 
+                    File.AppendAllText(filename,
                         T7 + "<td class=\"Calibri14_L\" style=\"width:81mm;border:1px solid black\">\r\n"
                         + T8 + $"<span>{marksStr}</span>\r\n"
                         + T7 + "</td>\r\n");
@@ -314,7 +377,7 @@ namespace Notation.Utils
 
                 foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                 {
-                    File.AppendAllText(filename, 
+                    File.AppendAllText(filename,
                         T6 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
                         + T7 + "<td style=\"width:31mm;text-align:right;border:1px solid black\">\r\n"
                         + T8 + "<span class=\"Cambria12I_R\">\r\n"
@@ -322,7 +385,7 @@ namespace Notation.Utils
                         + T8 + "</span><br/>\r\n"
                         + T8 + "<span class=\"Cambria9I_R\">\r\n"
                         + T9 + $"({(subject2.Option ? "option " : "")}coeff. {subject2.Coefficient})\r\n"
-                        + T8 + "</span><br/>\r\n"
+                        + T8 + "</span>\r\n"
                         + T7 + "</td>\r\n");
                     foreach (int coefficient in coefficients)
                     {
@@ -340,12 +403,12 @@ namespace Notation.Utils
                             + T8 + $"<span>{marksStr}</span>\r\n"
                             + T7 + "</td>\r\n");
                     }
-                    File.AppendAllText(filename, 
+                    File.AppendAllText(filename,
                         T6 + "</tr>\r\n");
                 }
             }
 
-            File.AppendAllText(filename, 
+            File.AppendAllText(filename,
                 T5 + "</table>\r\n"
                 + T4 + "</td>\r\n"
                 + T3 + "</tr>\r\n"
@@ -518,20 +581,24 @@ namespace Notation.Utils
                 + T3 + "</tr>\r\n"
                 + T2 + "</table>\r\n");
 
+            WriteAdressFooter(filename);
             WriteFooter(filename);
 
             MainViewModel.Instance.Reports.PeriodReports.Add(Path.GetFileName(filename));
         }
 
-        static public void CreatePeriodReportSummary(string directory, PeriodViewModel period)
+        static public void CreatePeriodReportSummary(string directory, PeriodViewModel period, MainWindow.UpdatePeriodReportsDelegate _updatePeriodReportsDispatch)
         {
             if (!string.IsNullOrEmpty(directory))
             {
                 try
                 {
+                    int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes.OrderBy(c => c.Order))
                     {
+                        classCount++;
                         ExportUtils.ExportPeriodSummary(directory, _class, period);
+                        _updatePeriodReportsDispatch(800 + classCount * 200 / MainViewModel.Instance.Parameters.Classes.Count);
                     }
                 }
                 catch (Exception e)
@@ -539,6 +606,381 @@ namespace Notation.Utils
                     MessageBox.Show(e.Message);
                 }
             }
+        }
+
+        static public void CreateSemiTrimesterReport(SemiTrimesterViewModel semiTrimester, MainWindow.UpdateSemiTrimesterReportsDelegate _updateSemiTrimesterReportsDispatch)
+        {
+            string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectorySemiTrimesterReports, "LastSelectedDirectorySemiTrimesterReports");
+
+            if (!string.IsNullOrEmpty(directory))
+            {
+                try
+                {
+                    CopyIcone(directory);
+
+                    MainViewModel.Instance.Reports.SemiTrimesterReports.Clear();
+
+                    int classCount = 0;
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+                    {
+                        SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester = new SSRSUtils_SemiTrimester();
+                        foreach (SubjectViewModel subject in _class.Level.Subjects)
+                        {
+                            if (subject.ChildrenSubjects.Any())
+                            {
+                                double average = MarkModel.ReadSemiTrimesterClassMainSubjectAverage(semiTrimester, _class, subject);
+                                SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadSemiTrimesterMinMaxMainSubjectAverage(semiTrimester, _class, subject, out double minAverage, out double maxAverage);
+                                SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                                {
+                                    average = MarkModel.ReadSemiTrimesterClassSubjectAverage(semiTrimester, _class, subject2);
+                                    SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject2, average);
+                                    MarkModel.ReadSemiTrimesterMinMaxSubjectAverage(semiTrimester, _class, subject2, out minAverage, out maxAverage);
+                                    SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject2, minAverage);
+                                    SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject2, maxAverage);
+                                }
+                            }
+                            else
+                            {
+                                double average = MarkModel.ReadSemiTrimesterClassSubjectAverage(semiTrimester, _class, subject);
+                                SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadSemiTrimesterMinMaxSubjectAverage(semiTrimester, _class, subject, out double minAverage, out double maxAverage);
+                                SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                            }
+                        }
+                        SSRSUtils_SemiTrimester.ClassAverage = MarkModel.ReadSemiTrimesterClassAverage(semiTrimester, _class);
+                        MarkModel.ReadSemiTrimesterMinMaxAverage(semiTrimester, _class, out double classMinAverage, out double classMaxAverage);
+                        SSRSUtils_SemiTrimester.ClassMinAverage = classMinAverage;
+                        SSRSUtils_SemiTrimester.ClassMaxAverage = classMaxAverage;
+                        foreach (StudentViewModel student in _class.Students)
+                        {
+                            double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+                            if (average != double.MinValue)
+                            {
+                                SSRSUtils_SemiTrimester.StudentAverages[student] = average;
+                            }
+                        }
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in SSRSUtils_SemiTrimester.StudentAverages.Keys)
+                        {
+                            try
+                            {
+                                GenerateSemiTrimesterReport(directory, semiTrimester, student, _class, SSRSUtils_SemiTrimester);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(e.Message);
+                            }
+
+                            studentCount++;
+                            _updateSemiTrimesterReportsDispatch(studentCount * 1000 / SSRSUtils_SemiTrimester.StudentAverages.Count
+                                + classCount * 1000 / SSRSUtils_SemiTrimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count);
+                        }
+                        classCount++;
+                    }
+
+                    MainViewModel.Instance.Reports.SemiTrimesterReportsPath = directory;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+
+        private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester)
+        {
+            string filename = Path.Combine(directory, $"Bulletin de demi-trimestre de {semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.html");
+
+            File.Delete(filename);
+            WriteHeader(filename);
+
+            File.AppendAllText(filename,
+                T2 + "<table style=\"height:7mm;border-collapse:collapse\">\r\n"
+                + T3 + "<tr>\r\n"
+                + T4 + "<td>\r\n"
+                + T4 + "</td>\r\n"
+                + T3 + "<tr>\r\n"
+                + T2 + "</table>\r\n"
+                + T2 + "<table style=\"width:194mm;border-collapse:collapse\">\r\n"
+                + T3 + "<tr>\r\n"
+                + T4 + "<td>\r\n"
+                + T5 + "<img src=\"icon.png\" style=\"width:35mm;height:35mm\">\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td style=\"width:10mm\">\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td style=\"width:104mm\">\r\n"
+                + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                + T6 + "<tr style=\"height:8.5mm\">\r\n"
+                + T7 + "<td class=\"Cambria27_C\">\r\n"
+                + T8 + "BULLETIN DEMI-TRIMESTRIEL\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:8.5mm\">\r\n"
+                + T7 + "<td class=\"Cambria27_C\">\r\n"
+                + T8 + $"{(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name.ToUpper()}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:7mm\">\r\n"
+                + T7 + "<td class=\"Cambria19_C\">\r\n"
+                + T8 + $"Année {student.Year} - {student.Year + 1}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:6mm\">\r\n"
+                + T7 + "<td class=\"Cambria15_C\">\r\n"
+                + T8 + $"Classe de {_class.Name} - Effectif {_class.Students.Count}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:6.5mm\">\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td style=\"width:45mm\">\r\n"
+                + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                + T7 + "<td class=\"Cambria21_R\">\r\n"
+                + T8 + $"{student.LastName}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                + T7 + "<td class=\"Cambria21_R\">\r\n"
+                + T8 + $"{student.FirstName}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:5mm\">\r\n"
+                + T7 + "<td class=\"Cambria13_R\">\r\n"
+                + T8 + $"né le {student.BirthDate.ToShortDateString()}\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T6 + "<tr style=\"height:15mm\">\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T4 + "</td>\r\n"
+                + T3 + "</tr>\r\n"
+                + T2 + "</table>\r\n");
+
+            File.AppendAllText(filename,
+                T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                + T3 + "<tr>\r\n"
+                + T4 + "<td>\r\n"
+                + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td>\r\n"
+                + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria15_C\" style=\"width:26mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Disciplines</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T10 + "<td class=\"Cambria12_C\" style=\"width:14mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Moyenne élève</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n");
+
+            int subjectsHeight = 8;
+
+            foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+            {
+                subjectsHeight += 11;
+                TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, semiTrimester.Period1);
+
+                double average = double.MinValue;
+                if (subject.ChildrenSubjects.Any())
+                {
+                    average = MarkModel.ReadSemiTrimesterMainSubjectAverage(semiTrimester, student, subject);
+                }
+                else
+                {
+                    average = MarkModel.ReadSemiTrimesterSubjectAverage(semiTrimester, student, subject);
+                }
+
+                File.AppendAllText(filename,
+                    T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                    + T10 + "<td style=\"width:26mm;border:1px solid black\">\r\n"
+                    + T11 + "<span class=\"Cambria10B_L\">\r\n"
+                    + T12 + $"{subject.Name.ToUpper()}\r\n"
+                    + T11 + "</span><br/>\r\n"
+                    + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                    + T12 + $"{(subject.Option ? $"(option " : $"(")}coeff. {subject.Coefficient}\r\n"
+                    + T11 + "</span><br/>\r\n"
+                    + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                    + T12 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
+                    + T11 + "</span><br/>\r\n"
+                    + T10 + "</td>\r\n"
+                    + T10 + "<td class=\"Cambria17B_C\" style=\"width:14mm;border:1px solid black\">\r\n"
+                    + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                    + T10 + "</td>\r\n"
+                    + T9 + "</tr>\r\n");
+
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                {
+                    subjectsHeight += 8;
+                    average = MarkModel.ReadSemiTrimesterSubjectAverage(semiTrimester, student, subject2);
+                    File.AppendAllText(filename,
+                        T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"width:26mm;border:1px solid black\">\r\n"
+                        + T11 + "<span class=\"Cambria12I_R\">\r\n"
+                        + T12 + $"{subject2.Name.ToUpper()}\r\n"
+                        + T11 + "</span><br/>\r\n"
+                        + T11 + "<span class=\"Cambria9I_R\">\r\n"
+                        + T12 + $"{(subject2.Option ? $"(option " : $"(")}coeff. {subject2.Coefficient})\r\n"
+                        + T11 + "</span><br/>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria17B_C\" style=\"width:14mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+                }
+            }
+
+            File.AppendAllText(filename,
+                T8 + "</table>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td style=\"width:2mm\">\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td>\r\n"
+                + T5 + "<table style=\"height:31mm;border:1px solid black\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td style=\"height:29mm\">\r\n"
+                + T8 + "<table style=\"height:29mm;border-collapse:collapse\">\r\n"
+                + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria12_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Moy. classe</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T10 + "<td class=\"Cambria11_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Moy. min</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T10 + "<td class=\"Cambria11_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Moy. max</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n");
+
+            foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+            {
+                File.AppendAllText(filename,
+                    T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                    + T10 + "<td class=\"Cambria15I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                    + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
+                    + T10 + "</td>\r\n"
+                    + T10 + "<td class=\"Cambria12I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                    + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
+                    + T10 + "</td>\r\n"
+                    + T10 + "<td class=\"Cambria12I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                    + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
+                    + T10 + "</td>\r\n"
+                    + T9 + "</tr>\r\n");
+
+                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                {
+                    File.AppendAllText(filename,
+                        T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:11mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+                }
+            }
+
+            SemiTrimesterCommentModel semiTrimesterComment = SemiTrimesterCommentModel.Read(semiTrimester, student);
+
+            File.AppendAllText(filename,
+                T8 + "</table>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td style=\"width:2mm\">\r\n"
+                + T4 + "</td>\r\n"
+                + T4 + "<td>\r\n"
+                + T5 + "<table style=\"border:1px solid black\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td>\r\n"
+                + T8 + "<table style=\"height:29mm;border-collapse:collapse\">\r\n"
+                + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria15_C\" style=\"width:115mm;border:1px solid black\">\r\n"
+                + T11 + "<span>Compte rendu des études</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n"
+                + T9 + "<tr style=\"height:55mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria15_L\" style=\"width:115mm;border:1px solid black\">\r\n"
+                + T11 + $"<span>{(semiTrimesterComment?.MainTeacherComment ?? "")}</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n"
+                + T8 + "</table>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T5 + "<table style=\"height:2mm;border-collapse:collapse\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T5 + "<table style=\"border:1px solid black\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td>\r\n"
+                + T8 + "<table style=\"height:29mm;border-collapse:collapse\">\r\n"
+                + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria15_C\" style=\"width:115mm;border:1px solid black\">\r\n"
+                + T11 + $"<span>Appréciation du préfet de division{(!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? $" {MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect}" : "")}</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n"
+                + T9 + "<tr style=\"height:55mm;border:1px solid black\">\r\n"
+                + T10 + "<td class=\"Cambria15_L\" style=\"width:115mm;border:1px solid black\">\r\n"
+                + T11 + $"<span>{(semiTrimesterComment?.DivisionPrefectComment ?? "")}</span>\r\n"
+                + T10 + "</td>\r\n"
+                + T9 + "</tr>\r\n"
+                + T8 + "</table>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T5 + $"<table style=\"height:{((subjectsHeight - 132) + 1.75).ToString().Replace(",", ".")}mm;border-collapse:collapse\">\r\n"
+                + T6 + "<tr>\r\n"
+                + T7 + "<td>\r\n"
+                + T7 + "</td>\r\n"
+                + T6 + "</tr>\r\n"
+                + T5 + "</table>\r\n"
+                + T4 + "</td>\r\n");
+
+            //double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
+            //if (average != double.MinValue)
+            //{
+            //    bulletinDemiTrimestreHeader.Average = average.ToString("0.0");
+            //}
+            //if (SSRSUtils_SemiTrimester.ClassAverage != double.MinValue)
+            //{
+            //    bulletinDemiTrimestreHeader.ClassAverage = SSRSUtils_SemiTrimester.ClassAverage.ToString("0.0");
+            //}
+            //if (SSRSUtils_SemiTrimester.ClassMinAverage != double.MaxValue)
+            //{
+            //    bulletinDemiTrimestreHeader.ClassMinAverage = SSRSUtils_SemiTrimester.ClassMinAverage.ToString("0.0");
+            //}
+            //if (SSRSUtils_SemiTrimester.ClassMaxAverage != double.MinValue)
+            //{
+            //    bulletinDemiTrimestreHeader.ClassMaxAverage = SSRSUtils_SemiTrimester.ClassMaxAverage.ToString("0.0");
+            //}
+            //int ranking = MarkModel.ReadSemiTrimesterRanking(student, SSRSUtils_SemiTrimester.StudentAverages);
+            //bulletinDemiTrimestreHeader.Ranking = $"{ranking}/{SSRSUtils_SemiTrimester.StudentAverages.Count}";
+
+            File.AppendAllText(filename,
+                T3 + "</tr>\r\n"
+                + T2 + "</table>\r\n");
+
+            WriteAdressFooter(filename);
+            WriteFooter(filename);
+
+            MainViewModel.Instance.Reports.SemiTrimesterReports.Add(Path.GetFileName(filename));
         }
     }
 }

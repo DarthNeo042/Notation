@@ -1,24 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Notation.Resources">
-    <BitmapImage x:Key="Icon" UriSource="Icon.png" />
     <BitmapImage x:Key="Add" UriSource="Add.png" />
-    <BitmapImage x:Key="Modify" UriSource="Modify.png" />
-    <BitmapImage x:Key="Delete" UriSource="Delete.png" />
-    <BitmapImage x:Key="Up" UriSource="Up.png" />
-    <BitmapImage x:Key="Down" UriSource="Down.png" />
-    <BitmapImage x:Key="Save" UriSource="Save.png" />
-    <BitmapImage x:Key="Cancel" UriSource="Cancel.png" />
-    <BitmapImage x:Key="User" UriSource="User.png" />
-    <BitmapImage x:Key="Refresh" UriSource="Refresh.png" />
-    <BitmapImage x:Key="Help" UriSource="Help.png" />
-    <BitmapImage x:Key="Minus" UriSource="Minus.png" />
-    <BitmapImage x:Key="Folder" UriSource="Folder.png" />
-    <BitmapImage x:Key="Entry" UriSource="Entry.png" />
-    <BitmapImage x:Key="Models" UriSource="Models.png" />
-    <BitmapImage x:Key="Parameters" UriSource="Parameters.png" />
-    <BitmapImage x:Key="Reports" UriSource="Reports.png" />
     <BitmapImage x:Key="Base" UriSource="Base.png" />
+    <BitmapImage x:Key="Cancel" UriSource="Cancel.png" />
+    <BitmapImage x:Key="Delete" UriSource="Delete.png" />
+    <BitmapImage x:Key="Down" UriSource="Down.png" />
+    <BitmapImage x:Key="Entry" UriSource="Entry.png" />
+    <BitmapImage x:Key="Folder" UriSource="Folder.png" />
+    <BitmapImage x:Key="Help" UriSource="Help.png" />
+    <BitmapImage x:Key="Icon" UriSource="Icon.png" />
+    <BitmapImage x:Key="Minus" UriSource="Minus.png" />
+    <BitmapImage x:Key="Models" UriSource="Models.png" />
+    <BitmapImage x:Key="Modify" UriSource="Modify.png" />
+    <BitmapImage x:Key="Parameters" UriSource="Parameters.png" />
+    <BitmapImage x:Key="Refresh" UriSource="Refresh.png" />
+    <BitmapImage x:Key="Reports" UriSource="Reports.png" />
+    <BitmapImage x:Key="Save" UriSource="Save.png" />
+    <BitmapImage x:Key="Up" UriSource="Up.png" />
+    <BitmapImage x:Key="User" UriSource="User.png" />
 
     <Style TargetType="TextBlock">
         <Setter Property="FontSize" Value="20"></Setter>

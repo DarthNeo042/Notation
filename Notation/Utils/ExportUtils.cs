@@ -732,7 +732,7 @@ namespace Notation.Utils
         public static void Import(string filename)
         {
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
-            ExcelWorksheet workSheet = excel.Workbook.Worksheets[1];
+            ExcelWorksheet workSheet = excel.Workbook.Worksheets[0];
             switch (workSheet.Cells[1, 2].Text)
             {
                 case "APP_GEN_PER":
@@ -1059,7 +1059,7 @@ namespace Notation.Utils
                                 IdStudent = student.Id,
                                 IdSubject = subject.Id,
                                 IdTeacher = teacher.Id,
-                                Mark = (int)(double)workSheet.Cells[i, j].Value,
+                                Mark = (decimal)(double)workSheet.Cells[i, j].Value,
                                 Year = year,
                             };
                             marks.Add(mark);
@@ -1219,6 +1219,8 @@ namespace Notation.Utils
 
             workSheet.Column(1).AutoFit();
             excel.Save();
+
+            MainViewModel.Instance.Reports.PeriodReports.Add(Path.GetFileName(filename));
         }
 
         private static bool ImportTrimesterGeneralComments(string filename, ExcelWorksheet workSheet)

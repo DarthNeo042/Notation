@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Notation.Utils;
 using Notation.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -124,45 +125,53 @@ namespace Notation.Views
 
         public MainWindow()
         {
-            DataContext = MainViewModel.Instance;
-            CommandBindings.AddRange(MainViewModel.Instance.Bindings);
-            CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
-            CommandBindings.AddRange(MainViewModel.Instance.Parameters.Utils.Bindings);
-            CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
-            CommandBindings.AddRange(MainViewModel.Instance.Reports.Bindings);
-            CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);
-
-            _updatePeriodModels = new UpdatePeriodModelsDelegate(UpdatePeriodModels);
-            _updatePeriodModelsDispatch = new UpdatePeriodModelsDelegate(UpdatePeriodModelsDispatch);
-            _updateSemiTrimesterModels = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModels);
-            _updateSemiTrimesterModelsDispatch = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModelsDispatch);
-            _updateTrimesterModels = new UpdateTrimesterModelsDelegate(UpdateTrimesterModels);
-            _updateTrimesterModelsDispatch = new UpdateTrimesterModelsDelegate(UpdateTrimesterModelsDispatch);
-            _updateImport = new UpdateImportDelegate(UpdateImport);
-
-            _updatePeriodReports = new UpdatePeriodReportsDelegate(UpdatePeriodReports);
-            _updatePeriodReportsDispatch = new UpdatePeriodReportsDelegate(UpdatePeriodReportsDispatch);
-            _updateSemiTrimesterReports = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReports);
-            _updateSemiTrimesterReportsDispatch = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReportsDispatch);
-            _updateTrimesterReports = new UpdateTrimesterReportsDelegate(UpdateTrimesterReports);
-            _updateTrimesterReportsDispatch = new UpdateTrimesterReportsDelegate(UpdateTrimesterReportsDispatch);
-            _updateYearReports = new UpdateYearReportsDelegate(UpdateYearReports);
-            _updateYearReportsDispatch = new UpdateYearReportsDelegate(UpdateYearReportsDispatch);
-
-            InitializeComponent();
-
-            for (int i = 1; i <= 12; i++)
+            try
             {
-                ComboPeriodNumber.Items.Add(i);
-            }
-            for (int i = 1; i <= 4; i++)
-            {
-                ComboPeriodTrimester.Items.Add(i);
-            }
-            ComboTeacherTitle.ItemsSource = new List<string>() { "M.", "Mme", "Mlle", "Ab.", "Fr." };
+                DataContext = MainViewModel.Instance;
+                CommandBindings.AddRange(MainViewModel.Instance.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Login.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Parameters.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Parameters.Utils.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Models.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Reports.Bindings);
+                CommandBindings.AddRange(MainViewModel.Instance.Entry.Bindings);
 
-            MainViewModel.Instance.Parameters.BaseParametersChangedEvent += Parameters_BaseParametersChangedEvent;
-            Parameters_BaseParametersChangedEvent();
+                _updatePeriodModels = new UpdatePeriodModelsDelegate(UpdatePeriodModels);
+                _updatePeriodModelsDispatch = new UpdatePeriodModelsDelegate(UpdatePeriodModelsDispatch);
+                _updateSemiTrimesterModels = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModels);
+                _updateSemiTrimesterModelsDispatch = new UpdateSemiTrimesterModelsDelegate(UpdateSemiTrimesterModelsDispatch);
+                _updateTrimesterModels = new UpdateTrimesterModelsDelegate(UpdateTrimesterModels);
+                _updateTrimesterModelsDispatch = new UpdateTrimesterModelsDelegate(UpdateTrimesterModelsDispatch);
+                _updateImport = new UpdateImportDelegate(UpdateImport);
+
+                _updatePeriodReports = new UpdatePeriodReportsDelegate(UpdatePeriodReports);
+                _updatePeriodReportsDispatch = new UpdatePeriodReportsDelegate(UpdatePeriodReportsDispatch);
+                _updateSemiTrimesterReports = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReports);
+                _updateSemiTrimesterReportsDispatch = new UpdateSemiTrimesterReportsDelegate(UpdateSemiTrimesterReportsDispatch);
+                _updateTrimesterReports = new UpdateTrimesterReportsDelegate(UpdateTrimesterReports);
+                _updateTrimesterReportsDispatch = new UpdateTrimesterReportsDelegate(UpdateTrimesterReportsDispatch);
+                _updateYearReports = new UpdateYearReportsDelegate(UpdateYearReports);
+                _updateYearReportsDispatch = new UpdateYearReportsDelegate(UpdateYearReportsDispatch);
+
+                InitializeComponent();
+
+                for (int i = 1; i <= 12; i++)
+                {
+                    ComboPeriodNumber.Items.Add(i);
+                }
+                for (int i = 1; i <= 4; i++)
+                {
+                    ComboPeriodTrimester.Items.Add(i);
+                }
+                ComboTeacherTitle.ItemsSource = new List<string>() { "M.", "Mme", "Mlle", "Ab.", "Fr." };
+
+                MainViewModel.Instance.Parameters.BaseParametersChangedEvent += Parameters_BaseParametersChangedEvent;
+                Parameters_BaseParametersChangedEvent();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Parameters_BaseParametersChangedEvent()
@@ -247,7 +256,12 @@ namespace Notation.Views
         {
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.PeriodModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedPeriodModel))
             {
-                Process.Start(Path.Combine(MainViewModel.Instance.Models.PeriodModelsPath, MainViewModel.Instance.Models.SelectedPeriodModel));
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Models.PeriodModelsPath, MainViewModel.Instance.Models.SelectedPeriodModel))
+                    {
+                        UseShellExecute = true,
+                    }
+                );
             }
         }
 
@@ -255,7 +269,12 @@ namespace Notation.Views
         {
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.SemiTrimesterModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedSemiTrimesterModel))
             {
-                Process.Start(Path.Combine(MainViewModel.Instance.Models.SemiTrimesterModelsPath, MainViewModel.Instance.Models.SelectedSemiTrimesterModel));
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Models.SemiTrimesterModelsPath, MainViewModel.Instance.Models.SelectedSemiTrimesterModel))
+                    {
+                        UseShellExecute = true,
+                    }
+                );
             }
         }
 
@@ -263,7 +282,12 @@ namespace Notation.Views
         {
             if (!string.IsNullOrEmpty(MainViewModel.Instance.Models.TrimesterModelsPath) && !string.IsNullOrEmpty(MainViewModel.Instance.Models.SelectedTrimesterModel))
             {
-                Process.Start(Path.Combine(MainViewModel.Instance.Models.TrimesterModelsPath, MainViewModel.Instance.Models.SelectedTrimesterModel));
+                Process.Start(
+                    new ProcessStartInfo(Path.Combine(MainViewModel.Instance.Models.TrimesterModelsPath, MainViewModel.Instance.Models.SelectedTrimesterModel))
+                    {
+                        UseShellExecute = true,
+                    }
+                );
             }
         }
 
@@ -284,7 +308,7 @@ namespace Notation.Views
             {
                 SemiTrimesterReportsProgressBar.Visibility = Visibility.Visible;
                 SemiTrimesterReportsProgressBar.Value = 0;
-                SSRSUtils.CreateSemiTrimesterReport(semiTrimester, _updateSemiTrimesterReportsDispatch);
+                HTMLUtils.CreateSemiTrimesterReport(semiTrimester, _updateSemiTrimesterReportsDispatch);
                 SemiTrimesterReportsProgressBar.Visibility = Visibility.Collapsed;
             }
         }
@@ -404,6 +428,34 @@ namespace Notation.Views
 
                 MainViewModel.Instance.Models.SuccessfulImport = true;
             }
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            MainViewModel mainViewModel = (MainViewModel)DataContext;
+            mainViewModel.Login.Password = Password.Password;
+        }
+
+        private void LoginText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Password.Focus();
+            }
+        }
+
+        private void Password_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                Validate.Command.Execute(null);
+            }
+        }
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            Password.Password = "";
+            LoginText.Focus();
         }
     }
 }
