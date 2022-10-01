@@ -23,6 +23,7 @@
         <converters:CountToLibelleConverter x:Key="CountToLibelleConverter"></converters:CountToLibelleConverter>
         <converters:ObjectToVisibilityConverter x:Key="ObjectToVisibilityConverter"></converters:ObjectToVisibilityConverter>
         <converters:ObjectToNotVisibilityConverter x:Key="ObjectToNotVisibilityConverter"></converters:ObjectToNotVisibilityConverter>
+        <converters:SemiTrimesterNameToLabelConverter x:Key="SemiTrimesterNameToLabelConverter"></converters:SemiTrimesterNameToLabelConverter>
         <converters:SubjectToNameConverter x:Key="SubjectToNameConverter"></converters:SubjectToNameConverter>
         <converters:YearToLibelleConverter x:Key="YearToLibelleConverter"></converters:YearToLibelleConverter>
         <converters:YearToVisibilityConverter x:Key="YearToVisibilityConverter"></converters:YearToVisibilityConverter>
@@ -1327,8 +1328,7 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Orientation="Horizontal" Background="LightGray">
-                                    <TextBlock Text="Demi-trimestre de"></TextBlock>
-                                    <TextBlock Text="{Binding ModificationSemiTrimester.Name}"></TextBlock>
+                                    <TextBlock Text="{Binding ModificationSemiTrimester.Name, Converter={StaticResource SemiTrimesterNameToLabelConverter}}"></TextBlock>
                                 </StackPanel>
                                 <TextBlock Grid.Column="0" Grid.Row="2" Text="Nom :" TextAlignment="Right"></TextBlock>
                                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding ModificationSemiTrimester.Name}"></TextBox>
@@ -1695,8 +1695,7 @@
                                     <DataTemplate>
                                         <Button Click="ExportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Demi-trimestre de"></TextBlock>
-                                                <TextBlock Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Text="{Binding Name, Converter={StaticResource SemiTrimesterNameToLabelConverter}}" Margin="0"></TextBlock>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>
@@ -1897,8 +1896,7 @@
                                     <DataTemplate>
                                         <Button Click="ReportSemiTrimester_Click">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Demi-trimestre de"></TextBlock>
-                                                <TextBlock Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Text="{Binding Name, Converter={StaticResource SemiTrimesterNameToLabelConverter}}"></TextBlock>
                                             </StackPanel>
                                         </Button>
                                     </DataTemplate>

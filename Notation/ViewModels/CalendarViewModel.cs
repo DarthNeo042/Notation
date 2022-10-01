@@ -93,7 +93,7 @@ namespace Notation.ViewModels
                 {
                     SemiTrimestersSummary += "\r\n";
                 }
-                SemiTrimestersSummary += $"Demi-trimestre de {semiTrimester.Name}";
+                SemiTrimestersSummary += $"Demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "d'" : "de ")}{semiTrimester.Name}";
                 if (semiTrimester.Period2 != null)
                 {
                     if (!string.IsNullOrEmpty(SemiTrimestersSummary))

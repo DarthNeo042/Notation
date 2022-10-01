@@ -636,7 +636,7 @@ namespace Notation.Utils
                     int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        string filename = Path.Combine(directory, $"Appréciations demi-trimestre {semiTrimester.Name} - {_class.Name}.xlsx");
+                        string filename = Path.Combine(directory, $"Appréciations demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "d'" : "de ")}{semiTrimester.Name} - {_class.Name}.xlsx");
                         File.Delete(filename);
 
                         ExcelPackage excel = new ExcelPackage(new FileInfo(filename));

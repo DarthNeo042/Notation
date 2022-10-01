@@ -678,7 +678,7 @@ namespace Notation.Utils
                         classCount++;
                     }
 
-                    string filename = Path.Combine(directory, $"Bulletin de demi-trimestre de {semiTrimester.Name} (regroupement).html");
+                    string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} (regroupement).html");
                     File.Delete(filename);
 
                     MergeHTML(directory, MainViewModel.Instance.Reports.SemiTrimesterReports, filename);
@@ -697,7 +697,7 @@ namespace Notation.Utils
 
         private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester)
         {
-            string filename = Path.Combine(directory, $"Bulletin de demi-trimestre de {semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.html");
+            string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.html");
 
             File.Delete(filename);
             using (FileStream file = new FileStream(filename, FileMode.OpenOrCreate))

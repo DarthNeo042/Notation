@@ -396,7 +396,7 @@ namespace Notation.Utils
 
         private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester)
         {
-            //string filename = Path.Combine(directory, $"Bulletin de demi-trimestre de {semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
+            //string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.pdf");
 
             //ReportViewer report = new ReportViewer();
             //report.LocalReport.ReportPath = @".\Reports\BulletinDemiTrimestre.rdlc";
