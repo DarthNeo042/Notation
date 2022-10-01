@@ -3,6 +3,7 @@
                     xmlns:local="clr-namespace:Notation.Resources">
     <BitmapImage x:Key="Add" UriSource="Add.png" />
     <BitmapImage x:Key="Base" UriSource="Base.png" />
+    <BitmapImage x:Key="Background" UriSource="Background.png" />
     <BitmapImage x:Key="Cancel" UriSource="Cancel.png" />
     <BitmapImage x:Key="Delete" UriSource="Delete.png" />
     <BitmapImage x:Key="Down" UriSource="Down.png" />

@@ -33,7 +33,6 @@
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Image Source="{StaticResource Icon}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.RowSpan="3" Height="315" Width="315"></Image>
         <TextBlock Grid.Row="0" Grid.RowSpan="2" Height="70">
             <TextBlock.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -133,8 +132,11 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2" Width="400" Height="160" Visibility="{Binding User, Converter={StaticResource ObjectToNotVisibilityConverter}}" Background="#AFFFFFFF">
-            <Border BorderThickness="2" BorderBrush="Black"></Border>
+        <Image Grid.Row="2" Source="{StaticResource Background}" HorizontalAlignment="Stretch"
+                Visibility="{Binding User, Converter={StaticResource ObjectToNotVisibilityConverter}}"></Image>
+        <Grid Grid.Row="2" Width="400" Height="160"
+              Visibility="{Binding User, Converter={StaticResource ObjectToNotVisibilityConverter}}" Background="#AFFFFFFF">
+            <Border BorderThickness="2" BorderBrush="Black" CornerRadius="5"></Border>
             <Grid Margin="5" DataContext="{Binding Login}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
