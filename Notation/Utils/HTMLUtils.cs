@@ -323,7 +323,7 @@ namespace Notation.Utils
                         + T3 + "</tr>\r\n"
                         + T2 + "</table>\r\n");
 
-                    writer.Write(T2 + "<table style=\"border:1px solid black;margin-top:1mm;width:194mm\">\r\n"
+                    writer.Write(T2 + "<table style=\"border:1px solid black;margin-top:1mm\">\r\n"
                          + T3 + "<tr>\r\n"
                          + T4 + "<td>\r\n"
                          + T5 + $"<table style=\"width:192mm;border-collapse:collapse\">\r\n"
@@ -337,7 +337,7 @@ namespace Notation.Utils
 
                     foreach (int coefficient in coefficients)
                     {
-                        writer.Write(T7 + "<td class=\"Cambria10B_C\" style=\"width:81mm;border:1px solid black\">\r\n"
+                        writer.Write(T7 + $"<td class=\"Cambria10B_C\" style=\"width:{162 / coefficients.Count()}mm;border:1px solid black\">\r\n"
                             + T8 + $"{(coefficientLibelles.ContainsKey(coefficient) ? coefficientLibelles[coefficient] + " - c" : "C")}oefficient {coefficient}\r\n"
                             + T7 + "</td>\r\n");
                     }
@@ -347,7 +347,7 @@ namespace Notation.Utils
                     {
                         TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
                         writer.Write(T6 + $"<tr style=\"height:11mm\">\r\n"
-                            + T7 + "<td style=\"width:31mm;border:1px solid black\">\r\n"
+                            + T7 + "<td style=\"border:1px solid black\">\r\n"
                             + T8 + "<span class=\"Cambria10B_L\">\r\n"
                             + T9 + $"{subject.Name.ToUpper()}\r\n"
                             + T8 + "</span><br/>\r\n"
@@ -369,7 +369,7 @@ namespace Notation.Utils
                                 }
                                 marksStr += ((double)mark.Mark).ToString();
                             }
-                            writer.Write(T7 + "<td class=\"Calibri14_L\" style=\"width:81mm;border:1px solid black\">\r\n"
+                            writer.Write(T7 + "<td class=\"Calibri14_L\" style=\"border:1px solid black\">\r\n"
                                 + T8 + $"<span>{marksStr}</span>\r\n"
                                 + T7 + "</td>\r\n");
                         }
@@ -378,7 +378,7 @@ namespace Notation.Utils
                         foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                         {
                             writer.Write(T6 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T7 + "<td style=\"width:31mm;text-align:right;border:1px solid black\">\r\n"
+                                + T7 + "<td style=\"text-align:right;border:1px solid black\">\r\n"
                                 + T8 + "<span class=\"Cambria12I_R\">\r\n"
                                 + T9 + $"{subject2.Name.ToUpper()}\r\n"
                                 + T8 + "</span><br/>\r\n"
@@ -397,7 +397,7 @@ namespace Notation.Utils
                                     }
                                     marksStr += ((double)mark.Mark).ToString();
                                 }
-                                writer.Write(T7 + "<td class=\"Calibri14_L\" style=\"width:81mm;border:1px solid black\">\r\n"
+                                writer.Write(T7 + "<td class=\"Calibri14_L\" style=\"border:1px solid black\">\r\n"
                                     + T8 + $"<span>{marksStr}</span>\r\n"
                                     + T7 + "</td>\r\n");
                             }
@@ -427,18 +427,18 @@ namespace Notation.Utils
                         + T7 + "</td>\r\n"
                         + T6 + "</tr>\r\n"
                         + T6 + "<tr style=\"height:6.5mm\">\r\n"
-                        + T7 + "<td class=\"Cambria12BI_R\" style=\"width:129mm;border:1px solid black\">\r\n"
+                        + T7 + "<td class=\"Cambria12BI_R\" style=\"border:1px solid black\">\r\n"
                         + T8 + "<span>Rappel de la dernière moyenne obtenue</span>\r\n"
                         + T7 + "</td>\r\n"
-                        + T7 + "<td class=\"Cambria16_C\" style=\"width:25mm;border:1px solid black\">\r\n"
+                        + T7 + "<td class=\"Cambria16_C\" style=\"border:1px solid black\">\r\n"
                         + T8 + $"{(lastAverage != double.MinValue ? lastAverage.ToString("0.0") : "")}\r\n"
                         + T7 + "</td>\r\n"
                         + T6 + "</tr>\r\n"
                         + T6 + "<tr style=\"height:6.5mm\">\r\n"
-                        + T7 + "<td class=\"Cambria12BI_R\" style=\"width:129mm;border:1px solid black\">\r\n"
+                        + T7 + "<td class=\"Cambria12BI_R\" style=\"border:1px solid black\">\r\n"
                         + T8 + "<span>Tendance</span>\r\n"
                         + T7 + "</td>\r\n"
-                        + T7 + "<td class=\"Calibri17B_C\" style=\"width:25mm;border:1px solid black\">\r\n"
+                        + T7 + "<td class=\"Calibri17B_C\" style=\"border:1px solid black\">\r\n"
                         + $"{(lastPeriod != null ? (T8 + (average > lastAverage ? "↗" : average < lastAverage ? "↘" : "→")) : "")}\r\n"
                         + T7 + "</td>\r\n"
                         + T6 + "</tr>\r\n"
@@ -464,34 +464,34 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>1er degré - bien</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.StudiesReport ?? 0) == 1 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>2ème degré - doit progresser</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.StudiesReport ?? 0) == 2 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>3ème degré - insuffisant</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.StudiesReport ?? 0) == 3 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>Avertissement</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.StudiesReport ?? 0) == 4 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
@@ -515,34 +515,34 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>1er degré - bien</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.DisciplineReport ?? 0) == 1 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>2ème degré - doit progresser</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.DisciplineReport ?? 0) == 2 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>3ème degré - insuffisant</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.DisciplineReport ?? 0) == 3 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_R\" style=\"width:63mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_R\" style=\"border:1px solid black\">\r\n"
                         + T11 + "<span>Avertissement</span>\r\n"
                         + T10 + "</td>\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                         + ((periodComment?.DisciplineReport ?? 0) == 4 ? T11 + "X\r\n" : "")
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
@@ -556,8 +556,8 @@ namespace Notation.Utils
                         + T4 + "<td>\r\n"
                         + T5 + "<table style=\"height:34.5mm;border:1px solid black\">\r\n"
                         + T6 + "<tr>\r\n"
-                        + T7 + "<td style=\"height:32.5mm;\" width=\"100%\">\r\n"
-                        + T8 + "<table style=\"height:32.5mm;border-collapse:collapse\">\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
                         + T10 + "<td class=\"Cambria12I_L\" style=\"width:39mm;border:1px solid black\">\r\n"
                         + T11 + "<span>Signature des parents :</span>\r\n"
@@ -803,7 +803,7 @@ namespace Notation.Utils
                         }
 
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
-                            + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                            + T10 + "<td style=\"border:1px solid black\">\r\n"
                             + T11 + "<span class=\"Cambria10B_L\">\r\n"
                             + T12 + $"{subject.Name.ToUpper()}\r\n"
                             + T11 + "</span><br/>\r\n"
@@ -814,7 +814,7 @@ namespace Notation.Utils
                             + T12 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
                             + T11 + "</span><br/>\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
@@ -824,7 +824,7 @@ namespace Notation.Utils
                             subjectsHeight += 8;
                             average = MarkModel.ReadSemiTrimesterSubjectAverage(semiTrimester, student, subject2);
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                                + T10 + "<td style=\"border:1px solid black\">\r\n"
                                 + T11 + "<span class=\"Cambria12I_R\">\r\n"
                                 + T12 + $"{subject2.Name.ToUpper()}\r\n"
                                 + T11 + "</span><br/>\r\n"
@@ -832,7 +832,7 @@ namespace Notation.Utils
                                 + T12 + $"{(subject2.Option ? $"(option " : $"(")}coeff. {subject2.Coefficient})\r\n"
                                 + T11 + "</span><br/>\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
@@ -866,13 +866,13 @@ namespace Notation.Utils
                     foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
                     {
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
-                            + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectAverages[subject] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject] != double.MaxValue ? HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
@@ -880,13 +880,13 @@ namespace Notation.Utils
                         foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                         {
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectAverages[subject2] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject2] != double.MaxValue ? HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
@@ -913,7 +913,7 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:55mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria15_L\" style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
                         + T11 + $"<span>{(semiTrimesterComment?.MainTeacherComment ?? "")}</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
@@ -937,7 +937,7 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:55mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria15_L\" style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
                         + T11 + $"<span>{(semiTrimesterComment?.DivisionPrefectComment ?? "")}</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
@@ -1028,7 +1028,7 @@ namespace Notation.Utils
                         + T6 + "</tr>\r\n"
                         + T5 + "</table>\r\n"
                         + T4 + "</td>\r\n"
-                        + T4 + "<td style=\"width: 74mm\">\r\n"
+                        + T4 + "<td style=\"width:74mm\">\r\n"
                         + T4 + "</td>\r\n"
                         + T4 + "<td>\r\n"
                         + T5 + "<table style=\"height:21mm;border:1px solid black\">\r\n"
@@ -1131,12 +1131,12 @@ namespace Notation.Utils
                         classCount++;
                     }
 
-                    //string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} (regroupement).html");
-                    //File.Delete(filename);
+                    string filename = Path.Combine(directory, $"Bulletin de trimestre de {trimester} (regroupement).html");
+                    File.Delete(filename);
 
-                    //MergeHTML(directory, MainViewModel.Instance.Reports.SemiTrimesterReports, filename);
+                    MergeHTML(directory, MainViewModel.Instance.Reports.TrimesterReports, filename);
 
-                    //MainViewModel.Instance.Reports.SemiTrimesterReports.Insert(0, Path.GetFileName(filename));
+                    MainViewModel.Instance.Reports.TrimesterReports.Insert(0, Path.GetFileName(filename));
                     _updateTrimesterReportsDispatch(1000);
 
                     MainViewModel.Instance.Reports.TrimesterReportsPath = directory;
@@ -1256,7 +1256,7 @@ namespace Notation.Utils
                         }
 
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
-                            + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                            + T10 + "<td style=\"border:1px solid black\">\r\n"
                             + T11 + "<span class=\"Cambria10B_L\">\r\n"
                             + T12 + $"{subject.Name.ToUpper()}\r\n"
                             + T11 + "</span><br/>\r\n"
@@ -1267,7 +1267,7 @@ namespace Notation.Utils
                             + T12 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
                             + T11 + "</span><br/>\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
@@ -1276,7 +1276,7 @@ namespace Notation.Utils
                         {
                             average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                                + T10 + "<td style=\"border:1px solid black\">\r\n"
                                 + T11 + "<span class=\"Cambria12I_R\">\r\n"
                                 + T12 + $"{subject2.Name.ToUpper()}\r\n"
                                 + T11 + "</span><br/>\r\n"
@@ -1284,7 +1284,7 @@ namespace Notation.Utils
                                 + T12 + $"{(subject2.Option ? $"(option " : $"(")}coeff. {subject2.Coefficient})\r\n"
                                 + T11 + "</span><br/>\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
@@ -1299,10 +1299,10 @@ namespace Notation.Utils
                         + T4 + "<td style=\"width:2mm\">\r\n"
                         + T4 + "</td>\r\n"
                         + T4 + "<td>\r\n"
-                        + T5 + "<table style=\"height:31mm;border:1px solid black\">\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
                         + T6 + "<tr>\r\n"
-                        + T7 + "<td style=\"height:29mm\">\r\n"
-                        + T8 + "<table style=\"height:29mm;border-collapse:collapse\">\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
                         + T10 + "<td class=\"Cambria11_C\" style=\"width:10mm;border:1px solid black\">\r\n"
                         + T11 + "<span>Moy. classe</span>\r\n"
@@ -1318,13 +1318,13 @@ namespace Notation.Utils
                     foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
                     {
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
-                            + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_Trimester.ClassSubjectAverages[subject] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMinAverages[subject] != double.MaxValue ? HTMLUtils_Trimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
-                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMaxAverages[subject] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
@@ -1332,13 +1332,13 @@ namespace Notation.Utils
                         foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                         {
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_Trimester.ClassSubjectAverages[subject2] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMinAverages[subject2] != double.MaxValue ? HTMLUtils_Trimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
-                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
@@ -1368,7 +1368,7 @@ namespace Notation.Utils
                         TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
 
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
-                            + T10 + "<td class=\"Cambria15_L\" style=\"width:10mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
@@ -1378,7 +1378,7 @@ namespace Notation.Utils
                             trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject2);
 
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td class=\"Cambria15_L\" style=\"width:10mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
                                 + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
@@ -1418,8 +1418,6 @@ namespace Notation.Utils
                         + T5 + "</table>\r\n"
                         + T5 + "<table style=\"height:2mm;border-collapse:collapse\">\r\n"
                         + T6 + "<tr>\r\n"
-                        + T7 + "<td>\r\n"
-                        + T7 + "</td>\r\n"
                         + T6 + "</tr>\r\n"
                         + T5 + "</table>\r\n"
                         + T5 + "<table style=\"border:1px solid black;\">\r\n"
@@ -1463,25 +1461,23 @@ namespace Notation.Utils
                         + T5 + "</table>\r\n"
                         + T5 + "<table style=\"height:15.4mm;border-collapse:collapse\">\r\n"
                         + T6 + "<tr>\r\n"
-                        + T7 + "<td>\r\n"
-                        + T7 + "</td>\r\n"
                         + T6 + "</tr>\r\n"
                         + T5 + "</table>\r\n"
                         + T4 + "</td>\r\n"
                         + T4 + "<td style=\"width:2mm\">\r\n"
                         + T4 + "</td>\r\n"
                         + T4 + "<td>\r\n"
-                        + T5 + "<table style=\"height:21mm;border:1px solid black\">\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
                         + T6 + "<tr>\r\n"
                         + T7 + "<td>\r\n"
-                        + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
                         + T10 + "<td class=\"Cambria15_C\" style=\"width:115mm;border:1px solid black\">\r\n"
                         + T11 + "Compte rendu des études\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
-                        + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
-                        + T10 + "<td style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T9 + "<tr style=\"height:19.5mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"border:1px solid black\">\r\n"
                         + T11 + $"<span>{(trimesterComment?.MainTeacherComment ?? "")}</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
@@ -1506,7 +1502,7 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
-                        + T10 + "<td style=\"width:155mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"border:1px solid black\">\r\n"
                         + T11 + $"<span>{(trimesterComment?.DivisionPrefectComment ?? "")}</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
@@ -1528,7 +1524,7 @@ namespace Notation.Utils
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
                         + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
-                        + T10 + "<td style=\"width:39mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"border:1px solid black\">\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
                         + T8 + "</table>\r\n"
