@@ -319,7 +319,7 @@ namespace Notation.Views
             {
                 TrimesterReportsProgressBar.Visibility = Visibility.Visible;
                 TrimesterReportsProgressBar.Value = 0;
-                SSRSUtils.CreateTrimesterReport(trimester, _updateTrimesterReportsDispatch);
+                HTMLUtils.CreateTrimesterReport(trimester, _updateTrimesterReportsDispatch);
                 TrimesterReportsProgressBar.Visibility = Visibility.Collapsed;
             }
         }

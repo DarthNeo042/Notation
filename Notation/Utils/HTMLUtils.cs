@@ -619,52 +619,52 @@ namespace Notation.Utils
                     int classCount = 0;
                     foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
                     {
-                        SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester = new SSRSUtils_SemiTrimester();
+                        HTMLUtils_SemiTrimester HTMLUtils_SemiTrimester = new HTMLUtils_SemiTrimester();
                         foreach (SubjectViewModel subject in _class.Level.Subjects)
                         {
                             if (subject.ChildrenSubjects.Any())
                             {
                                 double average = MarkModel.ReadSemiTrimesterClassMainSubjectAverage(semiTrimester, _class, subject);
-                                SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
+                                HTMLUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
                                 MarkModel.ReadSemiTrimesterMinMaxMainSubjectAverage(semiTrimester, _class, subject, out double minAverage, out double maxAverage);
-                                SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
-                                SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                                HTMLUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
                                 foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
                                 {
                                     average = MarkModel.ReadSemiTrimesterClassSubjectAverage(semiTrimester, _class, subject2);
-                                    SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject2, average);
+                                    HTMLUtils_SemiTrimester.ClassSubjectAverages.Add(subject2, average);
                                     MarkModel.ReadSemiTrimesterMinMaxSubjectAverage(semiTrimester, _class, subject2, out minAverage, out maxAverage);
-                                    SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject2, minAverage);
-                                    SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject2, maxAverage);
+                                    HTMLUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject2, minAverage);
+                                    HTMLUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject2, maxAverage);
                                 }
                             }
                             else
                             {
                                 double average = MarkModel.ReadSemiTrimesterClassSubjectAverage(semiTrimester, _class, subject);
-                                SSRSUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
+                                HTMLUtils_SemiTrimester.ClassSubjectAverages.Add(subject, average);
                                 MarkModel.ReadSemiTrimesterMinMaxSubjectAverage(semiTrimester, _class, subject, out double minAverage, out double maxAverage);
-                                SSRSUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
-                                SSRSUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                                HTMLUtils_SemiTrimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_SemiTrimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
                             }
                         }
-                        SSRSUtils_SemiTrimester.ClassAverage = MarkModel.ReadSemiTrimesterClassAverage(semiTrimester, _class);
+                        HTMLUtils_SemiTrimester.ClassAverage = MarkModel.ReadSemiTrimesterClassAverage(semiTrimester, _class);
                         MarkModel.ReadSemiTrimesterMinMaxAverage(semiTrimester, _class, out double classMinAverage, out double classMaxAverage);
-                        SSRSUtils_SemiTrimester.ClassMinAverage = classMinAverage;
-                        SSRSUtils_SemiTrimester.ClassMaxAverage = classMaxAverage;
+                        HTMLUtils_SemiTrimester.ClassMinAverage = classMinAverage;
+                        HTMLUtils_SemiTrimester.ClassMaxAverage = classMaxAverage;
                         foreach (StudentViewModel student in _class.Students)
                         {
                             double average = MarkModel.ReadSemiTrimesterAverage(semiTrimester, student);
                             if (average != double.MinValue)
                             {
-                                SSRSUtils_SemiTrimester.StudentAverages[student] = average;
+                                HTMLUtils_SemiTrimester.StudentAverages[student] = average;
                             }
                         }
                         int studentCount = 0;
-                        foreach (StudentViewModel student in SSRSUtils_SemiTrimester.StudentAverages.Keys)
+                        foreach (StudentViewModel student in HTMLUtils_SemiTrimester.StudentAverages.Keys)
                         {
                             try
                             {
-                                GenerateSemiTrimesterReport(directory, semiTrimester, student, _class, SSRSUtils_SemiTrimester);
+                                GenerateSemiTrimesterReport(directory, semiTrimester, student, _class, HTMLUtils_SemiTrimester);
                             }
                             catch (Exception e)
                             {
@@ -672,7 +672,7 @@ namespace Notation.Utils
                             }
 
                             studentCount++;
-                            _updateSemiTrimesterReportsDispatch(studentCount * 800 / SSRSUtils_SemiTrimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
+                            _updateSemiTrimesterReportsDispatch(studentCount * 800 / HTMLUtils_SemiTrimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
                                 + classCount * 800  / MainViewModel.Instance.Parameters.Classes.Count);
                         }
                         classCount++;
@@ -695,7 +695,7 @@ namespace Notation.Utils
             }
         }
 
-        private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, SSRSUtils_SemiTrimester SSRSUtils_SemiTrimester)
+        private static void GenerateSemiTrimesterReport(string directory, SemiTrimesterViewModel semiTrimester, StudentViewModel student, ClassViewModel _class, HTMLUtils_SemiTrimester HTMLUtils_SemiTrimester)
         {
             string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} de {_class.Name} de {student.LastName} {student.FirstName}.html");
 
@@ -867,13 +867,13 @@ namespace Notation.Utils
                     {
                         writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
                             + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
-                            + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectAverages[subject] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                            + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject] != double.MaxValue ? HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                            + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
 
@@ -881,13 +881,13 @@ namespace Notation.Utils
                         {
                             writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
                                 + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
-                                + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectAverages[subject2] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                                + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject2] != double.MaxValue ? HTMLUtils_SemiTrimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                                + T11 + $"{(SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? SSRSUtils_SemiTrimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T11 + $"{(HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? HTMLUtils_SemiTrimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
                                 + T10 + "</td>\r\n"
                                 + T9 + "</tr>\r\n");
                         }
@@ -991,7 +991,7 @@ namespace Notation.Utils
                         + T11 + "<span>Classement</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T10 + "<td class=\"Cambria15B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
-                        + T11 + $"<span>{MarkModel.ReadSemiTrimesterRanking(student, SSRSUtils_SemiTrimester.StudentAverages)}/{SSRSUtils_SemiTrimester.StudentAverages.Count}</span>\r\n"
+                        + T11 + $"<span>{MarkModel.ReadSemiTrimesterRanking(student, HTMLUtils_SemiTrimester.StudentAverages)}/{HTMLUtils_SemiTrimester.StudentAverages.Count}</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T8 + "</table>\r\n"
@@ -1008,13 +1008,13 @@ namespace Notation.Utils
                         + T8 + "<table style=\"border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
                         + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
-                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassAverage != double.MinValue ? SSRSUtils_SemiTrimester.ClassAverage.ToString("0.0") : "")}\r\n"
+                        + T11 + $"{(HTMLUtils_SemiTrimester.ClassAverage != double.MinValue ? HTMLUtils_SemiTrimester.ClassAverage.ToString("0.0") : "")}\r\n"
                         + T10 + " </td>\r\n"
                         + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassMinAverage != double.MinValue ? SSRSUtils_SemiTrimester.ClassMinAverage.ToString("0.0") : "")}\r\n"
+                        + T11 + $"{(HTMLUtils_SemiTrimester.ClassMinAverage != double.MaxValue ? HTMLUtils_SemiTrimester.ClassMinAverage.ToString("0.0") : "")}\r\n"
                         + T10 + " </td>\r\n"
                         + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
-                        + T11 + $"{(SSRSUtils_SemiTrimester.ClassMaxAverage != double.MinValue ? SSRSUtils_SemiTrimester.ClassMaxAverage.ToString("0.0") : "")}\r\n"
+                        + T11 + $"{(HTMLUtils_SemiTrimester.ClassMaxAverage != double.MinValue ? HTMLUtils_SemiTrimester.ClassMaxAverage.ToString("0.0") : "")}\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "</tr>\r\n"
                         + T8 + "</table>\r\n"
@@ -1058,6 +1058,493 @@ namespace Notation.Utils
             }
 
             MainViewModel.Instance.Reports.SemiTrimesterReports.Add(Path.GetFileName(filename));
+        }
+
+        static public void CreateTrimesterReport(int trimester, MainWindow.UpdateTrimesterReportsDelegate _updateTrimesterReportsDispatch)
+        {
+            string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectoryTrimesterReports, "LastSelectedDirectoryTrimesterReports");
+
+            if (!string.IsNullOrEmpty(directory))
+            {
+                try
+                {
+                    CopyIcone(directory);
+
+                    MainViewModel.Instance.Reports.TrimesterReports.Clear();
+
+                    int classCount = 0;
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+                    {
+                        HTMLUtils_Trimester HTMLUtils_Trimester = new HTMLUtils_Trimester();
+                        foreach (SubjectViewModel subject in _class.Level.Subjects)
+                        {
+                            if (subject.ChildrenSubjects.Any())
+                            {
+                                double average = MarkModel.ReadTrimesterClassMainSubjectAverage(trimester, _class, subject);
+                                HTMLUtils_Trimester.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadTrimesterMinMaxMainSubjectAverage(trimester, _class, subject, out double minAverage, out double maxAverage);
+                                HTMLUtils_Trimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_Trimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                                {
+                                    average = MarkModel.ReadTrimesterClassSubjectAverage(trimester, _class, subject2);
+                                    HTMLUtils_Trimester.ClassSubjectAverages.Add(subject2, average);
+                                    MarkModel.ReadTrimesterMinMaxSubjectAverage(trimester, _class, subject2, out minAverage, out maxAverage);
+                                    HTMLUtils_Trimester.ClassSubjectMinAverages.Add(subject2, minAverage);
+                                    HTMLUtils_Trimester.ClassSubjectMaxAverages.Add(subject2, maxAverage);
+                                }
+                            }
+                            else
+                            {
+                                double average = MarkModel.ReadTrimesterClassSubjectAverage(trimester, _class, subject);
+                                HTMLUtils_Trimester.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadTrimesterMinMaxSubjectAverage(trimester, _class, subject, out double minAverage, out double maxAverage);
+                                HTMLUtils_Trimester.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_Trimester.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                            }
+                        }
+                        HTMLUtils_Trimester.ClassAverage = MarkModel.ReadTrimesterClassAverage(trimester, _class);
+                        MarkModel.ReadTrimesterMinMaxAverage(trimester, _class, out double classMinAverage, out double classMaxAverage);
+                        HTMLUtils_Trimester.ClassMinAverage = classMinAverage;
+                        HTMLUtils_Trimester.ClassMaxAverage = classMaxAverage;
+                        foreach (StudentViewModel student in _class.Students)
+                        {
+                            HTMLUtils_Trimester.StudentAverages[student] = MarkModel.ReadTrimesterAverage(trimester, student);
+                        }
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in _class.Students.Where(s => HTMLUtils_Trimester.StudentAverages[s] != double.MinValue))
+                        {
+                            try
+                            {
+                                GenerateTrimesterReport(directory, trimester, student, _class, HTMLUtils_Trimester);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(e.Message);
+                            }
+
+                            studentCount++;
+                            _updateTrimesterReportsDispatch(studentCount * 800 / HTMLUtils_Trimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
+                                + classCount * 800 / MainViewModel.Instance.Parameters.Classes.Count);
+                        }
+                        ExportUtils.ExportTrimesterSummary(directory, _class, trimester);
+                        classCount++;
+                    }
+
+                    //string filename = Path.Combine(directory, $"Bulletin de demi-trimestre {(semiTrimester.Name.ToUpper().StartsWith("A") || semiTrimester.Name.ToUpper().StartsWith("O") ? "D'" : "DE ")}{semiTrimester.Name} (regroupement).html");
+                    //File.Delete(filename);
+
+                    //MergeHTML(directory, MainViewModel.Instance.Reports.SemiTrimesterReports, filename);
+
+                    //MainViewModel.Instance.Reports.SemiTrimesterReports.Insert(0, Path.GetFileName(filename));
+                    _updateTrimesterReportsDispatch(1000);
+
+                    MainViewModel.Instance.Reports.TrimesterReportsPath = directory;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+
+        private static void GenerateTrimesterReport(string directory, int trimester, StudentViewModel student, ClassViewModel _class, HTMLUtils_Trimester HTMLUtils_Trimester)
+        {
+            PeriodViewModel period = MainViewModel.Instance.Reports.Periods.OrderBy(p => p.Number).FirstOrDefault(p => p.Trimester == trimester);
+
+            string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} de {student.LastName} {student.FirstName}.html");
+
+            File.Delete(filename);
+            using (FileStream file = new FileStream(filename, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter writer = new StreamWriter(file))
+                {
+                    WriteHeader(writer);
+
+                    writer.Write(T2 + "<table style=\"height:7mm;border-collapse:collapse\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T2 + "</table>\r\n"
+                        + T2 + "<table style=\"width:194mm;border-collapse:collapse\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<img src=\"icon.png\" style=\"width:35mm;height:35mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:10mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:104mm\">\r\n"
+                        + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                        + T6 + "<tr style=\"height:8.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria27_C\">\r\n"
+                        + T8 + "BULLETIN\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:7mm\">\r\n"
+                        + T7 + "<td class=\"Cambria19_C\">\r\n"
+                        + T8 + $"DU {NumberUtils.GetRankString(trimester)} TRIMESTRE\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:7mm\">\r\n"
+                        + T7 + "<td class=\"Cambria19_C\">\r\n"
+                        + T8 + $"Année {student.Year} - {student.Year + 1}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:6mm\">\r\n"
+                        + T7 + "<td class=\"Cambria15_C\">\r\n"
+                        + T8 + $"Classe de {_class.Name} - Effectif {_class.Students.Count}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:5mm\">\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:45mm\">\r\n"
+                        + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                        + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria21_R\">\r\n"
+                        + T8 + $"{student.LastName}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria21_R\">\r\n"
+                        + T8 + $"{student.FirstName}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria13_R\">\r\n"
+                        + T8 + $"né le {student.BirthDate.ToShortDateString()}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:15mm\">\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_C\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Disciplines</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria11_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moyenne élève</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+
+                    double average = double.MinValue;
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
+
+                        average = double.MinValue;
+                        if (subject.ChildrenSubjects.Any())
+                        {
+                            average = MarkModel.ReadTrimesterMainSubjectAverage(trimester, student, subject);
+                        }
+                        else
+                        {
+                            average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject);
+                        }
+
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                            + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                            + T11 + "<span class=\"Cambria10B_L\">\r\n"
+                            + T12 + $"{subject.Name.ToUpper()}\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                            + T12 + $"{(subject.Option ? $"(option " : $"(")}coeff. {subject.Coefficient})\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                            + T12 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                            + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T9 + "</tr>\r\n");
+
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                                + T10 + "<td style=\"width:28mm;border:1px solid black\">\r\n"
+                                + T11 + "<span class=\"Cambria12I_R\">\r\n"
+                                + T12 + $"{subject2.Name.ToUpper()}\r\n"
+                                + T11 + "</span><br/>\r\n"
+                                + T11 + "<span class=\"Cambria9I_R\">\r\n"
+                                + T12 + $"{(subject2.Option ? $"(option " : $"(")}coeff. {subject2.Coefficient})\r\n"
+                                + T11 + "</span><br/>\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria17B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                                + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:31mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td style=\"height:29mm\">\r\n"
+                        + T8 + "<table style=\"height:29mm;border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria11_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. classe</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria10_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. min</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria10_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. max</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Trimester.ClassSubjectAverages[subject] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMinAverages[subject] != double.MaxValue ? HTMLUtils_Trimester.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMaxAverages[subject] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T9 + "</tr>\r\n");
+
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Trimester.ClassSubjectAverages[subject2] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMinAverages[subject2] != double.MaxValue ? HTMLUtils_Trimester.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Trimester.ClassSubjectMaxAverages[subject2] != double.MinValue ? HTMLUtils_Trimester.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_C\" style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Appréciation des professeurs</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
+
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15_L\" style=\"width:10mm;border:1px solid black\">\r\n"
+                            + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
+                            + T10 + "</td>\r\n"
+                            + T9 + "</tr>\r\n");
+
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject2);
+
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15_L\" style=\"width:10mm;border:1px solid black\">\r\n"
+                                + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
+                                + T10 + "</td>\r\n"
+                                + T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    average = MarkModel.ReadTrimesterAverage(trimester, student);
+                    int ranking = MarkModel.ReadtrimesterRanking(student, HTMLUtils_Trimester.StudentAverages);
+                    TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15B_R\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moyenne</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria15B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(average != double.MinValue ? average.ToString("0.0") : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T5 + "<table style=\"height:2mm;border-collapse:collapse\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15B_R\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Classement</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria15B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{ranking}/{HTMLUtils_Trimester.StudentAverages.Count}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:13mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(HTMLUtils_Trimester.ClassAverage != double.MinValue ? HTMLUtils_Trimester.ClassAverage.ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(HTMLUtils_Trimester.ClassMinAverage != double.MinValue ? HTMLUtils_Trimester.ClassMinAverage.ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + $"{(HTMLUtils_Trimester.ClassMaxAverage != double.MinValue ? HTMLUtils_Trimester.ClassMaxAverage.ToString("0.0") : "")}\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T5 + "<table style=\"height:15.4mm;border-collapse:collapse\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:21mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_C\" style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T11 + "Compte rendu des études\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "<tr>\r\n"
+                        + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"width:115mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(trimesterComment?.MainTeacherComment ?? "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:21mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_L\" style=\"width:155mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>Appréciation du préfet de division{(!string.IsNullOrEmpty(MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect) ? " " + MainViewModel.Instance.Parameters.YearParameters.DivisionPrefect : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"width:155mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(trimesterComment?.DivisionPrefectComment ?? "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "<tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:21mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:39mm;border:1px solid black\">\r\n"
+                        + T11 + "Signature des parents :\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "<tr>\r\n"
+                        + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
+                        + T10 + "<td style=\"width:39mm;border:1px solid black\">\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "<tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    WriteAdressFooter(writer);
+                    WriteFooter(writer);
+                }
+            }
+
+            MainViewModel.Instance.Reports.TrimesterReports.Add(Path.GetFileName(filename));
         }
     }
 }
