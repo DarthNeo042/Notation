@@ -52,7 +52,6 @@
   <ItemGroup>
     <Folder Include="Documentation\" />
     <Folder Include="Models\" />
-    <Folder Include="Reports\" />
     <Folder Include="SQL\" />
   </ItemGroup>
 
@@ -92,9 +91,6 @@
 
   <ItemGroup>
     <None Update="HTML\Icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Reports\BulletinAnnuel.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

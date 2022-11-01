@@ -230,15 +230,16 @@ namespace Notation.Utils
                         _updatePeriodReportsDispatch(studentCount * 600 / studentGroups.Count());
                     }
 
+                    CreatePeriodReportSummary(directory, period, _updatePeriodReportsDispatch);
+
+                    _updatePeriodReportsDispatch(800);
+
                     string filename = Path.Combine(directory, $"Bulletin de période {period.Number} (regroupement).html");
                     File.Delete(filename);
 
                     MergeHTML(directory, MainViewModel.Instance.Reports.PeriodReports, filename);
 
                     MainViewModel.Instance.Reports.PeriodReports.Insert(0, Path.GetFileName(filename));
-                    _updatePeriodReportsDispatch(800);
-
-                    CreatePeriodReportSummary(directory, period, _updatePeriodReportsDispatch);
 
                     MainViewModel.Instance.Reports.PeriodReportsPath = directory;
                 }
@@ -1036,8 +1037,8 @@ namespace Notation.Utils
                         + T7 + "<td>\r\n"
                         + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:39mm;border:1px solid black\">\r\n"
-                        + T11 + "Signature des parents :\r\n"
+                        + T10 + "<td class=\"Cambria12I_L\" style=\"width:39mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Signature des parents :</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
                         + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
@@ -1124,14 +1125,15 @@ namespace Notation.Utils
                             }
 
                             studentCount++;
-                            _updateTrimesterReportsDispatch(studentCount * 800 / HTMLUtils_Trimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
+                            _updateTrimesterReportsDispatch(studentCount * 600 / HTMLUtils_Trimester.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
                                 + classCount * 800 / MainViewModel.Instance.Parameters.Classes.Count);
                         }
                         ExportUtils.ExportTrimesterSummary(directory, _class, trimester);
                         classCount++;
+                        _updateTrimesterReportsDispatch(classCount * 800 / MainViewModel.Instance.Parameters.Classes.Count);
                     }
 
-                    string filename = Path.Combine(directory, $"Bulletin de trimestre de {trimester} (regroupement).html");
+                    string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} (regroupement).html");
                     File.Delete(filename);
 
                     MergeHTML(directory, MainViewModel.Instance.Reports.TrimesterReports, filename);
@@ -1394,7 +1396,7 @@ namespace Notation.Utils
                         + T2 + "</table>\r\n");
 
                     average = MarkModel.ReadTrimesterAverage(trimester, student);
-                    int ranking = MarkModel.ReadtrimesterRanking(student, HTMLUtils_Trimester.StudentAverages);
+                    int ranking = MarkModel.ReadTrimesterRanking(student, HTMLUtils_Trimester.StudentAverages);
                     TrimesterCommentModel trimesterComment = TrimesterCommentModel.Read(trimester, student);
 
                     writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
@@ -1519,8 +1521,8 @@ namespace Notation.Utils
                         + T7 + "<td>\r\n"
                         + T8 + "<table style=\"height:21mm;border-collapse:collapse\">\r\n"
                         + T9 + "<tr style=\"height:6.5mm;border:1px solid black\">\r\n"
-                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:39mm;border:1px solid black\">\r\n"
-                        + T11 + "Signature des parents :\r\n"
+                        + T10 + "<td class=\"Cambria12I_L\" style=\"width:39mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Signature des parents :</span>\r\n"
                         + T10 + "</td>\r\n"
                         + T9 + "<tr>\r\n"
                         + T9 + "<tr style=\"height:19mm;border:1px solid black\">\r\n"
@@ -1541,6 +1543,449 @@ namespace Notation.Utils
             }
 
             MainViewModel.Instance.Reports.TrimesterReports.Add(Path.GetFileName(filename));
+        }
+
+        static public void CreateYearReport(int year, MainWindow.UpdateYearReportsDelegate _updateYearReportsDispatch)
+        {
+            string directory = FileUtils.SelectDirectory(Settings.Settings.Instance.LastSelectedDirectoryYearReports, "LastSelectedDirectoryYearReports");
+
+            if (!string.IsNullOrEmpty(directory))
+            {
+                try
+                {
+                    CopyIcone(directory);
+
+                    MainViewModel.Instance.Reports.TrimesterReports.Clear();
+
+                    int classCount = 0;
+                    foreach (ClassViewModel _class in MainViewModel.Instance.Parameters.Classes)
+                    {
+                        HTMLUtils_Year HTMLUtils_Year = new HTMLUtils_Year();
+                        foreach (SubjectViewModel subject in _class.Level.Subjects)
+                        {
+                            if (subject.ChildrenSubjects.Any())
+                            {
+                                double average = MarkModel.ReadYearClassMainSubjectAverage(year, _class, subject);
+                                HTMLUtils_Year.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadYearMinMaxMainSubjectAverage(year, _class, subject, out double minAverage, out double maxAverage);
+                                HTMLUtils_Year.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_Year.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                                foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                                {
+                                    average = MarkModel.ReadYearClassSubjectAverage(year, _class, subject2);
+                                    HTMLUtils_Year.ClassSubjectAverages.Add(subject2, average);
+                                    MarkModel.ReadYearMinMaxSubjectAverage(year, _class, subject2, out minAverage, out maxAverage);
+                                    HTMLUtils_Year.ClassSubjectMinAverages.Add(subject2, minAverage);
+                                    HTMLUtils_Year.ClassSubjectMaxAverages.Add(subject2, maxAverage);
+                                }
+                            }
+                            else
+                            {
+                                double average = MarkModel.ReadYearClassSubjectAverage(year, _class, subject);
+                                HTMLUtils_Year.ClassSubjectAverages.Add(subject, average);
+                                MarkModel.ReadYearMinMaxSubjectAverage(year, _class, subject, out double minAverage, out double maxAverage);
+                                HTMLUtils_Year.ClassSubjectMinAverages.Add(subject, minAverage);
+                                HTMLUtils_Year.ClassSubjectMaxAverages.Add(subject, maxAverage);
+                            }
+                        }
+                        HTMLUtils_Year.ClassAverage = MarkModel.ReadYearClassAverage(year, _class);
+                        MarkModel.ReadYearMinMaxAverage(year, _class, out double classMinAverage, out double classMaxAverage);
+                        HTMLUtils_Year.ClassMinAverage = classMinAverage;
+                        HTMLUtils_Year.ClassMaxAverage = classMaxAverage;
+                        foreach (StudentViewModel student in _class.Students)
+                        {
+                            HTMLUtils_Year.StudentAverages[student] = MarkModel.ReadYearAverage(year, student);
+                        }
+                        int studentCount = 0;
+                        foreach (StudentViewModel student in _class.Students.Where(s => HTMLUtils_Year.StudentAverages[s] != double.MinValue))
+                        {
+                            try
+                            {
+                                GenerateYearReport(directory, year, student, _class, HTMLUtils_Year);
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(e.Message);
+                            }
+
+                            studentCount++;
+                            _updateYearReportsDispatch(studentCount * 800 / HTMLUtils_Year.StudentAverages.Count / MainViewModel.Instance.Parameters.Classes.Count
+                                + classCount * 800 / MainViewModel.Instance.Parameters.Classes.Count);
+                        }
+                        classCount++;
+                    }
+
+                    string filename = Path.Combine(directory, $"Bulletin de l'année {year}-{year + 1} (regroupement).html");
+                    File.Delete(filename);
+
+                    MergeHTML(directory, MainViewModel.Instance.Reports.YearReports, filename);
+
+                    MainViewModel.Instance.Reports.YearReports.Insert(0, Path.GetFileName(filename));
+                    _updateYearReportsDispatch(1000);
+
+                    MainViewModel.Instance.Reports.YearReportsPath = directory;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
+        }
+
+        private static void GenerateYearReport(string directory, int year, StudentViewModel student, ClassViewModel _class, HTMLUtils_Year HTMLUtils_Year)
+        {
+            PeriodViewModel period = MainViewModel.Instance.Models.Periods.OrderBy(p => p.Number).FirstOrDefault();
+
+            string filename = Path.Combine(directory, $"Bulletin de l'année {year}-{year + 1} de {_class.Name} de {student.LastName} {student.FirstName}.html");
+
+            File.Delete(filename);
+            using (FileStream file = new FileStream(filename, FileMode.OpenOrCreate))
+            {
+                using (StreamWriter writer = new StreamWriter(file))
+                {
+                    WriteHeader(writer);
+
+                    writer.Write(T2 + "<table style=\"height:7mm;border-collapse:collapse\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T2 + "</table>\r\n"
+                        + T2 + "<table style=\"width:194mm;border-collapse:collapse\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<img src=\"icon.png\" style=\"width:35mm;height:35mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:10mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:104mm\">\r\n"
+                        + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                        + T6 + "<tr style=\"height:8.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria27_C\">\r\n"
+                        + T8 + "BULLETIN ANNUEL\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:7mm\">\r\n"
+                        + T7 + "<td class=\"Cambria19_C\">\r\n"
+                        + T8 + $"Année {student.Year} - {student.Year + 1}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:6mm\">\r\n"
+                        + T7 + "<td class=\"Cambria15_C\">\r\n"
+                        + T8 + $"Classe de {_class.Name} - Effectif {_class.Students.Count}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:12mm\">\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:45mm\">\r\n"
+                        + T5 + "<table width=\"100%\" style=\"border-collapse:collapse\">\r\n"
+                        + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria21_R\">\r\n"
+                        + T8 + $"{student.LastName}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:7.5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria21_R\">\r\n"
+                        + T8 + $"{student.FirstName}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:5mm\">\r\n"
+                        + T7 + "<td class=\"Cambria13_R\">\r\n"
+                        + T8 + $"né le {student.BirthDate.ToShortDateString()}\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T6 + "<tr style=\"height:15mm\">\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15_C\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Disciplines</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria11_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moyenne élève</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+
+                    double average = double.MinValue;
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        TeacherViewModel teacher = ModelUtils.GetTeacherFromClassAndSubject(student.Class, subject, period);
+
+                        average = double.MinValue;
+                        if (subject.ChildrenSubjects.Any())
+                        {
+                            average = MarkModel.ReadYearMainSubjectAverage(year, student, subject);
+                        }
+                        else
+                        {
+                            average = MarkModel.ReadYearSubjectAverage(year, student, subject);
+                        }
+
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                            + T10 + "<td style=\"border:1px solid black\">\r\n"
+                            + T11 + "<span class=\"Cambria10B_L\">\r\n"
+                            + T12 + $"{subject.Name.ToUpper()}\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                            + T12 + $"{(subject.Option ? $"(option " : $"(")}coeff. {subject.Coefficient})\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T11 + "<span class=\"Cambria9I_L\">\r\n"
+                            + T12 + $"{(teacher != null ? $"{teacher.Title} {(!string.IsNullOrEmpty(teacher.FirstName) ? teacher.FirstName.Substring(0, 1) : "")}. {teacher.LastName}" : "")}\r\n"
+                            + T11 + "</span><br/>\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
+                            + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T9 + "</tr>\r\n");
+
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            average = MarkModel.ReadYearSubjectAverage(year, student, subject2);
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                                + T10 + "<td style=\"border:1px solid black\">\r\n"
+                                + T11 + "<span class=\"Cambria12I_R\">\r\n"
+                                + T12 + $"{subject2.Name.ToUpper()}\r\n"
+                                + T11 + "</span><br/>\r\n"
+                                + T11 + "<span class=\"Cambria9I_R\">\r\n"
+                                + T12 + $"{(subject2.Option ? $"(option " : $"(")}coeff. {subject2.Coefficient})\r\n"
+                                + T11 + "</span><br/>\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria17B_C\" style=\"border:1px solid black\">\r\n"
+                                + T11 + $"{(average != double.MinValue ? average.ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria11_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. classe</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria10_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. min</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria10_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moy. max</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n");
+
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                            + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Year.ClassSubjectAverages[subject] != double.MinValue ? HTMLUtils_Year.ClassSubjectAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Year.ClassSubjectMinAverages[subject] != double.MaxValue ? HTMLUtils_Year.ClassSubjectMinAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
+                            + T11 + $"{(HTMLUtils_Year.ClassSubjectMaxAverages[subject] != double.MinValue ? HTMLUtils_Year.ClassSubjectMaxAverages[subject].ToString("0.0") : "")}\r\n"
+                            + T10 + "</td>\r\n"
+                            + T9 + "</tr>\r\n");
+
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
+                                + T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Year.ClassSubjectAverages[subject2] != double.MinValue ? HTMLUtils_Year.ClassSubjectAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Year.ClassSubjectMinAverages[subject2] != double.MaxValue ? HTMLUtils_Year.ClassSubjectMinAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T10 + "<td class=\"Cambria12I_C\" style=\"border:1px solid black\">\r\n"
+                                + T11 + $"{(HTMLUtils_Year.ClassSubjectMaxAverages[subject2] != double.MinValue ? HTMLUtils_Year.ClassSubjectMaxAverages[subject2].ToString("0.0") : "")}\r\n"
+                                + T10 + "</td>\r\n"
+                                + T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n");
+                    for (int trimester = 1; trimester <= 3; trimester++)
+                    {
+                        writer.Write(T10 + "<td class=\"Cambria12_C\" style=\"width:38.3mm;border:1px solid black\">\r\n"
+                            + T11 + $"<span>Trimestre {trimester}</span>\r\n"
+                            + T10 + "</td>\r\n");
+                    }
+                    writer.Write(T9 + "</tr>\r\n");
+
+                    foreach (SubjectViewModel subject in _class.Level.Subjects.Where(s => s.ParentSubject == null))
+                    {
+                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n");
+                        for (int trimester = 1; trimester <= 3; trimester++)
+                        {
+                            if (subject.ChildrenSubjects.Any())
+                            {
+                                average = MarkModel.ReadTrimesterMainSubjectAverage(trimester, student, subject);
+                            }
+                            else
+                            {
+                                average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject);
+                            }
+                            writer.Write(T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
+                                + T11 + $"<span>{(average != double.MinValue ? average.ToString("0.0") : "")}</span>\r\n"
+                                + T10 + "</td>\r\n");
+                        }
+                        writer.Write(T9 + "</tr>\r\n");
+                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
+                        {
+                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n");
+                            for (int trimester = 1; trimester <= 3; trimester++)
+                            {
+                                average = MarkModel.ReadTrimesterSubjectAverage(trimester, student, subject2);
+                                writer.Write(T10 + "<td class=\"Cambria15I_C\" style=\"border:1px solid black\">\r\n"
+                                    + T11 + $"<span>{(average != double.MinValue ? average.ToString("0.0") : "")}</span>\r\n"
+                                    + T10 + "</td>\r\n");
+                            }
+                            writer.Write(T9 + "</tr>\r\n");
+                        }
+                    }
+
+                    writer.Write(T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    average = MarkModel.ReadYearAverage(year, student);
+                    int ranking = MarkModel.ReadYearRanking(student, HTMLUtils_Year.StudentAverages);
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15B_R\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Moyenne</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria15B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(average != double.MinValue ? average.ToString("0.0") : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"height:13mm;border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15I_C\" style=\"width:10mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(HTMLUtils_Year.ClassAverage != double.MinValue ? HTMLUtils_Year.ClassAverage.ToString("0.0") : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(HTMLUtils_Year.ClassMinAverage != double.MinValue ? HTMLUtils_Year.ClassMinAverage.ToString("0.0") : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria12I_C\" style=\"width:7.5mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{(HTMLUtils_Year.ClassMaxAverage != double.MinValue ? HTMLUtils_Year.ClassMaxAverage.ToString("0.0") : "")}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:2mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n");
+                    for (int trimester = 1; trimester <= 3; trimester++)
+                    {
+                        average = MarkModel.ReadTrimesterAverage(trimester, student);
+                        writer.Write(T10 + "<td class=\"Cambria15I_C\" style=\"width:38.3mm;border:1px solid black\">\r\n"
+                            + T11 + $"<span>{(average != double.MinValue ? average.ToString("0.0") : "")}</span>\r\n"
+                            + T10 + "</td>\r\n");
+                    }
+                    writer.Write(T9 + "<tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    writer.Write(T2 + "<table style=\"margin-top:2mm;border-collapse:collapse;width:194mm\">\r\n"
+                        + T3 + "<tr>\r\n"
+                        + T4 + "<td>\r\n"
+                        + T5 + "<table style=\"border:1px solid black;\">\r\n"
+                        + T6 + "<tr>\r\n"
+                        + T7 + "<td>\r\n"
+                        + T8 + "<table style=\"border-collapse:collapse\">\r\n"
+                        + T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        + T10 + "<td class=\"Cambria15B_R\" style=\"width:28mm;border:1px solid black\">\r\n"
+                        + T11 + "<span>Classement</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T10 + "<td class=\"Cambria15B_C\" style=\"width:13mm;border:1px solid black\">\r\n"
+                        + T11 + $"<span>{ranking}/{HTMLUtils_Year.StudentAverages.Count}</span>\r\n"
+                        + T10 + "</td>\r\n"
+                        + T9 + "</tr>\r\n"
+                        + T8 + "</table>\r\n"
+                        + T7 + "</td>\r\n"
+                        + T6 + "</tr>\r\n"
+                        + T5 + "</table>\r\n"
+                        + T4 + "</td>\r\n"
+                        + T4 + "<td style=\"width:149mm\">\r\n"
+                        + T4 + "</td>\r\n"
+                        + T3 + "</tr>\r\n"
+                        + T2 + "</table>\r\n");
+
+                    WriteAdressFooter(writer);
+                    WriteFooter(writer);
+                }
+            }
+
+            MainViewModel.Instance.Reports.YearReports.Add(Path.GetFileName(filename));
         }
     }
 }

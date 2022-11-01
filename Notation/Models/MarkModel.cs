@@ -770,7 +770,7 @@ namespace Notation.Models
             }
         }
 
-        public static int ReadtrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
+        public static int ReadTrimesterRanking(StudentViewModel student, Dictionary<StudentViewModel, double> averages)
         {
             double average = averages[student];
             return averages.Values.OrderByDescending(v => v).ToList().IndexOf(average) + 1;

@@ -1088,7 +1088,7 @@ namespace Notation.Utils
 
         public static void ExportPeriodSummary(string directory, ClassViewModel _class, PeriodViewModel period)
         {
-            string filename = Path.Combine(directory, $"Bulletin de période {period.Number} de {_class.Name} (Résumé).xlsx");
+            string filename = Path.Combine(directory, $"Bulletin de période {period.Number} de {_class.Name} (résumé).xlsx");
             File.Delete(filename);
 
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -1220,7 +1220,7 @@ namespace Notation.Utils
             workSheet.Column(1).AutoFit();
             excel.Save();
 
-            MainViewModel.Instance.Reports.PeriodReports.Add(Path.GetFileName(filename));
+            MainViewModel.Instance.Reports.PeriodReports.Insert(MainViewModel.Instance.Reports.PeriodReports.Count(r => r.Contains("résumé")), Path.GetFileName(filename));
         }
 
         private static bool ImportTrimesterGeneralComments(string filename, ExcelWorksheet workSheet)
@@ -1266,7 +1266,7 @@ namespace Notation.Utils
 
         public static void ExportTrimesterSummary(string directory, ClassViewModel _class, int trimester)
         {
-            string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} (Résumé).xlsx");
+            string filename = Path.Combine(directory, $"Bulletin de trimestre {trimester} de {_class.Name} (résumé).xlsx");
             File.Delete(filename);
 
             ExcelPackage excel = new ExcelPackage(new FileInfo(filename));
@@ -1398,7 +1398,7 @@ namespace Notation.Utils
             workSheet.Column(1).AutoFit();
             excel.Save();
 
-            MainViewModel.Instance.Reports.TrimesterReports.Add(Path.GetFileName(filename));
+            MainViewModel.Instance.Reports.TrimesterReports.Insert(MainViewModel.Instance.Reports.TrimesterReports.Count(r => r.Contains("résumé")), Path.GetFileName(filename));
         }
     }
 }

@@ -328,7 +328,7 @@ namespace Notation.Views
         {
             YearReportsProgressBar.Visibility = Visibility.Visible;
             YearReportsProgressBar.Value = 0;
-            SSRSUtils.CreateYearReport(MainViewModel.Instance.Reports.Year, _updateYearReportsDispatch);
+            HTMLUtils.CreateYearReport(MainViewModel.Instance.Reports.Year, _updateYearReportsDispatch);
             YearReportsProgressBar.Visibility = Visibility.Collapsed;
         }
 
