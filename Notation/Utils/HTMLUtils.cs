@@ -1369,22 +1369,11 @@ namespace Notation.Utils
                     {
                         TrimesterSubjectCommentModel trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject);
 
-                        writer.Write(T9 + "<tr style=\"height:11mm;border:1px solid black\">\r\n"
+                        writer.Write(T9 + $"<tr style=\"height:{11 + 8 * subject.ChildrenSubjects.Count}mm;border:1px solid black\">\r\n"
                             + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
                             + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
                             + T10 + "</td>\r\n"
                             + T9 + "</tr>\r\n");
-
-                        foreach (SubjectViewModel subject2 in subject.ChildrenSubjects.OrderBy(s => s.Order))
-                        {
-                            trimesterSubjectComment = TrimesterSubjectCommentModel.Read(trimester, student, subject2);
-
-                            writer.Write(T9 + "<tr style=\"height:8mm;border:1px solid black\">\r\n"
-                                + T10 + "<td class=\"Cambria15_L\" style=\"border:1px solid black\">\r\n"
-                                + T11 + $"<span>{(trimesterSubjectComment?.Comment)}</span>\r\n"
-                                + T10 + "</td>\r\n"
-                                + T9 + "</tr>\r\n");
-                        }
                     }
 
                     writer.Write(T8 + "</table>\r\n"
